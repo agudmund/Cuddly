@@ -1,1 +1,9 @@
 Documents/*.idlk
+Unity/Library
+Unity/Temp
+Unity/Library
+Unity/UserSettings
+Unity/ProjectSettings
+Unity/obj
+Unity/Packages
+Unity/Logs
