@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+// just some notes
+
 public class Exist : MonoBehaviour
 {
     NavMeshAgent nav;
