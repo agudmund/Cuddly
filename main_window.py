@@ -28,15 +28,15 @@ from cozy.about import AboutNode
 from cozy.session import SessionManager
 from cozy.audio import AudioFeedback
 from cozy.window import ModernMainWindowMixin
-from cozy.session_helpers import (
-    prompt_save_current_session,
-    save_session,
-    load_session,
-    auto_backup_session,
-    add_to_recent_sessions,
-    quick_load_most_recent,
-    get_session_filename
-)
+# from cozy.session_helpers import (
+#     prompt_save_current_session,
+#     save_session,
+#     load_session,
+#     auto_backup_session,
+#     add_to_recent_sessions,
+#     quick_load_most_recent,
+#     get_session_filename
+# )
 
 from dialogs.settings_dialog import SettingsDialog
 
@@ -124,6 +124,7 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
 
     def _restore_last_session(self):
         last_session = Settings().get("last_session")
+        self.logger.debug(f'Restoring session {last_session}')
         
         if last_session:
             # Find the index of the last session in the combo box
@@ -164,10 +165,13 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
         # 1. The Session Combo
         sessions = SessionManager.get_available_sessions()
         self.session_combo = nodal.combo(
-            items=sessions,
+            items=None,
             fixedWidth=310,
             currentTextChanged=self._handle_session_switch
         )
+        self.session_combo.blockSignals(True)
+        self.session_combo.addItems(sessions)
+        self.session_combo.blockSignals(False)
         self.current_session_name = self.session_combo.currentText()
         top_bar.addWidget(self.session_combo)
 
@@ -230,20 +234,20 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
 
     def _handle_session_switch(self, new_session_name):
         # Guard 1: Ensure we aren't switching to the same thing
-        if not new_session_name or new_session_name == self.current_session_name:
-            return
+        # if not new_session_name or new_session_name == self.current_session_name:
+        #     return
 
-        # Guard 2: Ensure the scene is actually ready before we try to save/load
-        if not hasattr(self, 'sketch_scene') or self.sketch_scene is None:
-            return
+        # # Guard 2: Ensure the scene is actually ready before we try to save/load
+        # if not hasattr(self, 'sketch_scene') or self.sketch_scene is None:
+        #     return
 
         self.logger.info(f"Switching from {self.current_session_name} to {new_session_name}")
 
         # 1. Save the OLD session
-        self.on_save(self.current_session_name)
+        # self.on_save(self.current_session_name)
 
         # 2. Update tracking and Load NEW
-        self.current_session_name = new_session_name
+        # self.current_session_name = new_session_name
         self.on_load()
 
     def _setup_nodal_canvas(self):
@@ -676,20 +680,19 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
         Settings().sync()
 
     def closeEvent(self, event):
-        if self._scene_dirty:
-            reply = QMessageBox.question(self, "Unsaved changes", 
-                                         "Save current session before closing? 🌱",
-                                         QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
-            if reply == QMessageBox.Cancel:
-                event.ignore()
-                return
-            if reply == QMessageBox.Yes:
-                if self.current_session_path:
-                    save_session(self.sketch_scene, self.current_session_path, ...)
-                else:
-                    save_path = prompt_save_current_session()
-                    if save_path:
-                        save_session(self.sketch_scene, save_path, ...)
+        # if self._scene_dirty:
+            # reply = QMessageBox.question(self, "Unsaved changes", 
+            #                              "Save current session before closing? 🌱",
+            #                              QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+            # if reply == QMessageBox.Cancel:
+            #     event.ignore()
+            #     return
+            # if reply == QMessageBox.Yes:
+            #     if self.current_session_path:
+            #         save_session(self.sketch_scene, self.current_session_path, ...)
+            #     else:
+        self.on_save()
+                        # save_session(self.sketch_scene, save_path, ...)
         Settings().set("window_geometry", self.saveGeometry().toHex().data().decode())
         super().closeEvent(event)
 
@@ -706,49 +709,66 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
 
     def on_save(self, session_name=None):
         # If no name is passed (manual click), use the one currently in the combo box
-        name_to_save = session_name if session_name else self.session_combo.currentText()
+        # name_to_save = session_name if session_name else self.session_combo.currentText()
         
         # Crucial: get_session_filename must receive the name_to_save
-        path = get_session_filename(name_to_save)
+        path = 'sessions/'+self.session_combo.currentText()+'.json'
         
-        if path:
-            # Get current view state for the camera
-            view_center = self.sketch_view.mapToScene(self.sketch_view.viewport().rect().center())
-            view_zoom = self.sketch_view.transform().m11()
+        # if path:
+        # Get current view state for the camera
+        view_center = self.sketch_view.mapToScene(self.sketch_view.viewport().rect().center())
+        view_zoom = self.sketch_view.transform().m11()
 
-            success = SessionManager.save_session(
-                self.sketch_scene,
-                path,
-                view=self.sketch_view,
-                progress_value=self.progress_value,
-                joy_buckets=self.joy_buckets,
-                camera_pos=(view_center.x(), view_center.y()),
-                camera_zoom=view_zoom
-            )
-            if success:
-                self.logger.info(f"Saved session: {name_to_save}")
-                self._scene_dirty = False
-                self._trigger_save_visual() # Show the "Saved!" feedback
+        success = SessionManager.save_session(
+            self.sketch_scene,
+            path,
+            view=self.sketch_view,
+            progress_value=self.progress_value,
+            joy_buckets=self.joy_buckets,
+            camera_pos=(view_center.x(), view_center.y()),
+            camera_zoom=view_zoom
+        )
+        # if success:
+        self.logger.info(f"Saved session: {path}")
+        # print("Inside foo, caller is:", self.get_caller_name_ctypes())
 
+                # self._scene_dirty = False
+                # self._trigger_save_visual() # Show the "Saved!" feedback
+    # ?
+
+    # def get_caller_name_ctypes(self):
+    #     import ctypes
+    #     # Get the current frame
+    #     frame = ctypes.pythonapi.PyEval_GetFrame()
+    #     if not frame:
+    #         return "<no frame>"
+
+    #     # Go one level up
+    #     prev_frame = ctypes.cast(frame, ctypes.py_object).value.f_back
+    #     if not prev_frame:
+    #         return "<top-level>"
+
+    #     code = prev_frame.f_code
+    #     return code.co_name
     def on_load(self):
-        if self._scene_dirty:
-            save_path = prompt_save_current_session(self.current_session_path)
-            if save_path is None:
-                self.logger.debug("Session switch cancelled to save current 🌱")
-                return  # Abort load if user cancels prompt
+        # if self._scene_dirty:
+            # save_path = self.current_session_path)
+            # if save_path is None:
+            #     self.logger.debug("Session switch cancelled to save current 🌱")
+                # return  # Abort load if user cancels prompt
 
             # Actually save the current before clearing
-            if save_session(self.sketch_scene, save_path, self.sketch_view, 
-                            self.progress_value, self.joy_buckets):
-                self._scene_dirty = False  # Reset after successful save
-                self.current_session_path = save_path  # Update path if new
-            else:
-                self.logger.warning("Save failed during switch — aborting load")
-                return  # Don't proceed if save fails
+            # if save_session(self.sketch_scene, save_path, self.sketch_view, 
+            #                 self.progress_value, self.joy_buckets):
+            #     self._scene_dirty = False  # Reset after successful save
+            #     self.current_session_path = save_path  # Update path if new
+            # else:
+            #     self.logger.warning("Save failed during switch — aborting load")
+            #     return  # Don't proceed if save fails
 
         # Now safe to clear and load
         current_text = self.session_combo.currentText()
-        target = get_session_filename(current_text)
+        target = 'sessions/'+current_text+'.json'
         
         if not target or not os.path.exists(target):
             self.logger.warning(f"Invalid load path: {target} — skipping")
@@ -772,7 +792,7 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
         else:
             self.logger.info("Load returned no data — adding gentle default node ✨")
             # If you have a add_default_node() method, call it here
-            self.add_welcome_node()
+            # self.add_welcome_node()
 
     def add_welcome_node(self):
         node = WarmNode(node_id=1, title="All Glory", full_text=" and that.", pos=QPointF(0, 0))

@@ -38,7 +38,7 @@ def main() -> None:
     logger = setup_logging(debug=debug_mode)
 
     # High-DPI setup before QApplication creation as per what Qt officially recommends 
-    # There have been some disagreements in the past on where in the order it should be
+    # There have been some disagreements in the past on where in the order it should be 
     QApplication.setHighDpiScaleFactorRoundingPolicy(
         Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
     )
@@ -49,8 +49,7 @@ def main() -> None:
         app.setOrganizationName(ORG_NAME)
         app.setApplicationVersion(APP_VERSION)
         app.setStyle(APP_STYLE)
-        QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
-
+        
         logger.debug(f"debug mode: {debug_mode}")
         logger.info(f"{APP_NAME} is generally so happy that you are here. 🌱")
 

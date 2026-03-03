@@ -108,33 +108,33 @@ def add_to_recent_sessions(filepath: Path) -> None:
     logger.debug(f"Added to recent sessions (top 5): {str_path}")
 
 
-def save_session(
-    scene,
-    path: Path,
-    view=None,
-    progress_value: float = 100.0,
-    joy_buckets: int = 0
-) -> bool:
-    """
-    Saves the current scene + metadata to disk.
-    Updates recent list on success.
-    Returns True if saved successfully.
-    """
-    try:
-        SessionManager.save_session(
-            scene,
-            str(path),
-            view=view,
-            progress_value=progress_value,
-            joy_buckets=joy_buckets
-        )
-        add_to_recent_sessions(path)
-        logger.info(f"Session saved successfully: {path}")
-        return True
-    except Exception as e:
-        logger.warning(f"Failed to save session {path}: {e}", exc_info=True)
-        QMessageBox.warning(None, "Save failed", f"Could not save session:\n{str(e)}")
-        return False
+# def save_session(
+#     scene,
+#     path: Path,
+#     view=None,
+#     progress_value: float = 100.0,
+#     joy_buckets: int = 0
+# ) -> bool:
+#     """
+#     Saves the current scene + metadata to disk.
+#     Updates recent list on success.
+#     Returns True if saved successfully.
+#     """
+#     try:
+#         SessionManager.save_session(
+#             scene,
+#             str(path),
+#             view=view,
+#             progress_value=progress_value,
+#             joy_buckets=joy_buckets
+#         )
+#         add_to_recent_sessions(path)
+#         logger.info(f"Session saved successfully: {path}")
+#         return True
+#     except Exception as e:
+#         logger.warning(f"Failed to save session {path}: {e}", exc_info=True)
+#         QMessageBox.warning(None, "Save failed", f"Could not save session:\n{str(e)}")
+#         return False
 
 
 def load_session(
@@ -167,35 +167,35 @@ def load_session(
         return {}
 
 
-def auto_backup_session(
-    scene,
-    backup_dir: str = "backups",
-    prefix: str = "auto",
-    max_backups: int = 5
-) -> Optional[Path]:
-    """
-    Creates a timestamped auto-backup.
-    Keeps only the last max_backups files.
-    Returns the backup path on success, None on failure.
-    """
-    try:
-        backup_dir_path = Path(backup_dir)
-        backup_dir_path.mkdir(parents=True, exist_ok=True)
+# def auto_backup_session(
+#     scene,
+#     backup_dir: str = "backups",
+#     prefix: str = "auto",
+#     max_backups: int = 5
+# ) -> Optional[Path]:
+#     """
+#     Creates a timestamped auto-backup.
+#     Keeps only the last max_backups files.
+#     Returns the backup path on success, None on failure.
+#     """
+#     try:
+#         backup_dir_path = Path(backup_dir)
+#         backup_dir_path.mkdir(parents=True, exist_ok=True)
 
-        timestamp = AppLogger.get_timestamp("%Y%m%d_%H%M%S")
-        backup_name = f"{prefix}_{APP_NAME}_{timestamp}.json"
-        backup_path = backup_dir_path / backup_name
+#         timestamp = AppLogger.get_timestamp("%Y%m%d_%H%M%S")
+#         backup_name = f"{prefix}_{APP_NAME}_{timestamp}.json"
+#         backup_path = backup_dir_path / backup_name
 
-        SessionManager.save_session(scene, str(backup_path))
-        logger.debug(f"Auto-backup created: {backup_path}")
+#         SessionManager.save_session(scene, str(backup_path))
+#         logger.debug(f"Auto-backup created: {backup_path}")
 
-        # Clean up old backups
-        backups = sorted(backup_dir_path.glob(f"{prefix}_*.json"), key=os.path.getmtime)
-        for old in backups[:-max_backups]:
-            old.unlink()
-            logger.debug(f"Removed old backup: {old}")
+#         # Clean up old backups
+#         backups = sorted(backup_dir_path.glob(f"{prefix}_*.json"), key=os.path.getmtime)
+#         for old in backups[:-max_backups]:
+#             old.unlink()
+#             logger.debug(f"Removed old backup: {old}")
 
-        return backup_path
-    except Exception as e:
-        logger.warning(f"Auto-backup failed: {e}", exc_info=True)
-        return None
+#         return backup_path
+#     except Exception as e:
+#         logger.warning(f"Auto-backup failed: {e}", exc_info=True)
+#         return None

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-  The Jacket - cozy/session.py
+  Cuddly, Duddly, and Fuddy, the Wuddlies - cozy/session.py
   Cozy session persistence for enjoying.
   Built using a single shared braincell by Yours Truly, Grok, And Gemini
 """
@@ -57,52 +57,52 @@ class SessionManager:
                 combo.setCurrentText("Default Canvas")
         combo.blockSignals(False)
 
-    @staticmethod
-    def save_session(scene, filepath: str, view: QGraphicsView = None, 
-                     progress_value: float = 100.0, joy_buckets: int = 0,
-                     camera_pos: tuple = None, camera_zoom: float = None):
-        """Save nodes information"""
-        os.makedirs(os.path.dirname(filepath), exist_ok=True)
-        nodes_data = []
-        for item in scene.items():
-            if isinstance(item, (WarmNode, AboutNode)):
-                node_type = "about" if isinstance(item, AboutNode) else "warm"
-                nodes_data.append({
-                    "node_id": getattr(item, 'node_id', 0),
-                    "type": node_type,
-                    "title": item.title,
-                    "full_text": item.full_text,
-                    "pos_x": item.scenePos().x(),
-                    "pos_y": item.scenePos().y(),
-                    "width": item.rect().width(),
-                    "height": item.rect().height()
-                })
-            data = {
-            "version": "1.0",
-            "nodes": nodes_data,
-            "progress_value": round(progress_value, 2),
-            "joy_buckets": int(joy_buckets)
-        }
+    # @staticmethod
+    # def save_session(scene, filepath: str, view: QGraphicsView = None, 
+    #                  progress_value: float = 100.0, joy_buckets: int = 0,
+    #                  camera_pos: tuple = None, camera_zoom: float = None):
+    #     """Save nodes information"""
+    #     os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    #     nodes_data = []
+    #     for item in scene.items():
+    #         if isinstance(item, (WarmNode, AboutNode)):
+    #             node_type = "about" if isinstance(item, AboutNode) else "warm"
+    #             nodes_data.append({
+    #                 "node_id": getattr(item, 'node_id', 0),
+    #                 "type": node_type,
+    #                 "title": item.title,
+    #                 "full_text": item.full_text,
+    #                 "pos_x": item.scenePos().x(),
+    #                 "pos_y": item.scenePos().y(),
+    #                 "width": item.rect().width(),
+    #                 "height": item.rect().height()
+    #             })
+    #         data = {
+    #         "version": "1.0",
+    #         "nodes": nodes_data,
+    #         "progress_value": round(progress_value, 2),
+    #         "joy_buckets": int(joy_buckets)
+    #     }
 
-        # Handle Viewport Data
-        if view is not None:
-            if camera_pos and camera_zoom:
-                scale = camera_zoom
-                cx, cy = camera_pos
-            else:
-                transform = view.transform()
-                scale = transform.m11()
-                center = view.mapToScene(view.viewport().rect().center())
-                cx, cy = center.x(), center.y()
+    #     # Handle Viewport Data
+    #     if view is not None:
+    #         if camera_pos and camera_zoom:
+    #             scale = camera_zoom
+    #             cx, cy = camera_pos
+    #         else:
+    #             transform = view.transform()
+    #             scale = transform.m11()
+    #             center = view.mapToScene(view.viewport().rect().center())
+    #             cx, cy = center.x(), center.y()
 
-            data["viewport"] = {
-                "scale": round(scale, 4),
-                "center_x": round(cx, 2),
-                "center_y": round(cy, 2)
-            }
+    #         data["viewport"] = {
+    #             "scale": round(scale, 4),
+    #             "center_x": round(cx, 2),
+    #             "center_y": round(cy, 2)
+    #         }
 
-        with open(filepath, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
+    #     with open(filepath, "w", encoding="utf-8") as f:
+    #         json.dump(data, f, indent=2, ensure_ascii=False)
 
 
     @staticmethod

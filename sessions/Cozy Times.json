@@ -2,21 +2,81 @@
   "version": "1.0",
   "nodes": [
     {
+      "node_id": 5,
+      "type": "warm",
+      "title": "Current version does not remember window_geometry on launch",
+      "full_text": "",
+      "pos_x": -978.8159636845091,
+      "pos_y": 366.93777189332326,
+      "width": 1093.578588991867,
+      "height": 83.79988651409116
+    },
+    {
+      "node_id": 3,
+      "type": "about",
+      "title": "About",
+      "full_text": "",
+      "pos_x": 291.76602609061575,
+      "pos_y": -77.14967036049936,
+      "width": 200.0,
+      "height": 50.0
+    },
+    {
+      "node_id": 2,
+      "type": "warm",
+      "title": "cozy-tree .gitignore patterns",
+      "full_text": "Current implementation uses fnmatch, which handles basic patterns (*, ?, []) but falls short on advanced Git syntax like ** (recursive), ! (negate), or trailing / for directories only.\nSuggestion: Consider integrating a library like pathspec (from GitPython or standalone) for accurate matching. It's lightweight and handles full .gitignore parsing. For example:Pythonfrom pathspec import PathSpec\n\n# In _load_gitignore_patterns:\npatterns = PathSpec.from_lines('gitwildmatch', f.readlines())\n# Then in _should_ignore:\nif patterns.match_file(rel_path):\n    return TrueThis would make it \"rock-solid\" as promised, without much added complexity. Since your environment has no pip, you could implement a basic ** handler manually if needed, but pathspec might not be available—stick to fnmatch for now if simplicity is key.\n",
+      "pos_x": 144.72497529067596,
+      "pos_y": 66.28910408907507,
+      "width": 649.1955367885255,
+      "height": 397.0
+    },
+    {
       "node_id": 1,
       "type": "warm",
-      "title": "New Thought",
-      "full_text": " and that.",
-      "pos_x": 0.0,
-      "pos_y": 0.0,
-      "width": 250.0,
-      "height": 150.0
+      "title": "The Nodes",
+      "full_text": "They should auto resize on creating new nodes accordingly with the title width",
+      "pos_x": -371.84803809692875,
+      "pos_y": -78.99653844515551,
+      "width": 620.0190770093982,
+      "height": 111.54285313508205
+    },
+    {
+      "node_id": 3,
+      "type": "warm",
+      "title": "cozy-tree Encoding and File Reading",
+      "full_text": "Opening .gitignore with utf-8 is smart, but some edge-case files might have different encodings.\nSuggestion: Use errors='ignore' in open() to handle rare malformed files gracefully.",
+      "pos_x": -606.2038963495368,
+      "pos_y": 76.6029884622659,
+      "width": 728.5322489124267,
+      "height": 144.32570455835065
+    },
+    {
+      "node_id": 4,
+      "type": "warm",
+      "title": "The spellchecker doesnt have an option to add new words to dictionary",
+      "full_text": "",
+      "pos_x": -1158.5019860034045,
+      "pos_y": 269.52903347834314,
+      "width": 1264.7531681482883,
+      "height": 73.39701153773404
+    },
+    {
+      "node_id": 6,
+      "type": "warm",
+      "title": "app_info.py",
+      "full_text": "It has stuff in it, mostly the things intended for the About Node",
+      "pos_x": 413.27785133345947,
+      "pos_y": -126.72593153016841,
+      "width": 323.76584074144125,
+      "height": 150.94571590694156
     }
   ],
   "progress_value": 100.0,
   "joy_buckets": 0,
   "viewport": {
-    "scale": 1.0,
-    "center_x": 124.0,
-    "center_y": 74.0
+    "scale": 1.0574,
+    "center_x": 120.11,
+    "center_y": 157.93
   }
 }
