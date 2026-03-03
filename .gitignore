@@ -1,9 +1,16 @@
-Documents/*.idlk
-Unity/Library
-Unity/Temp
-Unity/Library
-Unity/UserSettings
-Unity/ProjectSettings
-Unity/obj
-Unity/Packages
-Unity/Logs
+# Cuddly, Duddly, and Fuddy, the Wuddlies - .gitignore
+# Standard stuff to ignore by and large.
+# Built using a single shared braincell by Yours Truly, Grok, And Gemini
+__pycache__/
+.mypy_cache/
+logs/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.json
+*.csproj
+*.sln
+*.idlk
+*.meta
+*.idlk
