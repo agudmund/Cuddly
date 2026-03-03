@@ -8,11 +8,12 @@
 
 import os
 import random
+from pathlib import Path
 
 from PySide6.QtCore import Qt, QTimer, QPropertyAnimation, QEasingCurve, QParallelAnimationGroup, QPoint
 from PySide6.QtGui import QFont, QIcon, QPixmap, QFontDatabase, QColor
 from PySide6.QtWidgets import (
-    QFrame, QHBoxLayout, QLabel, QMainWindow, QApplication,
+    QFrame, QHBoxLayout, QLabel, QMainWindow, QApplication, QMessageBox,
     QStackedWidget, QVBoxLayout, QWidget, QProgressBar,
     QGraphicsOpacityEffect, QScrollArea, QSizePolicy, QGraphicsDropShadowEffect
 )
@@ -675,15 +676,33 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
         Settings().sync()
 
     def closeEvent(self, event):
-        # Remember the session
-        Settings().set("last_session", self.session_combo.currentText())
-        
-        # Remember the window size/position
+        if self._scene_dirty:
+            reply = QMessageBox.question(self, "Unsaved changes", 
+                                         "Save current session before closing? 🌱",
+                                         QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+            if reply == QMessageBox.Cancel:
+                event.ignore()
+                return
+            if reply == QMessageBox.Yes:
+                if self.current_session_path:
+                    save_session(self.sketch_scene, self.current_session_path, ...)
+                else:
+                    save_path = prompt_save_current_session()
+                    if save_path:
+                        save_session(self.sketch_scene, save_path, ...)
         Settings().set("window_geometry", self.saveGeometry().toHex().data().decode())
-        Settings().set("window_maximized", self.isMaximized())
-        
-        self.logger.info(f"Exid: {self.session_combo.currentText()} ✨")
         super().closeEvent(event)
+
+    # def closeEvent(self, event):
+    #     # Remember the session
+    #     Settings().set("last_session", self.session_combo.currentText())
+        
+    #     # Remember the window size/position
+    #     Settings().set("window_geometry", self.saveGeometry().toHex().data().decode())
+    #     Settings().set("window_maximized", self.isMaximized())
+        
+    #     self.logger.info(f"Exid: {self.session_combo.currentText()} ✨")
+    #     super().closeEvent(event)
 
     def on_save(self, session_name=None):
         # If no name is passed (manual click), use the one currently in the combo box
@@ -712,37 +731,86 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
                 self._trigger_save_visual() # Show the "Saved!" feedback
 
     def on_load(self):
-        # if self._scene_dirty:
-        #     if not prompt_save_current_session(self.sketch_scene):  # assuming it returns True if saved/canceled
-        #         return  # abort load if user cancels
+        if self._scene_dirty:
+            save_path = prompt_save_current_session(self.current_session_path)
+            if save_path is None:
+                self.logger.debug("Session switch cancelled to save current 🌱")
+                return  # Abort load if user cancels prompt
+
+            # Actually save the current before clearing
+            if save_session(self.sketch_scene, save_path, self.sketch_view, 
+                            self.progress_value, self.joy_buckets):
+                self._scene_dirty = False  # Reset after successful save
+                self.current_session_path = save_path  # Update path if new
+            else:
+                self.logger.warning("Save failed during switch — aborting load")
+                return  # Don't proceed if save fails
+
+        # Now safe to clear and load
         current_text = self.session_combo.currentText()
         target = get_session_filename(current_text)
         
         if not target or not os.path.exists(target):
+            self.logger.warning(f"Invalid load path: {target} — skipping")
             return
 
-        # Clear the scene for the new session
-        if self.sketch_scene:
-            self.sketch_scene.clear()
-
-        # SessionManager.load_session returns the full data dict 
-        # and handles view.centerOn internally if you pass 'view'
+        self.sketch_scene.clear()
         data = SessionManager.load_session(self.sketch_scene, filepath=target, view=self.sketch_view)
-        Settings().set("last_session", current_text)
-
         if data:
-            # Update UI elements from the loaded data
-            target_value = data.get("progress_value", 100.0)
-            self.progress_value = target_value # Keep internal value in sync
-            
-            if hasattr(self, 'progress_anim') and self.progress_bar:
+            # Update UI as before
+            self.progress_value = data.get("progress_value", 100.0)
+            if self.progress_anim and self.progress_bar:
                 self.progress_anim.stop()
                 self.progress_anim.setStartValue(self.progress_bar.value())
-                self.progress_anim.setEndValue(int(target_value))
+                self.progress_anim.setEndValue(int(self.progress_value))
                 self.progress_anim.start()
-
             self.joy_buckets = data.get("joy_buckets", 0)
             self.joy_label.setText(f"{self.joy_buckets}")
+            Settings().set("last_session", current_text)
+            self.current_session_path = Path(target)  # Track new path
+            self._scene_dirty = False  # Clean after load
+        else:
+            self.logger.info("Load returned no data — adding gentle default node ✨")
+            # If you have a add_default_node() method, call it here
+            self.add_welcome_node()
+
+    def add_welcome_node(self):
+        node = WarmNode(node_id=1, title="All Glory", full_text=" and that.", pos=QPointF(0, 0))
+        self.sketch_scene.addItem(node)
+        self._expand_scene_to_fit_content()    
+
+    # def on_load(self):
+    #     # if self._scene_dirty:
+    #     #     if not prompt_save_current_session(self.sketch_scene):  # assuming it returns True if saved/canceled
+    #     #         return  # abort load if user cancels
+    #     current_text = self.session_combo.currentText()
+    #     target = get_session_filename(current_text)
+        
+    #     if not target or not os.path.exists(target):
+    #         return
+
+    #     # Clear the scene for the new session
+    #     if self.sketch_scene:
+    #         self.sketch_scene.clear()
+
+    #     # SessionManager.load_session returns the full data dict 
+    #     # and handles view.centerOn internally if you pass 'view'
+    #     data = SessionManager.load_session(self.sketch_scene, filepath=target, view=self.sketch_view)
+    #     Settings().set("last_session", current_text)
+
+    #     if data:
+    #         # Update UI elements from the loaded data
+    #         target_value = data.get("progress_value", 100.0)
+    #         self.progress_value = target_value # Keep internal value in sync
+            
+    #         if hasattr(self, 'progress_anim') and self.progress_bar:
+    #             self.progress_anim.stop()
+    #             self.progress_anim.setStartValue(self.progress_bar.value())
+    #             self.progress_anim.setEndValue(int(target_value))
+    #             self.progress_anim.start()
+
+    #         self.joy_buckets = data.get("joy_buckets", 0)
+    #         self.joy_label.setText(f"{self.joy_buckets}")
 
 
     def _on_auto_backup(self):

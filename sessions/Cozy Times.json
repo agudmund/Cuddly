@@ -2,31 +2,21 @@
   "version": "1.0",
   "nodes": [
     {
-      "node_id": 2,
-      "type": "warm",
-      "title": "New Thought",
-      "full_text": "",
-      "pos_x": 206.20726950634844,
-      "pos_y": 199.19341680205088,
-      "width": 329.95511291906297,
-      "height": 145.7918361621546
-    },
-    {
       "node_id": 1,
       "type": "warm",
       "title": "New Thought",
       "full_text": " and that.",
       "pos_x": 0.0,
       "pos_y": 0.0,
-      "width": 404.0,
-      "height": 141.0
+      "width": 250.0,
+      "height": 150.0
     }
   ],
   "progress_value": 100.0,
   "joy_buckets": 0,
   "viewport": {
-    "scale": 0.7129,
-    "center_x": 227.24,
-    "center_y": 175.34
+    "scale": 1.0,
+    "center_x": 124.0,
+    "center_y": 74.0
   }
 }

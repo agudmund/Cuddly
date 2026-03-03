@@ -30,10 +30,18 @@ def setup_parser():
     args = parser.parse_args()
     return args
 
+
+
 def main() -> None:
     args = setup_parser()
     debug_mode = args.debug or (os.getenv("COZY_DEBUG") == "1")
     logger = setup_logging(debug=debug_mode)
+
+    # High-DPI setup before QApplication creation as per what Qt officially recommends 
+    # There have been some disagreements in the past on where in the order it should be
+    QApplication.setHighDpiScaleFactorRoundingPolicy(
+        Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
+    )
 
     try:
         app = QApplication(sys.argv)
