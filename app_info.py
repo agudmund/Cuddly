@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-The Jacket - app_info.py
+Cuddly, Duddly, and Fuddy, the Wuddlies - app_info.py
   A minor UI for enjoying
   Built using a single shared braincell by Yours Truly, Grok, And Gemini
 """
 
 # ─── Core Identity ───────────────────────────────────────────────
-APP_NAME         = "The Jacket"
+APP_NAME         = "Cuddly, Duddly, and Fuddy, the Wuddlies"
 ORG_NAME         = "Single Shared Braincell"
 APP_VERSION      = "0.0.3"
 APP_AUTHOR       = "Yours Truly, Grok, and Gemini"
@@ -25,6 +25,8 @@ FEATURES = [
     "Persistent window geometry — it sometimes remembers where you left it!",
     "Built with love and our single shared braincell",
 ]
+
+# ─── Utility Functions ──────────────────────────────────────────
 
 def get_full_version() -> str:
     return f"Version v{APP_VERSION} - {VER_DESCRIPTION}"
