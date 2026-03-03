@@ -20,92 +20,92 @@ from cozy import AppLogger
 logger = AppLogger.get()
 
 
-def get_session_filename(session_name: str) -> str:
-    """Returns the standard filename for a session (e.g., 'Cozy Times.json')."""
-    return f"sessions/{session_name}.json"
+# def get_session_filename(session_name: str) -> str:
+#     """Returns the standard filename for a session (e.g., 'Cozy Times.json')."""
+#     return f"sessions/{session_name}.json"
 
-def prompt_save_current_session(current_path: Optional[Path] = None) -> Optional[Path]:
-    """
-    Prompts user for save location if no path is known yet.
-    Returns the chosen Path or None if cancelled.
-    """
-    if current_path and current_path.exists():
-        return current_path
+# def prompt_save_current_session(current_path: Optional[Path] = None) -> Optional[Path]:
+#     """
+#     Prompts user for save location if no path is known yet.
+#     Returns the chosen Path or None if cancelled.
+#     """
+#     if current_path and current_path.exists():
+#         return current_path
 
-    suggested = Path(f"{APP_NAME} - Untitled.json")
-    path_str, _ = QFileDialog.getSaveFileName(
-        None,
-        "Save cozy session ✨",
-        str(suggested),
-        "JSON Files (*.json)"
-    )
+#     suggested = Path(f"{APP_NAME} - Untitled.json")
+#     path_str, _ = QFileDialog.getSaveFileName(
+#         None,
+#         "Save cozy session ✨",
+#         str(suggested),
+#         "JSON Files (*.json)"
+#     )
 
-    if path_str:
-        path = Path(path_str)
-        logger.debug(f"User chose save path: {path}")
-        return path
+#     if path_str:
+#         path = Path(path_str)
+#         logger.debug(f"User chose save path: {path}")
+#         return path
 
-    logger.debug("Save cancelled by user")
-    return None
-
-
-def prompt_load_session() -> Optional[Path]:
-    """
-    Prompts user to select a session file to load.
-    Returns the chosen Path or None if cancelled.
-    """
-    path_str, _ = QFileDialog.getOpenFileName(
-        None,
-        "Load cozy session ✨",
-        "",
-        "JSON Files (*.json)"
-    )
-
-    if path_str:
-        path = Path(path_str)
-        if path.exists():
-            logger.debug(f"User selected load path: {path}")
-            return path
-        else:
-            logger.warning(f"Selected file does not exist: {path}")
-            QMessageBox.warning(None, "Not found", f"File not found:\n{path}")
-            return None
-
-    logger.debug("Load cancelled by user")
-    return None
+#     logger.debug("Save cancelled by user")
+#     return None
 
 
-def quick_load_most_recent() -> Optional[Path]:
-    """
-    Attempts to load the most recently used session from settings.
-    Returns the path if found and valid, otherwise None.
-    """
-    recent = Settings.get("session/recent", [])
-    if not recent:
-        logger.debug("No recent sessions found")
-        return None
+# def prompt_load_session() -> Optional[Path]:
+#     """
+#     Prompts user to select a session file to load.
+#     Returns the chosen Path or None if cancelled.
+#     """
+#     path_str, _ = QFileDialog.getOpenFileName(
+#         None,
+#         "Load cozy session ✨",
+#         "",
+#         "JSON Files (*.json)"
+#     )
 
-    last_path = Path(recent[0])
-    if last_path.exists():
-        logger.debug(f"Quick-loading most recent: {last_path}")
-        return last_path
-    else:
-        logger.debug(f"Most recent session no longer exists: {last_path}")
-        return None
+#     if path_str:
+#         path = Path(path_str)
+#         if path.exists():
+#             logger.debug(f"User selected load path: {path}")
+#             return path
+#         else:
+#             logger.warning(f"Selected file does not exist: {path}")
+#             QMessageBox.warning(None, "Not found", f"File not found:\n{path}")
+#             return None
+
+#     logger.debug("Load cancelled by user")
+#     return None
 
 
-def add_to_recent_sessions(filepath: Path) -> None:
-    """Adds a filepath to the recent sessions list (keeps top 5)."""
-    recent: List[str] = Settings.get("session/recent", [])
-    str_path = str(filepath.resolve())
+# def quick_load_most_recent() -> Optional[Path]:
+#     """
+#     Attempts to load the most recently used session from settings.
+#     Returns the path if found and valid, otherwise None.
+#     """
+#     recent = Settings.get("session/recent", [])
+#     if not recent:
+#         logger.debug("No recent sessions found")
+#         return None
 
-    if str_path in recent:
-        recent.remove(str_path)
+#     last_path = Path(recent[0])
+#     if last_path.exists():
+#         logger.debug(f"Quick-loading most recent: {last_path}")
+#         return last_path
+#     else:
+#         logger.debug(f"Most recent session no longer exists: {last_path}")
+#         return None
 
-    recent.insert(0, str_path)
-    Settings.set("session/recent", recent[:5])
-    Settings.sync()
-    logger.debug(f"Added to recent sessions (top 5): {str_path}")
+
+# def add_to_recent_sessions(filepath: Path) -> None:
+#     """Adds a filepath to the recent sessions list (keeps top 5)."""
+#     recent: List[str] = Settings.get("session/recent", [])
+#     str_path = str(filepath.resolve())
+
+#     if str_path in recent:
+#         recent.remove(str_path)
+
+#     recent.insert(0, str_path)
+#     Settings.set("session/recent", recent[:5])
+#     Settings.sync()
+#     logger.debug(f"Added to recent sessions (top 5): {str_path}")
 
 
 # def save_session(
@@ -137,34 +137,34 @@ def add_to_recent_sessions(filepath: Path) -> None:
 #         return False
 
 
-def load_session(
-    scene,
-    view=None,
-    path: Optional[Path] = None
-) -> Dict[str, Any]:
-    """
-    Loads a session from disk into the given scene and view.
-    Returns a dict with loaded metadata (progress_value, joy_buckets, etc.).
-    Returns empty dict on failure.
-    """
-    if not path:
-        path = quick_load_most_recent()
-        if not path:
-            path = prompt_load_session()
-            if not path:
-                logger.debug("No session selected for loading")
-                return {}
+# def load_session(
+#     scene,
+#     view=None,
+#     path: Optional[Path] = None
+# ) -> Dict[str, Any]:
+#     """
+#     Loads a session from disk into the given scene and view.
+#     Returns a dict with loaded metadata (progress_value, joy_buckets, etc.).
+#     Returns empty dict on failure.
+#     """
+#     if not path:
+#         path = quick_load_most_recent()
+#         if not path:
+#             path = prompt_load_session()
+#             if not path:
+#                 logger.debug("No session selected for loading")
+#                 return {}
 
-    try:
-        path = Path(path)
-        data = SessionManager.load_session( scene, path, view)
-        add_to_recent_sessions(path)
-        logger.info(f"Session loaded successfully: {path}")
-        return data
-    except Exception as e:
-        logger.warning(f"Failed to load session {path}: {e}", exc_info=True)
-        QMessageBox.warning(None, "Load failed", f"Could not load session:\n{str(e)}")
-        return {}
+#     try:
+#         path = Path(path)
+#         data = SessionManager.load_session( scene, path, view)
+#         add_to_recent_sessions(path)
+#         logger.info(f"Session loaded successfully: {path}")
+#         return data
+#     except Exception as e:
+#         logger.warning(f"Failed to load session {path}: {e}", exc_info=True)
+#         QMessageBox.warning(None, "Load failed", f"Could not load session:\n{str(e)}")
+#         return {}
 
 
 # def auto_backup_session(

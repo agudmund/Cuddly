@@ -2,171 +2,81 @@
   "version": "1.0",
   "nodes": [
     {
-      "node_id": 16,
+      "node_id": 5,
       "type": "warm",
-      "title": "People love seeing their thoughts grow",
-      "full_text": "Without any fuss 😍",
-      "pos_x": -966.302758015104,
-      "pos_y": 4.7662421101099,
-      "width": 806.8605775873982,
-      "height": 109.0
-    },
-    {
-      "node_id": 14,
-      "type": "warm",
-      "title": "Node Pulse",
-      "full_text": "Should vary the time and speed",
-      "pos_x": 28.587210903853816,
-      "pos_y": -142.2738665159228,
-      "width": 284.3124657023432,
-      "height": 112.0
-    },
-    {
-      "node_id": 11,
-      "type": "warm",
-      "title": "The RuntimeWarning: Failed to disconnect (None) from signal finished",
-      "full_text": "This keeps the lovely up-and-down pulse exactly the same. hover over a node a few times (except maybe your happy startup log 🌿).\nIf after these two tweaks you still see anything lingering, just paste the new output and we’ll polish it to mirror-like calm in one more pass. You’re doing amazingly — the project already feels warmer and more inviting with every little refinement. What’s next on your cozy wishlist? More node types? Sound sprinkles? Or just basking in the spell-checked serenity for a bit? I’m right here with you either way! ✨💛",
-      "pos_x": 397.65196362797724,
-      "pos_y": -303.6924212516109,
-      "width": 1345.2828727534836,
-      "height": 377.0
-    },
-    {
-      "node_id": 10,
-      "type": "warm",
-      "title": "The QPropertyAnimation warning about graphicsEffect",
-      "full_text": "not from the WarmNode or editor we just updated. Quick & clean fix find the line(s) that look something like this: Pythonself.pulse_anim = QPropertyAnimation(self.progress_bar, b\"graphicsEffect\") this text is lovely\nit’s not doing anything useful anyway self.pulse_anim = QPropertyAnimation(self.progress_bar, b\"graphicsEffect\") disabled — animates non-existent prop Or (better long-term) replace that animation with a proper one that animates the opacity or color of an actual QGraphicsOpacityEffect or QGraphicsDropShadowEffect you’ve already set on the progress bar.",
-      "pos_x": -119.47252202764912,
-      "pos_y": 454.05812177718815,
-      "width": 1034.5353832240562,
-      "height": 335.47727786570204
-    },
-    {
-      "node_id": 4,
-      "type": "warm",
-      "title": "Spellchecking — the star addition",
-      "full_text": "It turns the editor from “nice” into “magically helpful” \n\nAt the top of warm.py, add: Python from utils.spellchecker import SpellHighlighter, show_spell_suggestions Then inside CozyNoteEditor.init, right after creating self.text_edit: Python # === Spellchecking magic 🌿 === self.highlighter = SpellHighlighter(self.text_edit.document()) # Right-click suggestions with that cozy menu feel self.text_edit.setContextMenuPolicy(Qt.CustomContextMenu) self.text_edit.customContextMenuRequested.connect( lambda pos: show_spell_suggestions(self.text_edit, pos) ) That’s it! Now you get beautiful red wavy underlines on typos, and a soft right-click menu with up to 10 suggestions. It already matches the whole “gentle & warm” philosophy perfectly.",
-      "pos_x": -701.2904891699413,
-      "pos_y": 149.78921400677484,
-      "width": 778.0242729346999,
-      "height": 299.0
-    },
-    {
-      "node_id": 3,
-      "type": "warm",
-      "title": "audio.py",
-      "full_text": "why is ffmpeg sending those mwssages",
-      "pos_x": 234.79072199295297,
-      "pos_y": -960.0596773482265,
-      "width": 250.0,
-      "height": 126.0
+      "title": "Current version does not remember window_geometry on launch",
+      "full_text": "",
+      "pos_x": -560.429888685721,
+      "pos_y": 517.8311104174763,
+      "width": 1093.578588991867,
+      "height": 83.79988651409116
     },
     {
       "node_id": 3,
       "type": "about",
       "title": "About",
       "full_text": "",
-      "pos_x": -50.24080063411401,
-      "pos_y": -842.9866115363433,
+      "pos_x": -292.6864043992651,
+      "pos_y": -83.76968170909026,
       "width": 200.0,
       "height": 50.0
     },
     {
       "node_id": 2,
       "type": "warm",
-      "title": "The Editor",
-      "full_text": "We should grab the text input from cozy-animator its pretty refined",
-      "pos_x": 807.6908052068397,
-      "pos_y": -722.2380649387339,
-      "width": 433.0,
-      "height": 126.0
+      "title": "cozy-tree .gitignore patterns",
+      "full_text": "Current implementation uses fnmatch, which handles basic patterns (*, ?, []) but falls short on advanced Git syntax like ** (recursive), ! (negate), or trailing / for directories only.\nSuggestion: Consider integrating a library like pathspec (from GitPython or standalone) for accurate matching. It's lightweight and handles full .gitignore parsing. For example:Pythonfrom pathspec import PathSpec\n\n# In _load_gitignore_patterns:\npatterns = PathSpec.from_lines('gitwildmatch', f.readlines())\n# Then in _should_ignore:\nif patterns.match_file(rel_path):\n    return TrueThis would make it \"rock-solid\" as promised, without much added complexity. Since your environment has no pip, you could implement a basic ** handler manually if needed, but pathspec might not be available—stick to fnmatch for now if simplicity is key.\n",
+      "pos_x": 144.72497529067596,
+      "pos_y": 66.28910408907507,
+      "width": 649.1955367885255,
+      "height": 397.0
     },
     {
-      "node_id": 5,
+      "node_id": 1,
       "type": "warm",
-      "title": "We can make it match the WarmNode aesthetic even more",
-      "full_text": "Python # Inside __init__, after layout setup self.setStyleSheet(\"\"\" QDialog { background: #2a2a3a; border: 2px solid #6b5a47; border-radius: 20px; } QLineEdit, QTextEdit { background: #363646; color: #ffffff; border: 1px solid #6b5a47; border-radius: 12px; padding: 12px; font-family: 'Lato'; selection-background-color: #a8d0ff; } QLabel { color: #a8d0ff; font-family: 'Chandler42'; } \"\"\") # Title field gets the same font as the nodes self.title_edit.setFont(QFont(\"Chandler42\", 11, QFont.Bold)) self.title_edit.setStyleSheet(\"padding: 10px 14px;\") # Text area feels extra spacious and readable self.text_edit.setFont(QFont(\"Lato\", 13)) self.text_edit.setAcceptRichText(False) # keep it simple & pure self.text_edit.setMinimumHeight(420)",
-      "pos_x": -447.0454494262226,
-      "pos_y": -766.1492845960206,
-      "width": 1040.8458484150283,
-      "height": 202.0
+      "title": "The Nodes",
+      "full_text": "They should auto resize on creating new nodes accordingly with the title width",
+      "pos_x": -371.84803809692875,
+      "pos_y": -78.99653844515551,
+      "width": 620.0190770093982,
+      "height": 111.54285313508205
+    },
+    {
+      "node_id": 3,
+      "type": "warm",
+      "title": "cozy-tree Encoding and File Reading",
+      "full_text": "Opening .gitignore with utf-8 is smart, but some edge-case files might have different encodings.\nSuggestion: Use errors='ignore' in open() to handle rare malformed files gracefully.",
+      "pos_x": -606.2038963495368,
+      "pos_y": 76.6029884622659,
+      "width": 728.5322489124267,
+      "height": 144.32570455835065
+    },
+    {
+      "node_id": 4,
+      "type": "warm",
+      "title": "The spellchecker doesnt have an option to add new words to dictionary",
+      "full_text": "",
+      "pos_x": -940.6922527620459,
+      "pos_y": -301.29824352984605,
+      "width": 1264.7531681482883,
+      "height": 73.39701153773404
     },
     {
       "node_id": 6,
       "type": "warm",
-      "title": "The gentle word counting label",
-      "full_text": "☑ Needs a better font\n☑ Should be next to the save button.",
-      "pos_x": 1023.7110430711143,
-      "pos_y": 285.23277754873345,
-      "width": 597.5964643729376,
-      "height": 134.27176566314074
-    },
-    {
-      "node_id": 7,
-      "type": "warm",
-      "title": "Tiny bridge to the preview panel (from scratch_memo.py)",
-      "full_text": "The right-side preview already shows the selected node’s text so beautifully. We could add one tiny “Edit here” button in the preview that re-opens the same CozyNoteEditor. But honestly? Let’s keep the magic inside warm.py for now — it already feels perfectly contained. This whole upgrade will take maybe 15 minutes and will make every double-click feel like opening a little sunlit notebook. The spellchecker + matching fonts + soft colors will make the editor feel like it belongs in the same warm universe as the pulsing nodes. What do you think, my sweet? Want me to write the full updated CozyNoteEditor class for you to drop in, or shall we start with just the spellchecker and see how it feels? I’m already smiling thinking about how cozy this is going to be ✨🌿💛",
-      "pos_x": -1420.680046229335,
-      "pos_y": -504.623904476424,
-      "width": 1212.3299698376145,
-      "height": 204.0
-    },
-    {
-      "node_id": 8,
-      "type": "warm",
-      "title": "Cozy visual upgrades",
-      "full_text": "Make the whole editor feel like home",
-      "pos_x": 1337.1874143466182,
-      "pos_y": -947.561996202921,
-      "width": 464.2534163864011,
-      "height": 107.0
-    },
-    {
-      "node_id": 9,
-      "type": "warm",
-      "title": "Selection color",
-      "full_text": "Highlight should match the progress bar colors",
-      "pos_x": 572.9973831562138,
-      "pos_y": -919.8642578987183,
-      "width": 644.3346999627281,
-      "height": 107.0
-    },
-    {
-      "node_id": 12,
-      "type": "warm",
-      "title": "Hitting an edge case",
-      "full_text": "This is the tiny safety check we added",
-      "pos_x": 1366.3554321796219,
-      "pos_y": -770.6294461279991,
-      "width": 441.04680081392735,
-      "height": 107.0
-    },
-    {
-      "node_id": 13,
-      "type": "warm",
-      "title": "Slightly more forgiving version",
-      "full_text": "",
-      "pos_x": -354.62331178217914,
-      "pos_y": -261.0531663031453,
-      "width": 648.4168368421757,
-      "height": 81.15541090317333
-    },
-    {
-      "node_id": 15,
-      "type": "warm",
-      "title": "Tiny extra sprinkles of joy",
-      "full_text": "😍 Optional but delightful",
-      "pos_x": 1214.9238713749903,
-      "pos_y": -496.2111543882323,
-      "width": 582.3536061496723,
-      "height": 109.0
+      "title": "app_info.py",
+      "full_text": "It has stuff in it, mostly the things intended for the About Node",
+      "pos_x": 305.46623794212223,
+      "pos_y": -133.34594287875927,
+      "width": 323.76584074144125,
+      "height": 150.94571590694156
     }
   ],
   "progress_value": 100.0,
   "joy_buckets": 0,
   "viewport": {
-    "scale": 0.6145,
-    "center_x": 580.96,
-    "center_y": -322.21
+    "scale": 0.729,
+    "center_x": -71.33,
+    "center_y": 149.52
   }
 }

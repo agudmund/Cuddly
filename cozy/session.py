@@ -21,89 +21,31 @@ from app_info import APP_NAME
 
 class SessionManager:
     """Gentle save/load for the entire sketchbook session — human-editable JSON"""
+
+    @staticmethod
+    def get_session_filename(display_name: str) -> str | None:
+        return f"sessions/{display_name}.json"
+    
     @staticmethod
     def get_available_sessions(directory: str = "sessions") -> List[str]:
         path = Path(directory)
         
-        files = [(f, f.stat().st_mtime) for f in path.glob("*.json") if f.is_file()]
-        
-        # Sort by mtime ascending → oldest first
-        files.sort(key=lambda x: x[1])
+        # Sort the files by mtime ascending → oldest first
+        files = [n for n in path.glob("*.json") if n.is_file()]
+        files.sort()
         
         # Build nice display names
-        names = [f.stem.replace("_", " ").title() for f, _ in files]
-        
+        names = [n.stem.replace("_", " ").title() for n in files]
         return names
 
     @staticmethod
-    def get_session_filename(display_name: str) -> str | None:
-        return f"{display_name}.json"
-
-    @staticmethod
-    def refresh_combo(combo, current_name: str = None):
-        sessions = SessionManager.get_available_sessions()
+    def refresh_session_list(combo, current_name: str = None):
+        """An even gentler docstring here for the lack of a better docstring"""
         combo.blockSignals(True)
         combo.clear()
-        combo.addItems(sessions)
-
-        if current_name and current_name in sessions:
-            combo.setCurrentText(current_name)
-        else:
-            if APP_NAME in sessions:
-                combo.setCurrentText(APP_NAME)
-            elif sessions:
-                combo.setCurrentText(sessions[0])
-            else:
-                combo.setCurrentText("Default Canvas")
+        combo.addItems(SessionManager.get_available_sessions())
+        combo.setCurrentText(current_name)
         combo.blockSignals(False)
-
-    # @staticmethod
-    # def save_session(scene, filepath: str, view: QGraphicsView = None, 
-    #                  progress_value: float = 100.0, joy_buckets: int = 0,
-    #                  camera_pos: tuple = None, camera_zoom: float = None):
-    #     """Save nodes information"""
-    #     os.makedirs(os.path.dirname(filepath), exist_ok=True)
-    #     nodes_data = []
-    #     for item in scene.items():
-    #         if isinstance(item, (WarmNode, AboutNode)):
-    #             node_type = "about" if isinstance(item, AboutNode) else "warm"
-    #             nodes_data.append({
-    #                 "node_id": getattr(item, 'node_id', 0),
-    #                 "type": node_type,
-    #                 "title": item.title,
-    #                 "full_text": item.full_text,
-    #                 "pos_x": item.scenePos().x(),
-    #                 "pos_y": item.scenePos().y(),
-    #                 "width": item.rect().width(),
-    #                 "height": item.rect().height()
-    #             })
-    #         data = {
-    #         "version": "1.0",
-    #         "nodes": nodes_data,
-    #         "progress_value": round(progress_value, 2),
-    #         "joy_buckets": int(joy_buckets)
-    #     }
-
-    #     # Handle Viewport Data
-    #     if view is not None:
-    #         if camera_pos and camera_zoom:
-    #             scale = camera_zoom
-    #             cx, cy = camera_pos
-    #         else:
-    #             transform = view.transform()
-    #             scale = transform.m11()
-    #             center = view.mapToScene(view.viewport().rect().center())
-    #             cx, cy = center.x(), center.y()
-
-    #         data["viewport"] = {
-    #             "scale": round(scale, 4),
-    #             "center_x": round(cx, 2),
-    #             "center_y": round(cy, 2)
-    #         }
-
-    #     with open(filepath, "w", encoding="utf-8") as f:
-    #         json.dump(data, f, indent=2, ensure_ascii=False)
-
 
     @staticmethod
     def save_session(scene, filepath: str, view: QGraphicsView = None, 
@@ -144,7 +86,8 @@ class SessionManager:
                 cx, cy = center.x(), center.y()
             data["viewport"] = { "scale": round(scale, 4), "center_x": round(cx, 2), "center_y": round(cy, 2) }
 
-        # Use a temporary file for "Atomic" saving
+        # Use a temporary file for "Atomic" saving, 
+        # this errors if i save fast repeatedly due to the other file being copied over being read only during
         temp_path = f"{filepath}.tmp"
         with open(temp_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
@@ -210,3 +153,4 @@ class SessionManager:
             view.viewport().update()
 
         return data
+

@@ -28,15 +28,6 @@ from cozy.about import AboutNode
 from cozy.session import SessionManager
 from cozy.audio import AudioFeedback
 from cozy.window import ModernMainWindowMixin
-# from cozy.session_helpers import (
-#     prompt_save_current_session,
-#     save_session,
-#     load_session,
-#     auto_backup_session,
-#     add_to_recent_sessions,
-#     quick_load_most_recent,
-#     get_session_filename
-# )
 
 from dialogs.settings_dialog import SettingsDialog
 
@@ -50,21 +41,11 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
         self.logger = AppLogger.get().root_logger
         self._restore_geometry()
         self.current_session_path = None
-        self._last_known_session_name = None  # if used
         self.progress_value = 100.0
         self.progress_bar = None
 
         self.joy_buckets = 0
-        self.full_duration_counter = 0  # seconds at 100%
-        self.joy_timer = QTimer(self)
-        self.joy_timer.setInterval(100)  # check every second
-        # self.joy_timer.timeout.connect(self._check_joy_accumulation)
-
-        # Feed cooldown
         self.feed_press_count = 0
-        self.feed_cooldown_timer = QTimer(self)
-        self.feed_cooldown_timer.setSingleShot(True)
-        # self.feed_cooldown_timer.timeout.connect(self._reset_feed_cooldown)
 
         # Breath timer
         self.breath_steps = 30
@@ -98,11 +79,13 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
 
         self.apply_modern_window_setup()
         self.setup_ui()
-        self.on_load()
+
+        last_session = Settings().get("last_session")
+        SessionManager.refresh_session_list(self.session_combo, current_name=last_session)
+        self._loading(last_session)
 
     # ── UI setup ────────────────────────────────────────────────────────
     def setup_ui(self) -> None:
-        # 1. CORE: Setup the data containers first
         self._setup_canvas()
         self._setup_nodal_canvas() 
         
@@ -114,31 +97,10 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
         self._setup_right_panel()
         
         # 4. TRIGGER: Finally, setup the top bar. 
-        # This will trigger the first _handle_session_switch.
         self._setup_top_bar()
 
         self.stack.addWidget(self.page_canvas)
         self.stack.setCurrentWidget(self.page_canvas)
-
-        self._restore_last_session()
-
-    def _restore_last_session(self):
-        last_session = Settings().get("last_session")
-        self.logger.debug(f'Restoring session {last_session}')
-        
-        if last_session:
-            # Find the index of the last session in the combo box
-            index = self.session_combo.findText(last_session)
-            if index >= 0:
-                # Setting this will automatically trigger the 'on_load' 
-                # signal if you have it connected to currentIndexChanged
-                self.session_combo.setCurrentIndex(index)
-            else:
-                # Fallback if the file was deleted or renamed
-                self.on_load() 
-        else:
-            # No history? Just load whatever is first
-            self.on_load()
 
     def _setup_canvas(self):
         self.stack = QStackedWidget()
@@ -153,8 +115,8 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
         self.layout_canvas.setSpacing(15)
 
     def _setup_top_bar(self):
-        # Guard: If the combo already exists, we've already run this.
         if hasattr(self, 'session_combo') and self.session_combo is not None:
+            log.info('Why on earth would the Ui layout load more than once?')
             return
 
         top_bar = QHBoxLayout()
@@ -162,23 +124,19 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
         top_bar.setSpacing(10)
         top_bar.addStretch(1)
 
-        # 1. The Session Combo
+        # 1. The Session Selector
         sessions = SessionManager.get_available_sessions()
         self.session_combo = nodal.combo(
             items=None,
             fixedWidth=310,
-            currentTextChanged=self._handle_session_switch
+            currentTextChanged=self._loading
         )
-        self.session_combo.blockSignals(True)
-        self.session_combo.addItems(sessions)
-        self.session_combo.blockSignals(False)
-        self.current_session_name = self.session_combo.currentText()
         top_bar.addWidget(self.session_combo)
 
         # 2. The Manual Save Button (using your nodal.button)
         self.save_btn = nodal.button(
             "Save", 
-            clicked=lambda: self.on_save(), # Manual click saves current combo selection
+            clicked=lambda: self._saving(),
             fixedWidth=80
         )
         top_bar.addWidget(self.save_btn)
@@ -231,24 +189,6 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
         self.save_group.finished.connect(lambda: self.save_feedback.move(current_pos))
         
         self.save_group.start()
-
-    def _handle_session_switch(self, new_session_name):
-        # Guard 1: Ensure we aren't switching to the same thing
-        # if not new_session_name or new_session_name == self.current_session_name:
-        #     return
-
-        # # Guard 2: Ensure the scene is actually ready before we try to save/load
-        # if not hasattr(self, 'sketch_scene') or self.sketch_scene is None:
-        #     return
-
-        self.logger.info(f"Switching from {self.current_session_name} to {new_session_name}")
-
-        # 1. Save the OLD session
-        # self.on_save(self.current_session_name)
-
-        # 2. Update tracking and Load NEW
-        # self.current_session_name = new_session_name
-        self.on_load()
 
     def _setup_nodal_canvas(self):
         canvas_panel, self.sketch_view, self.sketch_scene = CozyCanvas.create_canvas_panel(self)
@@ -659,62 +599,22 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
 
     def _restore_geometry(self):
         """Restore last saved window position and size if available."""
-        geometry_hex = Settings().get("window_geometry")
-        if geometry_hex and isinstance(geometry_hex, str):
-            try:
-                geometry_bytes = bytes.fromhex(geometry_hex)
-                if self.restoreGeometry(geometry_bytes):
-                    if Settings().get("window_maximized", False):  self.showMaximized()
-                    self.logger.debug("Window geometry restored successfully 🌱")
-                else:
-                    self.logger.debug("Stored geometry was invalid — using default")
-            except Exception as e:
-                self.logger.warning(f"Failed to restore geometry: {e} — using default")
-        else:
-            self.logger.debug("No saved geometry found — starting fresh")
-
-        if not geometry_hex:
-            self.setGeometry(300, 200, 1200, 800)  # your preferred cozy default size
-            self.move(QApplication.primaryScreen().availableGeometry().center() - self.rect().center())
-
+        geometry = Settings().get("window_geometry")
+        self.restoreGeometry(geometry)
         Settings().sync()
 
     def closeEvent(self, event):
-        # if self._scene_dirty:
-            # reply = QMessageBox.question(self, "Unsaved changes", 
-            #                              "Save current session before closing? 🌱",
-            #                              QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
-            # if reply == QMessageBox.Cancel:
-            #     event.ignore()
-            #     return
-            # if reply == QMessageBox.Yes:
-            #     if self.current_session_path:
-            #         save_session(self.sketch_scene, self.current_session_path, ...)
-            #     else:
-        self.on_save()
-                        # save_session(self.sketch_scene, save_path, ...)
-        Settings().set("window_geometry", self.saveGeometry().toHex().data().decode())
+        self._saving()
+        self.logger.info(f"Exid: {self.session_combo.currentText()} ✨")
+        # Settings().set("window_maximized", self.isMaximized())
+        Settings().set("window_maximized", False)
+        Settings().set("window_geometry", self.saveGeometry())
         super().closeEvent(event)
 
-    # def closeEvent(self, event):
-    #     # Remember the session
-    #     Settings().set("last_session", self.session_combo.currentText())
+    def _saving(self, session_name=None):
+        """Well, Jesus isn't the only one who saves things you know!"""
+        path = SessionManager.get_session_filename(self.session_combo.currentText())
         
-    #     # Remember the window size/position
-    #     Settings().set("window_geometry", self.saveGeometry().toHex().data().decode())
-    #     Settings().set("window_maximized", self.isMaximized())
-        
-    #     self.logger.info(f"Exid: {self.session_combo.currentText()} ✨")
-    #     super().closeEvent(event)
-
-    def on_save(self, session_name=None):
-        # If no name is passed (manual click), use the one currently in the combo box
-        # name_to_save = session_name if session_name else self.session_combo.currentText()
-        
-        # Crucial: get_session_filename must receive the name_to_save
-        path = 'sessions/'+self.session_combo.currentText()+'.json'
-        
-        # if path:
         # Get current view state for the camera
         view_center = self.sketch_view.mapToScene(self.sketch_view.viewport().rect().center())
         view_zoom = self.sketch_view.transform().m11()
@@ -728,48 +628,20 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
             camera_pos=(view_center.x(), view_center.y()),
             camera_zoom=view_zoom
         )
-        # if success:
         self.logger.info(f"Saved session: {path}")
-        # print("Inside foo, caller is:", self.get_caller_name_ctypes())
+        SessionManager.refresh_session_list(self.session_combo, self.session_combo.currentText())
+        # self._trigger_save_visual() # Show the "Saved!" feedback
 
-                # self._scene_dirty = False
-                # self._trigger_save_visual() # Show the "Saved!" feedback
-    # ?
+    def _loading(self,session_name: str = None):
+        if session_name == None:  session_name = self.session_combo.currentText()
+        # Actually save the current before clearing
+        # if save_session(self.sketch_scene, save_path, self.sketch_view, 
+        #                 self.progress_value, self.joy_buckets):
+        #     self._scene_dirty = False  # Reset after successful save
+        #     self.current_session_path = save_path  # Update path if new
 
-    # def get_caller_name_ctypes(self):
-    #     import ctypes
-    #     # Get the current frame
-    #     frame = ctypes.pythonapi.PyEval_GetFrame()
-    #     if not frame:
-    #         return "<no frame>"
+        target = SessionManager.get_session_filename(session_name)
 
-    #     # Go one level up
-    #     prev_frame = ctypes.cast(frame, ctypes.py_object).value.f_back
-    #     if not prev_frame:
-    #         return "<top-level>"
-
-    #     code = prev_frame.f_code
-    #     return code.co_name
-    def on_load(self):
-        # if self._scene_dirty:
-            # save_path = self.current_session_path)
-            # if save_path is None:
-            #     self.logger.debug("Session switch cancelled to save current 🌱")
-                # return  # Abort load if user cancels prompt
-
-            # Actually save the current before clearing
-            # if save_session(self.sketch_scene, save_path, self.sketch_view, 
-            #                 self.progress_value, self.joy_buckets):
-            #     self._scene_dirty = False  # Reset after successful save
-            #     self.current_session_path = save_path  # Update path if new
-            # else:
-            #     self.logger.warning("Save failed during switch — aborting load")
-            #     return  # Don't proceed if save fails
-
-        # Now safe to clear and load
-        current_text = self.session_combo.currentText()
-        target = 'sessions/'+current_text+'.json'
-        
         if not target or not os.path.exists(target):
             self.logger.warning(f"Invalid load path: {target} — skipping")
             return
@@ -786,52 +658,18 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
                 self.progress_anim.start()
             self.joy_buckets = data.get("joy_buckets", 0)
             self.joy_label.setText(f"{self.joy_buckets}")
-            Settings().set("last_session", current_text)
-            self.current_session_path = Path(target)  # Track new path
-            self._scene_dirty = False  # Clean after load
+            Settings().set("last_session", session_name)
+            self.current_session_path = Path(target)
+            self._scene_dirty = False
         else:
             self.logger.info("Load returned no data — adding gentle default node ✨")
-            # If you have a add_default_node() method, call it here
-            # self.add_welcome_node()
+
+        SessionManager.refresh_session_list(self.session_combo, session_name)
 
     def add_welcome_node(self):
         node = WarmNode(node_id=1, title="All Glory", full_text=" and that.", pos=QPointF(0, 0))
         self.sketch_scene.addItem(node)
-        self._expand_scene_to_fit_content()    
-
-    # def on_load(self):
-    #     # if self._scene_dirty:
-    #     #     if not prompt_save_current_session(self.sketch_scene):  # assuming it returns True if saved/canceled
-    #     #         return  # abort load if user cancels
-    #     current_text = self.session_combo.currentText()
-    #     target = get_session_filename(current_text)
-        
-    #     if not target or not os.path.exists(target):
-    #         return
-
-    #     # Clear the scene for the new session
-    #     if self.sketch_scene:
-    #         self.sketch_scene.clear()
-
-    #     # SessionManager.load_session returns the full data dict 
-    #     # and handles view.centerOn internally if you pass 'view'
-    #     data = SessionManager.load_session(self.sketch_scene, filepath=target, view=self.sketch_view)
-    #     Settings().set("last_session", current_text)
-
-    #     if data:
-    #         # Update UI elements from the loaded data
-    #         target_value = data.get("progress_value", 100.0)
-    #         self.progress_value = target_value # Keep internal value in sync
-            
-    #         if hasattr(self, 'progress_anim') and self.progress_bar:
-    #             self.progress_anim.stop()
-    #             self.progress_anim.setStartValue(self.progress_bar.value())
-    #             self.progress_anim.setEndValue(int(target_value))
-    #             self.progress_anim.start()
-
-    #         self.joy_buckets = data.get("joy_buckets", 0)
-    #         self.joy_label.setText(f"{self.joy_buckets}")
-
+        self._expand_scene_to_fit_content()
 
     def _on_auto_backup(self):
         if self._scene_dirty:
@@ -863,4 +701,4 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
         
         if new_rect != current:
             self.sketch_scene.setSceneRect(new_rect)
-            self.logger.info(f"Expanded canvas to {new_rect.width()}x{new_rect.height()} ✨")
+            self.logger.debug(f"Expanded canvas to {new_rect.width()}x{new_rect.height()} ✨")

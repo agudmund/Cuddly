@@ -30,8 +30,6 @@ def setup_parser():
     args = parser.parse_args()
     return args
 
-
-
 def main() -> None:
     args = setup_parser()
     debug_mode = args.debug or (os.getenv("COZY_DEBUG") == "1")
