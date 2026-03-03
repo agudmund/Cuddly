@@ -8,11 +8,67 @@ logs/
 *.pyo
 *.pyd
 *.log
-*.json
-*.csproj
-*.sln
 *.idlk
 *.meta
 *.idlk
 
 notes.txt
+
+# .NET / MAUI build artifacts (the biggest culprits)
+**/bin/
+**/obj/
+
+# Visual Studio / Rider / IDE temporaries
+.vs/
+.vscode/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+*.csproj.user
+
+# MAUI / Xamarin legacy & platform build junk
+**/Platforms/**/bin/
+**/Platforms/**/obj/
+**/Resources/SplashScreen.scale-*.png   # if you have generated splash variants
+**/obj/Debug/
+**/obj/Release/
+**/bin/Debug/
+**/bin/Release/
+
+# NuGet & packages cache
+**/packages/
+**/*.nupkg
+**/*.snupkg
+
+# Logs, diagnostics, and other noise
+**/Logs/
+**/logs/
+**/crashlogs/
+**/diagnostics/
+**/TestResults/
+
+# Android-specific bloat (APKs, intermediates)
+**/android/**/build/
+**/android/**/*.apk
+**/android/**/*.aab
+**/android/bin/
+**/android/obj/
+
+# iOS / MacCatalyst noise
+**/ios/**/build/
+**/maccatalyst/**/build/
+
+# Windows-specific (if targeting)
+**/windows/**/AppPackages/
+**/windows/**/x64/
+**/windows/**/x86/
+**/windows/**/ARM64/
+
+# General temp files
+*~
+*.tmp
+*.cache
+.DS_Store   # if you ever work on macOS too
+Thumbs.db
+ehthumbs.db

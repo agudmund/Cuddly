@@ -1,0 +1,182 @@
+{
+  "version": "1.0",
+  "nodes": [
+    {
+      "node_id": 7,
+      "type": "warm",
+      "title": "Save Button",
+      "full_text": "The save button isn't glorious enough yet",
+      "pos_x": 302.92628210088367,
+      "pos_y": -193.02208193563825,
+      "width": 370.269873863303,
+      "height": 132.3995306541508
+    },
+    {
+      "node_id": 6,
+      "type": "warm",
+      "title": "The Heartbeat",
+      "full_text": "\n",
+      "pos_x": 248.00818995268946,
+      "pos_y": -590.3043633934799,
+      "width": 356.4294234011042,
+      "height": 86.73926149051317
+    },
+    {
+      "node_id": 3,
+      "type": "about",
+      "title": "About",
+      "full_text": "",
+      "pos_x": 727.275678568531,
+      "pos_y": -392.11464917053854,
+      "width": 200.0,
+      "height": 50.0
+    },
+    {
+      "node_id": 3,
+      "type": "warm",
+      "title": "Nodes",
+      "full_text": "The default width of a node should match the length of the random title",
+      "pos_x": 296.7628522164682,
+      "pos_y": -399.17374943406725,
+      "width": 317.66917293233075,
+      "height": 158.41632767569084
+    },
+    {
+      "node_id": 4,
+      "type": "warm",
+      "title": "He headed off once",
+      "full_text": "Carrying three luxurious plums on a wooden tray\nAs is tradition",
+      "pos_x": 1227.8569764389263,
+      "pos_y": -539.6636755302022,
+      "width": 420.4657246642503,
+      "height": 140.01398042740163
+    },
+    {
+      "node_id": 6,
+      "type": "warm",
+      "title": "But as he walked",
+      "full_text": "The plums would topple back and forth\nSo started commanding the plums\nBe still or I will eat you!\nThey kept toppling\nSo he ate two of them",
+      "pos_x": 822.3852224807349,
+      "pos_y": -358.8339230447941,
+      "width": 485.42423763627744,
+      "height": 188.0
+    },
+    {
+      "node_id": 10,
+      "type": "warm",
+      "title": "The third he carried all the way",
+      "full_text": "It was a special gift for someone.",
+      "pos_x": 911.2976577467539,
+      "pos_y": -141.37406300324216,
+      "width": 647.4949420122327,
+      "height": 113.21688596304712
+    },
+    {
+      "node_id": 11,
+      "type": "warm",
+      "title": "That Someone",
+      "full_text": "Happened to be in a good mood, so they accepted the gift",
+      "pos_x": 1067.412947168388,
+      "pos_y": -9.809683237941421,
+      "width": 610.7118279752798,
+      "height": 125.0824066201287
+    },
+    {
+      "node_id": 12,
+      "type": "warm",
+      "title": "Then thanked him",
+      "full_text": "And asked if he could share some stories",
+      "pos_x": 1034.0701348760706,
+      "pos_y": 138.7810112086561,
+      "width": 552.5707767555801,
+      "height": 109.6572297659227
+    },
+    {
+      "node_id": 13,
+      "type": "warm",
+      "title": "That Someone",
+      "full_text": "Gave him gifts in return",
+      "pos_x": 1066.4852861377956,
+      "pos_y": 313.51052300523,
+      "width": 588.1673387268249,
+      "height": 115.58999009446347
+    },
+    {
+      "node_id": 11,
+      "type": "warm",
+      "title": "Feeling that his journey had been successful",
+      "full_text": "And before too long decided to visit again\nThis time bringing turnips rather than plums\nHoping they would stay on the tray better",
+      "pos_x": 709.1766196527349,
+      "pos_y": 470.7025829922268,
+      "width": 845.1667665268624,
+      "height": 179.9580587177951
+    },
+    {
+      "node_id": 12,
+      "type": "warm",
+      "title": "The Editors Spellchecker",
+      "full_text": "It should also check the spelling in the title",
+      "pos_x": -415.4184142200917,
+      "pos_y": -303.57499500699026,
+      "width": 671.4100259636507,
+      "height": 150.0
+    },
+    {
+      "node_id": 13,
+      "type": "warm",
+      "title": "On the way there met a friend",
+      "full_text": "Who suggested that in retrospect he probably should have brought figs instead",
+      "pos_x": 1263.1155638042007,
+      "pos_y": 684.9624569096039,
+      "width": 635.4603555022968,
+      "height": 151.9972039145198
+    },
+    {
+      "node_id": 14,
+      "type": "warm",
+      "title": "He considered this",
+      "full_text": "Went and sold the turnips and bought some figs instead",
+      "pos_x": 754.4064858930706,
+      "pos_y": 854.340190533405,
+      "width": 581.5358498102657,
+      "height": 146.00559217096065
+    },
+    {
+      "node_id": 15,
+      "type": "warm",
+      "title": "That Someone",
+      "full_text": "This time they where in a foul mood\nAnd showed him directly to the door\nOrdering the figs thrown at his head",
+      "pos_x": 1426.5266314653866,
+      "pos_y": 884.4566453139079,
+      "width": 347.86299181146387,
+      "height": 169.05312562412632
+    },
+    {
+      "node_id": 16,
+      "type": "warm",
+      "title": "He started praising God in Gratitude",
+      "full_text": "Which felt strange to the people throwing figs at his head",
+      "pos_x": 972.9758117128345,
+      "pos_y": 1096.0532353668784,
+      "width": 749.3009786299181,
+      "height": 120.04194128220502
+    },
+    {
+      "node_id": 17,
+      "type": "warm",
+      "title": "I'm grateful I brought Figs",
+      "full_text": "Otherwise you would be throwing considerably heavier things at my head",
+      "pos_x": 1078.5036813875627,
+      "pos_y": 1268.4285664047657,
+      "width": 707.3596964250048,
+      "height": 130.02796085480327
+    }
+  ],
+  "progress_value": 100.0,
+  "joy_buckets": 0,
+  "viewport": {
+    "scale": 0.626,
+    "center_x": 849.84,
+    "center_y": -178.91
+  }
+}
