@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-  The Jacket - utils/settings.py
+  Cuddly, Duddly, and Fuddy, the Wuddlies - utils/settings.py
   Unified, cozy settings using QSettings – platform-native persistence
   Built using a single shared braincell by Yours Truly, Grok, And Gemini
 """

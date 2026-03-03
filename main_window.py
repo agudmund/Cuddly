@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-  The Jacket - main_window.py
+  Cuddly, Duddly, and Fuddy, the Wuddlies - main_window.py
   A warm gentle UI for enjoying.
   Built using a single shared braincell by Yours Truly, Grok, And Gemini
 """
@@ -12,7 +12,7 @@ import random
 from PySide6.QtCore import Qt, QTimer, QPropertyAnimation, QEasingCurve, QParallelAnimationGroup, QPoint
 from PySide6.QtGui import QFont, QIcon, QPixmap, QFontDatabase, QColor
 from PySide6.QtWidgets import (
-    QFrame, QHBoxLayout, QLabel, QMainWindow,
+    QFrame, QHBoxLayout, QLabel, QMainWindow, QApplication,
     QStackedWidget, QVBoxLayout, QWidget, QProgressBar,
     QGraphicsOpacityEffect, QScrollArea, QSizePolicy, QGraphicsDropShadowEffect
 )
@@ -43,11 +43,11 @@ from PySide6.QtCore import Qt, QPoint, QRectF
 from PySide6.QtGui import QCursor, QColor
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QGraphicsDropShadowEffect
 
-class TheJacket(QMainWindow, ModernMainWindowMixin):
+class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
     def __init__(self):
         super().__init__()
         self.logger = AppLogger.get().root_logger
-
+        self._restore_geometry()
         self.current_session_path = None
         self._last_known_session_name = None  # if used
         self.progress_value = 100.0
@@ -121,7 +121,6 @@ class TheJacket(QMainWindow, ModernMainWindowMixin):
 
         self._restore_last_session()
 
-    # Inside main_window.py -> __init__ or at the end of setup_ui
     def _restore_last_session(self):
         last_session = Settings().get("last_session")
         
@@ -138,11 +137,6 @@ class TheJacket(QMainWindow, ModernMainWindowMixin):
         else:
             # No history? Just load whatever is first
             self.on_load()
-
-    def _restore_window_state(self):
-        geom = Settings().get("window_geometry")
-        if geom:
-            self.restoreGeometry(bytes.fromhex(geom))
 
     def _setup_canvas(self):
         self.stack = QStackedWidget()
@@ -658,12 +652,27 @@ class TheJacket(QMainWindow, ModernMainWindowMixin):
         """Open the glorious settings window using the cozy centralized helper"""
         nodal.cozy_dialog(SettingsDialog, self)
 
-    # def closeEvent(self, event):
-    #     self.on_save()
-    #     Settings.set("window/geometry", self.saveGeometry())
-    #     Settings.sync()
-    #     self.logger.info(f"Exid: {APP_NAME} ✨")
-    #     event.accept()
+    def _restore_geometry(self):
+        """Restore last saved window position and size if available."""
+        geometry_hex = Settings().get("window_geometry")
+        if geometry_hex and isinstance(geometry_hex, str):
+            try:
+                geometry_bytes = bytes.fromhex(geometry_hex)
+                if self.restoreGeometry(geometry_bytes):
+                    if Settings().get("window_maximized", False):  self.showMaximized()
+                    self.logger.debug("Window geometry restored successfully 🌱")
+                else:
+                    self.logger.debug("Stored geometry was invalid — using default")
+            except Exception as e:
+                self.logger.warning(f"Failed to restore geometry: {e} — using default")
+        else:
+            self.logger.debug("No saved geometry found — starting fresh")
+
+        if not geometry_hex:
+            self.setGeometry(300, 200, 1200, 800)  # your preferred cozy default size
+            self.move(QApplication.primaryScreen().availableGeometry().center() - self.rect().center())
+
+        Settings().sync()
 
     def closeEvent(self, event):
         # Remember the session
@@ -671,6 +680,7 @@ class TheJacket(QMainWindow, ModernMainWindowMixin):
         
         # Remember the window size/position
         Settings().set("window_geometry", self.saveGeometry().toHex().data().decode())
+        Settings().set("window_maximized", self.isMaximized())
         
         self.logger.info(f"Exid: {self.session_combo.currentText()} ✨")
         super().closeEvent(event)
@@ -702,6 +712,9 @@ class TheJacket(QMainWindow, ModernMainWindowMixin):
                 self._trigger_save_visual() # Show the "Saved!" feedback
 
     def on_load(self):
+        # if self._scene_dirty:
+        #     if not prompt_save_current_session(self.sketch_scene):  # assuming it returns True if saved/canceled
+        #         return  # abort load if user cancels
         current_text = self.session_combo.currentText()
         target = get_session_filename(current_text)
         

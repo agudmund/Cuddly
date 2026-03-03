@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#
-# cozy.about.py
-# The cozy about node class for enjoying
-# Built using a single shared braincell by Yours Truly and Grok (February 2026)
+"""
+  Cuddly, Duddly, and Fuddy, the Wuddlies - cozy/about.py
+  The cozy about node class for enjoying
+  Built using a single shared braincell by Yours Truly, Grok, And Gemini (February 2026)
+"""
 
 import re
 import random
@@ -208,7 +209,7 @@ class AboutNode(QGraphicsRectItem, QObject):
         return path
 
     def _update_preview_text(self):
-        """Word-wrapped body text (no more ugly truncation)"""
+        """Word-wrapped body text"""
         wrapped = textwrap.fill(self.full_text, width=38)   # 38 chars ≈ 200px at this font size
         self.text_item.setPlainText(wrapped)
 

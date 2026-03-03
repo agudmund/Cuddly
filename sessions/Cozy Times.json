@@ -2,6 +2,16 @@
   "version": "1.0",
   "nodes": [
     {
+      "node_id": 2,
+      "type": "warm",
+      "title": "New Thought",
+      "full_text": "",
+      "pos_x": 206.20726950634844,
+      "pos_y": 199.19341680205088,
+      "width": 329.95511291906297,
+      "height": 145.7918361621546
+    },
+    {
       "node_id": 1,
       "type": "warm",
       "title": "New Thought",
@@ -10,16 +20,6 @@
       "pos_y": 0.0,
       "width": 404.0,
       "height": 141.0
-    },
-    {
-      "node_id": 2,
-      "type": "warm",
-      "title": "New Thought",
-      "full_text": "",
-      "pos_x": 206.20726950634844,
-      "pos_y": 199.19341680205088,
-      "width": 250.0,
-      "height": 150.0
     }
   ],
   "progress_value": 100.0,

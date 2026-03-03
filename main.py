@@ -1,30 +1,29 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#
-# The Jacket - main.py
-# A warm gentle UI for enjoying.
-# Built using a single shared braincell by Yours Truly, Grok, and Gemini
-
+"""
+  Cuddly, Duddly, and Fuddy, the Wuddlies - main.py
+  A warm gentle UI for enjoying.
+  Built using a single shared braincell by Yours Truly, Grok, and Gemini
+"""
 import os
 import sys
 import argparse
+import traceback
 
-from main_window import TheJacket
+from main_window import CuddlyDuddlyFuddly
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Qt
 
 from cozy import setup_logging
 
 from app_info import APP_NAME, APP_VERSION, APP_STYLE, ORG_NAME
-import sys
-import traceback
 
 def exception_hook(exctype, value, tb):
     print('Exception occurred!', file=sys.stderr)
     traceback.print_exception(exctype, value, tb)
     sys.exit(1)
-
 sys.excepthook = exception_hook
+
 def setup_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("--debug", action="store_true", help="Enable debug logging")
@@ -37,20 +36,17 @@ def main() -> None:
     logger = setup_logging(debug=debug_mode)
 
     try:
-        QApplication.setHighDpiScaleFactorRoundingPolicy(
-            Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
-        )
         app = QApplication(sys.argv)
         app.setApplicationName(APP_NAME)
         app.setOrganizationName(ORG_NAME)
         app.setApplicationVersion(APP_VERSION)
         app.setStyle(APP_STYLE)
+        QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
 
-        if debug_mode:
-            logger.info(f"debug mode: {debug_mode}")
+        logger.debug(f"debug mode: {debug_mode}")
         logger.info(f"{APP_NAME} is generally so happy that you are here. 🌱")
 
-        window = TheJacket()
+        window = CuddlyDuddlyFuddly()
         window.show()
 
         sys.exit(app.exec())
