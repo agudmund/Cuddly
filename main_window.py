@@ -637,7 +637,6 @@ class CuddlyDuddlyFuddly(QMainWindow, ModernMainWindowMixin):
         # Actually save the current before clearing
         # if save_session(self.sketch_scene, save_path, self.sketch_view, 
         #                 self.progress_value, self.joy_buckets):
-        #     self._scene_dirty = False  # Reset after successful save
         #     self.current_session_path = save_path  # Update path if new
 
         target = SessionManager.get_session_filename(session_name)

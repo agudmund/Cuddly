@@ -2,24 +2,134 @@
   "version": "1.0",
   "nodes": [
     {
-      "node_id": 16,
+      "node_id": 15,
       "type": "warm",
-      "title": "app_info.py",
-      "full_text": "It has stuff in it",
-      "pos_x": -39.05614320585852,
-      "pos_y": -852.7257933279088,
-      "width": 306.95687550854353,
-      "height": 94.67046379170051
+      "title": "Tiny extra sprinkles of joy",
+      "full_text": "😍 Optional but delightful",
+      "pos_x": 1177.6486300713632,
+      "pos_y": -809.0569296151032,
+      "width": 553.0659165539653,
+      "height": 70.39350007838618
     },
     {
-      "node_id": 16,
+      "node_id": 13,
       "type": "warm",
-      "title": "People love seeing their thoughts grow",
-      "full_text": "Without any fuss 😍",
-      "pos_x": -966.302758015104,
-      "pos_y": 4.7662421101099,
-      "width": 806.8605775873982,
-      "height": 109.0
+      "title": "Slightly more forgiving version",
+      "full_text": "",
+      "pos_x": 338.9624281888832,
+      "pos_y": -391.51651086584036,
+      "width": 648.4168368421757,
+      "height": 81.15541090317333
+    },
+    {
+      "node_id": 9,
+      "type": "warm",
+      "title": "Selection color",
+      "full_text": "Highlight matches the progress bar colors",
+      "pos_x": 438.66069177639497,
+      "pos_y": -982.7250758176631,
+      "width": 352.7890626236443,
+      "height": 72.38727593234614
+    },
+    {
+      "node_id": 8,
+      "type": "warm",
+      "title": "Cozy visual upgrades",
+      "full_text": "Make the whole editor feel like home",
+      "pos_x": 487.2257478544783,
+      "pos_y": -878.9242916234414,
+      "width": 424.3156578468006,
+      "height": 72.38727593234626
+    },
+    {
+      "node_id": 7,
+      "type": "warm",
+      "title": "Tiny bridge to the preview panel (from scratch_memo.py)",
+      "full_text": "The right-side preview already shows the selected node’s text so beautifully. We could add one tiny “Edit here” button in the preview that re-opens the same CozyNoteEditor. But honestly? Let’s keep the magic inside warm.py for now — it already feels perfectly contained. This whole upgrade will take maybe 15 minutes and will make every double-click feel like opening a little sunlit notebook. The spellchecker + matching fonts + soft colors will make the editor feel like it belongs in the same warm universe as the pulsing nodes. What do you think, my sweet? Want me to write the full updated CozyNoteEditor class for you to drop in, or shall we start with just the spellchecker and see how it feels? I’m already smiling thinking about how cozy this is going to be ✨🌿💛",
+      "pos_x": -395.6109103795883,
+      "pos_y": -761.5568177478539,
+      "width": 1043.2601253533057,
+      "height": 73.53665543730494
+    },
+    {
+      "node_id": 6,
+      "type": "warm",
+      "title": "The gentle word counting label",
+      "full_text": "☑ Needs a better font\n☑ Should be next to the save button.",
+      "pos_x": 1613.4586108392155,
+      "pos_y": -198.01410078043284,
+      "width": 597.5964643729376,
+      "height": 134.27176566314074
+    },
+    {
+      "node_id": 5,
+      "type": "warm",
+      "title": "We can make it match the WarmNode aesthetic even more",
+      "full_text": "Python # Inside __init__, after layout setup self.setStyleSheet(\"\"\" QDialog { background: #2a2a3a; border: 2px solid #6b5a47; border-radius: 20px; } QLineEdit, QTextEdit { background: #363646; color: #ffffff; border: 1px solid #6b5a47; border-radius: 12px; padding: 12px; font-family: 'Lato'; selection-background-color: #a8d0ff; } QLabel { color: #a8d0ff; font-family: 'Chandler42'; } \"\"\") # Title field gets the same font as the nodes self.title_edit.setFont(QFont(\"Chandler42\", 11, QFont.Bold)) self.title_edit.setStyleSheet(\"padding: 10px 14px;\") # Text area feels extra spacious and readable self.text_edit.setFont(QFont(\"Lato\", 13)) self.text_edit.setAcceptRichText(False) # keep it simple & pure self.text_edit.setMinimumHeight(420)",
+      "pos_x": 201.4443135613402,
+      "pos_y": -636.1157031784796,
+      "width": 990.2580209315342,
+      "height": 72.54287958334487
+    },
+    {
+      "node_id": 2,
+      "type": "warm",
+      "title": "The Editor",
+      "full_text": "We should grab the text input from cozy-animator its pretty refined",
+      "pos_x": 966.9763795285758,
+      "pos_y": -943.6328535815974,
+      "width": 273.24896584159774,
+      "height": 76.74343113449265
+    },
+    {
+      "node_id": 3,
+      "type": "about",
+      "title": "About",
+      "full_text": "",
+      "pos_x": 1024.08490408114,
+      "pos_y": -968.1249216270917,
+      "width": 200.0,
+      "height": 50.0
+    },
+    {
+      "node_id": 3,
+      "type": "warm",
+      "title": "audio.py",
+      "full_text": "why is ffmpeg sending those mwssages",
+      "pos_x": 1899.796414609948,
+      "pos_y": -422.2168815534963,
+      "width": 250.0,
+      "height": 126.0
+    },
+    {
+      "node_id": 4,
+      "type": "warm",
+      "title": "Spellchecking — the star addition",
+      "full_text": "It turns the editor from “nice” into “magically helpful” \n\nAt the top of warm.py, add: Python from utils.spellchecker import SpellHighlighter, show_spell_suggestions Then inside CozyNoteEditor.init, right after creating self.text_edit: Python # === Spellchecking magic 🌿 === self.highlighter = SpellHighlighter(self.text_edit.document()) # Right-click suggestions with that cozy menu feel self.text_edit.setContextMenuPolicy(Qt.CustomContextMenu) self.text_edit.customContextMenuRequested.connect( lambda pos: show_spell_suggestions(self.text_edit, pos) ) That’s it! Now you get beautiful red wavy underlines on typos, and a soft right-click menu with up to 10 suggestions. It already matches the whole “gentle & warm” philosophy perfectly.",
+      "pos_x": 148.0525091055631,
+      "pos_y": 14.00083497213302,
+      "width": 778.0242729346999,
+      "height": 299.0
+    },
+    {
+      "node_id": 10,
+      "type": "warm",
+      "title": "The QPropertyAnimation warning about graphicsEffect",
+      "full_text": "not from the WarmNode or editor we just updated. Quick & clean fix find the line(s) that look something like this: Pythonself.pulse_anim = QPropertyAnimation(self.progress_bar, b\"graphicsEffect\") this text is lovely\nit’s not doing anything useful anyway self.pulse_anim = QPropertyAnimation(self.progress_bar, b\"graphicsEffect\") disabled — animates non-existent prop Or (better long-term) replace that animation with a proper one that animates the opacity or color of an actual QGraphicsOpacityEffect or QGraphicsDropShadowEffect you’ve already set on the progress bar.",
+      "pos_x": 595.4133558312003,
+      "pos_y": -242.19013542984766,
+      "width": 957.3223833808286,
+      "height": 190.3700885051535
+    },
+    {
+      "node_id": 11,
+      "type": "warm",
+      "title": "The RuntimeWarning: Failed to disconnect (None) from signal finished",
+      "full_text": "This keeps the lovely up-and-down pulse exactly the same. hover over a node a few times (except maybe your happy startup log 🌿).\nIf after these two tweaks you still see anything lingering, just paste the new output and we’ll polish it to mirror-like calm in one more pass. You’re doing amazingly — the project already feels warmer and more inviting with every little refinement. What’s next on your cozy wishlist? More node types? Sound sprinkles? Or just basking in the spell-checked serenity for a bit? I’m right here with you either way! ✨💛",
+      "pos_x": 478.85873932516506,
+      "pos_y": -515.3625415114936,
+      "width": 1273.3949073822027,
+      "height": 77.46681095299613
     },
     {
       "node_id": 14,
@@ -32,151 +142,31 @@
       "height": 112.0
     },
     {
-      "node_id": 11,
+      "node_id": 16,
       "type": "warm",
-      "title": "The RuntimeWarning: Failed to disconnect (None) from signal finished",
-      "full_text": "This keeps the lovely up-and-down pulse exactly the same. hover over a node a few times (except maybe your happy startup log 🌿).\nIf after these two tweaks you still see anything lingering, just paste the new output and we’ll polish it to mirror-like calm in one more pass. You’re doing amazingly — the project already feels warmer and more inviting with every little refinement. What’s next on your cozy wishlist? More node types? Sound sprinkles? Or just basking in the spell-checked serenity for a bit? I’m right here with you either way! ✨💛",
-      "pos_x": 397.65196362797724,
-      "pos_y": -303.6924212516109,
-      "width": 1345.2828727534836,
-      "height": 377.0
-    },
-    {
-      "node_id": 10,
-      "type": "warm",
-      "title": "The QPropertyAnimation warning about graphicsEffect",
-      "full_text": "not from the WarmNode or editor we just updated. Quick & clean fix find the line(s) that look something like this: Pythonself.pulse_anim = QPropertyAnimation(self.progress_bar, b\"graphicsEffect\") this text is lovely\nit’s not doing anything useful anyway self.pulse_anim = QPropertyAnimation(self.progress_bar, b\"graphicsEffect\") disabled — animates non-existent prop Or (better long-term) replace that animation with a proper one that animates the opacity or color of an actual QGraphicsOpacityEffect or QGraphicsDropShadowEffect you’ve already set on the progress bar.",
-      "pos_x": -119.47252202764912,
-      "pos_y": 454.05812177718815,
-      "width": 1034.5353832240562,
-      "height": 335.47727786570204
-    },
-    {
-      "node_id": 4,
-      "type": "warm",
-      "title": "Spellchecking — the star addition",
-      "full_text": "It turns the editor from “nice” into “magically helpful” \n\nAt the top of warm.py, add: Python from utils.spellchecker import SpellHighlighter, show_spell_suggestions Then inside CozyNoteEditor.init, right after creating self.text_edit: Python # === Spellchecking magic 🌿 === self.highlighter = SpellHighlighter(self.text_edit.document()) # Right-click suggestions with that cozy menu feel self.text_edit.setContextMenuPolicy(Qt.CustomContextMenu) self.text_edit.customContextMenuRequested.connect( lambda pos: show_spell_suggestions(self.text_edit, pos) ) That’s it! Now you get beautiful red wavy underlines on typos, and a soft right-click menu with up to 10 suggestions. It already matches the whole “gentle & warm” philosophy perfectly.",
-      "pos_x": -701.2904891699413,
-      "pos_y": 149.78921400677484,
-      "width": 778.0242729346999,
-      "height": 299.0
-    },
-    {
-      "node_id": 3,
-      "type": "warm",
-      "title": "audio.py",
-      "full_text": "why is ffmpeg sending those mwssages",
-      "pos_x": 532.5938139376234,
-      "pos_y": 115.61160011312404,
-      "width": 250.0,
-      "height": 126.0
-    },
-    {
-      "node_id": 3,
-      "type": "about",
-      "title": "About",
-      "full_text": "",
-      "pos_x": -50.24080063411401,
-      "pos_y": -842.9866115363433,
-      "width": 200.0,
-      "height": 50.0
-    },
-    {
-      "node_id": 2,
-      "type": "warm",
-      "title": "The Editor",
-      "full_text": "We should grab the text input from cozy-animator its pretty refined",
-      "pos_x": 960.3200864386426,
-      "pos_y": -1143.3216462796001,
-      "width": 433.0,
-      "height": 126.0
-    },
-    {
-      "node_id": 5,
-      "type": "warm",
-      "title": "We can make it match the WarmNode aesthetic even more",
-      "full_text": "Python # Inside __init__, after layout setup self.setStyleSheet(\"\"\" QDialog { background: #2a2a3a; border: 2px solid #6b5a47; border-radius: 20px; } QLineEdit, QTextEdit { background: #363646; color: #ffffff; border: 1px solid #6b5a47; border-radius: 12px; padding: 12px; font-family: 'Lato'; selection-background-color: #a8d0ff; } QLabel { color: #a8d0ff; font-family: 'Chandler42'; } \"\"\") # Title field gets the same font as the nodes self.title_edit.setFont(QFont(\"Chandler42\", 11, QFont.Bold)) self.title_edit.setStyleSheet(\"padding: 10px 14px;\") # Text area feels extra spacious and readable self.text_edit.setFont(QFont(\"Lato\", 13)) self.text_edit.setAcceptRichText(False) # keep it simple & pure self.text_edit.setMinimumHeight(420)",
-      "pos_x": -321.7403233074268,
-      "pos_y": -673.390944482107,
-      "width": 1040.8458484150283,
-      "height": 202.0
-    },
-    {
-      "node_id": 6,
-      "type": "warm",
-      "title": "The gentle word counting label",
-      "full_text": "☑ Needs a better font\n☑ Should be next to the save button.",
-      "pos_x": 1023.7110430711143,
-      "pos_y": 285.23277754873345,
-      "width": 597.5964643729376,
-      "height": 134.27176566314074
-    },
-    {
-      "node_id": 7,
-      "type": "warm",
-      "title": "Tiny bridge to the preview panel (from scratch_memo.py)",
-      "full_text": "The right-side preview already shows the selected node’s text so beautifully. We could add one tiny “Edit here” button in the preview that re-opens the same CozyNoteEditor. But honestly? Let’s keep the magic inside warm.py for now — it already feels perfectly contained. This whole upgrade will take maybe 15 minutes and will make every double-click feel like opening a little sunlit notebook. The spellchecker + matching fonts + soft colors will make the editor feel like it belongs in the same warm universe as the pulsing nodes. What do you think, my sweet? Want me to write the full updated CozyNoteEditor class for you to drop in, or shall we start with just the spellchecker and see how it feels? I’m already smiling thinking about how cozy this is going to be ✨🌿💛",
-      "pos_x": -1420.680046229335,
-      "pos_y": -504.623904476424,
-      "width": 1212.3299698376145,
-      "height": 204.0
-    },
-    {
-      "node_id": 8,
-      "type": "warm",
-      "title": "Cozy visual upgrades",
-      "full_text": "Make the whole editor feel like home",
-      "pos_x": 1158.1800913197671,
-      "pos_y": -921.5245673990155,
-      "width": 464.2534163864011,
-      "height": 107.0
-    },
-    {
-      "node_id": 9,
-      "type": "warm",
-      "title": "Selection color",
-      "full_text": "Highlight should match the progress bar colors",
-      "pos_x": 390.7353815288744,
-      "pos_y": -892.1994897945685,
-      "width": 644.3346999627281,
-      "height": 107.0
-    },
-    {
-      "node_id": 12,
-      "type": "warm",
-      "title": "Hitting an edge case",
-      "full_text": "This is the tiny safety check we added",
-      "pos_x": 1366.3554321796219,
-      "pos_y": -770.6294461279991,
-      "width": 441.04680081392735,
-      "height": 107.0
-    },
-    {
-      "node_id": 13,
-      "type": "warm",
-      "title": "Slightly more forgiving version",
-      "full_text": "",
-      "pos_x": -354.62331178217914,
-      "pos_y": -261.0531663031453,
-      "width": 648.4168368421757,
-      "height": 81.15541090317333
-    },
-    {
-      "node_id": 15,
-      "type": "warm",
-      "title": "Tiny extra sprinkles of joy",
-      "full_text": "😍 Optional but delightful",
-      "pos_x": 1214.9238713749903,
-      "pos_y": -496.2111543882323,
-      "width": 582.3536061496723,
+      "title": "People love seeing their thoughts grow",
+      "full_text": "Without any fuss 😍",
+      "pos_x": -292.6858973138418,
+      "pos_y": -276.1293262850804,
+      "width": 806.8605775873982,
       "height": 109.0
+    },
+    {
+      "node_id": 16,
+      "type": "warm",
+      "title": "app_info.py",
+      "full_text": "It has stuff in it",
+      "pos_x": 832.9182515754194,
+      "pos_y": -768.8565003947479,
+      "width": 275.0066686768631,
+      "height": 80.02661899384691
     }
   ],
   "progress_value": 100.0,
   "joy_buckets": 0,
   "viewport": {
-    "scale": 1.8476,
-    "center_x": 1450.53,
-    "center_y": -748.0
+    "scale": 0.7512,
+    "center_x": 1079.65,
+    "center_y": -166.41
   }
 }

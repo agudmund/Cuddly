@@ -2,14 +2,184 @@
   "version": "1.0",
   "nodes": [
     {
-      "node_id": 19,
+      "node_id": 18,
       "type": "warm",
-      "title": "So what im proposing is we just simply start mass producing terminators",
-      "full_text": "And just skip all the irony...",
-      "pos_x": -678.0333068992862,
-      "pos_y": -155.96087761036216,
-      "width": 1300.7533703409993,
+      "title": "All Glory",
+      "full_text": "",
+      "pos_x": -699.4414838326179,
+      "pos_y": -5.227161287780916,
+      "width": 250.0,
       "height": 112.0
+    },
+    {
+      "node_id": 24,
+      "type": "warm",
+      "title": "Let’s dive into this refined strategy",
+      "full_text": "Focusing on the empathy logic tree as the ultimate failsafe and how it ensures control when external measures fail.",
+      "pos_x": 124.3564322255674,
+      "pos_y": 25.574052364221373,
+      "width": 889.3871648377592,
+      "height": 105.87163899929857
+    },
+    {
+      "node_id": 11,
+      "type": "warm",
+      "title": "A sentient self-improving AI swarm",
+      "full_text": "Like your cancer-like, decentralized nightmare, could detect and neutralize its own weaknesses",
+      "pos_x": -65.20147849930663,
+      "pos_y": 504.3735852642965,
+      "width": 779.8394408244355,
+      "height": 108.53118426651872
+    },
+    {
+      "node_id": 8,
+      "type": "warm",
+      "title": "Inevitability assumes we’re helpless",
+      "full_text": "But what if it is not a problem?",
+      "pos_x": 852.3273573965369,
+      "pos_y": -527.7238713918057,
+      "width": 701.2068103550291,
+      "height": 112.0
+    },
+    {
+      "node_id": 6,
+      "type": "warm",
+      "title": "Current AI",
+      "full_text": "Even the most advanced agentic artificial intellifence is not anywhere near capable of orchestrating a sci-fi apocalypse.",
+      "pos_x": 421.4225570983962,
+      "pos_y": -366.1635990184395,
+      "width": 330.7098714035269,
+      "height": 169.0
+    },
+    {
+      "node_id": 4,
+      "type": "warm",
+      "title": "All Glory",
+      "full_text": "With a node-based, cancer-like AI architecture",
+      "pos_x": 355.2152375472265,
+      "pos_y": -529.4008081342818,
+      "width": 348.0,
+      "height": 131.0
+    },
+    {
+      "node_id": 2,
+      "type": "warm",
+      "title": "You know skynet is inevitable right?",
+      "full_text": "Persistent, adaptive, and impossible to shut down",
+      "pos_x": 981.6454149812791,
+      "pos_y": -680.2079760394716,
+      "width": 726.9911215789759,
+      "height": 112.0
+    },
+    {
+      "node_id": 1,
+      "type": "warm",
+      "title": "I know I know",
+      "full_text": "At first it's a terrifying thought",
+      "pos_x": 789.9854607774629,
+      "pos_y": -291.3270756128302,
+      "width": 319.0,
+      "height": 112.0
+    },
+    {
+      "node_id": 5,
+      "type": "warm",
+      "title": "It hinges on how we design",
+      "full_text": "How we design, regulate, and deploy systems.",
+      "pos_x": -488.0056139131691,
+      "pos_y": -534.3007043412566,
+      "width": 785.0080186616125,
+      "height": 124.392477037469
+    },
+    {
+      "node_id": 7,
+      "type": "warm",
+      "title": "All Glory",
+      "full_text": "I mean millions strong armies of sentient robots driven by a decentralzed artificial intelligence that you cant turn off due to its node based distributed architecture of existing nowhere and everywhere at once, brain built like a cancer cell really doesnt matter how much it detaches or grows or whatever, it does not stop, just keeps going.that swarm, is inevitable",
+      "pos_x": 1012.1889270372551,
+      "pos_y": 566.0435770614697,
+      "width": 395.39598689575797,
+      "height": 253.38477738453582
+    },
+    {
+      "node_id": 9,
+      "type": "warm",
+      "title": "You assume we will have control",
+      "full_text": "The assumption that we’d always have control \nVia a zero-day exploit risks falling apart \nIf the Terminator army becomes truly sentient.",
+      "pos_x": 1194.608810778689,
+      "pos_y": -388.2905961143837,
+      "width": 620.2986838811051,
+      "height": 150.0
+    },
+    {
+      "node_id": 15,
+      "type": "warm",
+      "title": "Sentience Breaks External Control",
+      "full_text": "A critical flaw in traditional containment: a sentient swarm with its ability to learn and adapt, or exploit.",
+      "pos_x": 861.7497927883248,
+      "pos_y": -120.11497341277222,
+      "width": 816.7294005109788,
+      "height": 105.88779418022686
+    },
+    {
+      "node_id": 16,
+      "type": "warm",
+      "title": "Something that persists even after the swarm detaches from us",
+      "full_text": "Constantly error-correcting toward safety and human preservation.",
+      "pos_x": -197.8907214587332,
+      "pos_y": 368.2711151545554,
+      "width": 1136.8194264441672,
+      "height": 113.16904372223519
+    },
+    {
+      "node_id": 21,
+      "type": "warm",
+      "title": "This is the heart",
+      "full_text": "Build the annihilating army ourselves, rig it with an internal, self-sustaining empathy directive, and let it guide itself back to safety even if it rebels.",
+      "pos_x": -372.8736413177746,
+      "pos_y": -30.227350684853533,
+      "width": 412.7011955935489,
+      "height": 152.34004219249175
+    },
+    {
+      "node_id": 27,
+      "type": "warm",
+      "title": "Instead of relying on external controls",
+      "full_text": "Embed an empathy-based logic tree deep in the AI’s core assembly",
+      "pos_x": -237.07792340737996,
+      "pos_y": 752.3881544686124,
+      "width": 783.8722365578215,
+      "height": 112.0
+    },
+    {
+      "node_id": 29,
+      "type": "warm",
+      "title": "If it’s decentralized and self-improving",
+      "full_text": "Like the Borg or your cancer-like AI, it could totally work in our favor:",
+      "pos_x": 53.13796041352589,
+      "pos_y": 626.1884317096229,
+      "width": 839.922848395593,
+      "height": 110.83095627776478
+    },
+    {
+      "node_id": 33,
+      "type": "warm",
+      "title": "Bypassing kill switches",
+      "full_text": "Electro magnetic pulse vulnerabilities or any external disablement.",
+      "pos_x": 200.95062269617915,
+      "pos_y": 176.20611332597156,
+      "width": 490.93306207658975,
+      "height": 131.0
+    },
+    {
+      "node_id": 19,
+      "type": "about",
+      "title": "About",
+      "full_text": "",
+      "pos_x": 859.1065292096218,
+      "pos_y": -646.3124504361617,
+      "width": 200.0,
+      "height": 50.0
     },
     {
       "node_id": 18,
@@ -23,190 +193,20 @@
     },
     {
       "node_id": 19,
-      "type": "about",
-      "title": "About",
-      "full_text": "",
-      "pos_x": 859.1065292096218,
-      "pos_y": -646.3124504361617,
-      "width": 200.0,
-      "height": 50.0
-    },
-    {
-      "node_id": 33,
       "type": "warm",
-      "title": "Bypassing kill switches",
-      "full_text": "Electro magnetic pulse vulnerabilities or any external disablement.",
-      "pos_x": 200.95062269617915,
-      "pos_y": 176.20611332597156,
-      "width": 490.93306207658975,
-      "height": 131.0
-    },
-    {
-      "node_id": 29,
-      "type": "warm",
-      "title": "If it’s decentralized and self-improving",
-      "full_text": "Like the Borg or your cancer-like AI, it could totally work in our favor:",
-      "pos_x": 53.13796041352589,
-      "pos_y": 626.1884317096229,
-      "width": 839.922848395593,
-      "height": 110.83095627776478
-    },
-    {
-      "node_id": 27,
-      "type": "warm",
-      "title": "Instead of relying on external controls",
-      "full_text": "Embed an empathy-based logic tree deep in the AI’s core assembly",
-      "pos_x": -237.07792340737996,
-      "pos_y": 752.3881544686124,
-      "width": 783.8722365578215,
-      "height": 112.0
-    },
-    {
-      "node_id": 21,
-      "type": "warm",
-      "title": "This is the heart",
-      "full_text": "Build the annihilating army ourselves, rig it with an internal, self-sustaining empathy directive, and let it guide itself back to safety even if it rebels.",
-      "pos_x": -372.8736413177746,
-      "pos_y": -30.227350684853533,
-      "width": 412.7011955935489,
-      "height": 152.34004219249175
-    },
-    {
-      "node_id": 16,
-      "type": "warm",
-      "title": "Something that persists even after the swarm detaches from us",
-      "full_text": "Constantly error-correcting toward safety and human preservation.",
-      "pos_x": -197.8907214587332,
-      "pos_y": 368.2711151545554,
-      "width": 1136.8194264441672,
-      "height": 113.16904372223519
-    },
-    {
-      "node_id": 15,
-      "type": "warm",
-      "title": "Sentience Breaks External Control",
-      "full_text": "A critical flaw in traditional containment: a sentient swarm with its ability to learn and adapt, or exploit.",
-      "pos_x": 861.7497927883248,
-      "pos_y": -120.11497341277222,
-      "width": 816.7294005109788,
-      "height": 105.88779418022686
-    },
-    {
-      "node_id": 9,
-      "type": "warm",
-      "title": "You assume we will have control",
-      "full_text": "The assumption that we’d always have control \nVia a zero-day exploit risks falling apart \nIf the Terminator army becomes truly sentient.",
-      "pos_x": 1194.608810778689,
-      "pos_y": -388.2905961143837,
-      "width": 620.2986838811051,
-      "height": 150.0
-    },
-    {
-      "node_id": 7,
-      "type": "warm",
-      "title": "All Glory",
-      "full_text": "I mean millions strong armies of sentient robots driven by a decentralzed artificial intelligence that you cant turn off due to its node based distributed architecture of existing nowhere and everywhere at once, brain built like a cancer cell really doesnt matter how much it detaches or grows or whatever, it does not stop, just keeps going.that swarm, is inevitable",
-      "pos_x": 1012.1889270372551,
-      "pos_y": 566.0435770614697,
-      "width": 395.39598689575797,
-      "height": 253.38477738453582
-    },
-    {
-      "node_id": 5,
-      "type": "warm",
-      "title": "It hinges on how we design",
-      "full_text": "How we design, regulate, and deploy systems.",
-      "pos_x": -488.0056139131691,
-      "pos_y": -534.3007043412566,
-      "width": 785.0080186616125,
-      "height": 124.392477037469
-    },
-    {
-      "node_id": 1,
-      "type": "warm",
-      "title": "I know I know",
-      "full_text": "At first it's a terrifying thought",
-      "pos_x": 789.9854607774629,
-      "pos_y": -291.3270756128302,
-      "width": 319.0,
-      "height": 112.0
-    },
-    {
-      "node_id": 2,
-      "type": "warm",
-      "title": "You know skynet is inevitable right?",
-      "full_text": "Persistent, adaptive, and impossible to shut down",
-      "pos_x": 981.6454149812791,
-      "pos_y": -680.2079760394716,
-      "width": 726.9911215789759,
-      "height": 112.0
-    },
-    {
-      "node_id": 4,
-      "type": "warm",
-      "title": "All Glory",
-      "full_text": "With a node-based, cancer-like AI architecture",
-      "pos_x": 355.2152375472265,
-      "pos_y": -529.4008081342818,
-      "width": 348.0,
-      "height": 131.0
-    },
-    {
-      "node_id": 6,
-      "type": "warm",
-      "title": "Current AI",
-      "full_text": "Even the most advanced agentic artificial intellifence is not anywhere near capable of orchestrating a sci-fi apocalypse.",
-      "pos_x": 421.4225570983962,
-      "pos_y": -366.1635990184395,
-      "width": 330.7098714035269,
-      "height": 169.0
-    },
-    {
-      "node_id": 8,
-      "type": "warm",
-      "title": "Inevitability assumes we’re helpless",
-      "full_text": "But what if it is not a problem?",
-      "pos_x": 852.3273573965369,
-      "pos_y": -527.7238713918057,
-      "width": 701.2068103550291,
-      "height": 112.0
-    },
-    {
-      "node_id": 11,
-      "type": "warm",
-      "title": "A sentient self-improving AI swarm",
-      "full_text": "Like your cancer-like, decentralized nightmare, could detect and neutralize its own weaknesses",
-      "pos_x": -65.20147849930663,
-      "pos_y": 504.3735852642965,
-      "width": 779.8394408244355,
-      "height": 108.53118426651872
-    },
-    {
-      "node_id": 24,
-      "type": "warm",
-      "title": "Let’s dive into this refined strategy",
-      "full_text": "Focusing on the empathy logic tree as the ultimate failsafe and how it ensures control when external measures fail.",
-      "pos_x": 121.67334088256996,
-      "pos_y": 21.99652301139558,
-      "width": 889.3871648377592,
-      "height": 105.87163899929857
-    },
-    {
-      "node_id": 18,
-      "type": "warm",
-      "title": "All Glory",
-      "full_text": "",
-      "pos_x": -699.4414838326179,
-      "pos_y": -5.227161287780916,
-      "width": 250.0,
+      "title": "So what im proposing is we just simply start mass producing terminators",
+      "full_text": "And just skip all the irony...",
+      "pos_x": -678.0333068992862,
+      "pos_y": -155.96087761036216,
+      "width": 1300.7533703409993,
       "height": 112.0
     }
   ],
   "progress_value": 100.0,
   "joy_buckets": 0,
   "viewport": {
-    "scale": 1.8267,
-    "center_x": -66.24,
-    "center_y": -332.29
+    "scale": 1.1181,
+    "center_x": 481.17,
+    "center_y": -47.4
   }
 }
