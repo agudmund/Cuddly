@@ -2,12 +2,42 @@
   "version": "1.0",
   "nodes": [
     {
+      "node_id": 4,
+      "type": "warm",
+      "title": "Irresistible",
+      "full_text": "",
+      "pos_x": 427.31629392971195,
+      "pos_y": -701.5441959531418,
+      "width": 313.89776357827486,
+      "height": 82.10862619808307
+    },
+    {
+      "node_id": 3,
+      "type": "warm",
+      "title": "Sweet",
+      "full_text": "",
+      "pos_x": 584.3982960596378,
+      "pos_y": -814.6964856230035,
+      "width": 180.7774227902023,
+      "height": 86.1022364217252
+    },
+    {
+      "node_id": 2,
+      "type": "warm",
+      "title": "Soft",
+      "full_text": "",
+      "pos_x": 348.77529286474953,
+      "pos_y": -817.3588924387645,
+      "width": 180.0,
+      "height": 83.43982960596378
+    },
+    {
       "node_id": 1,
       "type": "warm",
       "title": "We definately need a way to copy paste nodes from one session to another",
       "full_text": "",
-      "pos_x": 86.52822151224723,
-      "pos_y": -939.8296059637914,
+      "pos_x": 141.1075612353568,
+      "pos_y": -957.1352502662409,
       "width": 1336.261980830671,
       "height": 72.79020234291795
     },
