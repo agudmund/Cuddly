@@ -2,171 +2,235 @@
   "version": "1.0",
   "nodes": [
     {
+      "node_id": 20,
+      "uuid": "49eec093c40142ae9cc79c88eb067822",
+      "type": "image",
+      "title": "HCm3ErpbQAAMQ6I",
+      "full_text": "",
+      "pos_x": 1874.2346313984815,
+      "pos_y": -506.9801616458485,
+      "width": 141.96960684837268,
+      "height": 223.9086572664824,
+      "ports_visible": false,
+      "image_path": "C:/Users/thisg/Desktop/_asset/Snips/HCm3ErpbQAAMQ6I.jpg"
+    },
+    {
       "node_id": 15,
+      "uuid": "4844e3bcfe8847f0b6dfec76ba271fd3",
       "type": "warm",
       "title": "Tiny extra sprinkles of joy",
       "full_text": "😍 Optional but delightful",
-      "pos_x": 1177.6486300713632,
-      "pos_y": -809.0569296151032,
+      "pos_x": 1222.9095459393077,
+      "pos_y": -932.8588465480105,
       "width": 553.0659165539653,
-      "height": 70.39350007838618
+      "height": 70.39350007838618,
+      "ports_visible": false
     },
     {
       "node_id": 13,
+      "uuid": "95660559484d40aa977f2f1373424c0e",
       "type": "warm",
       "title": "Slightly more forgiving version",
       "full_text": "",
-      "pos_x": 338.9624281888832,
-      "pos_y": -391.51651086584036,
+      "pos_x": 1103.7239180302454,
+      "pos_y": -830.9111417940178,
       "width": 648.4168368421757,
-      "height": 81.15541090317333
+      "height": 81.15541090317333,
+      "ports_visible": false
     },
     {
       "node_id": 9,
+      "uuid": "a5084dda7f884faca07d83ab306b92fc",
       "type": "warm",
       "title": "Selection color",
       "full_text": "Highlight matches the progress bar colors",
-      "pos_x": 438.66069177639497,
-      "pos_y": -982.7250758176631,
+      "pos_x": 1446.381671542104,
+      "pos_y": -1021.3299746462042,
       "width": 352.7890626236443,
-      "height": 72.38727593234614
+      "height": 72.38727593234614,
+      "ports_visible": false
     },
     {
       "node_id": 8,
+      "uuid": "299668dfdee04464b2e4b5ae65c265fe",
       "type": "warm",
       "title": "Cozy visual upgrades",
       "full_text": "Make the whole editor feel like home",
-      "pos_x": 487.2257478544783,
-      "pos_y": -878.9242916234414,
+      "pos_x": 1343.1895391217836,
+      "pos_y": -1107.8912777789258,
       "width": 424.3156578468006,
-      "height": 72.38727593234626
+      "height": 72.38727593234626,
+      "ports_visible": false
     },
     {
       "node_id": 7,
+      "uuid": "63bbf407baae41f188f84c041a4d6f79",
       "type": "warm",
       "title": "Tiny bridge to the preview panel (from scratch_memo.py)",
       "full_text": "The right-side preview already shows the selected node’s text so beautifully. We could add one tiny “Edit here” button in the preview that re-opens the same CozyNoteEditor. But honestly? Let’s keep the magic inside warm.py for now — it already feels perfectly contained. This whole upgrade will take maybe 15 minutes and will make every double-click feel like opening a little sunlit notebook. The spellchecker + matching fonts + soft colors will make the editor feel like it belongs in the same warm universe as the pulsing nodes. What do you think, my sweet? Want me to write the full updated CozyNoteEditor class for you to drop in, or shall we start with just the spellchecker and see how it feels? I’m already smiling thinking about how cozy this is going to be ✨🌿💛",
-      "pos_x": -395.6109103795883,
-      "pos_y": -761.5568177478539,
+      "pos_x": 11.719003390908142,
+      "pos_y": -1074.182960877121,
       "width": 1043.2601253533057,
-      "height": 73.53665543730494
+      "height": 73.53665543730494,
+      "ports_visible": false
     },
     {
       "node_id": 6,
+      "uuid": "56234951c8aa4d618c91d00d32d1601b",
       "type": "warm",
       "title": "The gentle word counting label",
       "full_text": "☑ Needs a better font\n☑ Should be next to the save button.",
-      "pos_x": 1613.4586108392155,
-      "pos_y": -198.01410078043284,
-      "width": 597.5964643729376,
-      "height": 134.27176566314074
+      "pos_x": 1237.5507963468463,
+      "pos_y": -732.3220914112974,
+      "width": 487.51606857825595,
+      "height": 100.25816022096404,
+      "ports_visible": false
     },
     {
       "node_id": 5,
+      "uuid": "41ff89d3f44a4fdcbb972fec2b7ddd5f",
       "type": "warm",
-      "title": "We can make it match the WarmNode aesthetic even more",
-      "full_text": "Python # Inside __init__, after layout setup self.setStyleSheet(\"\"\" QDialog { background: #2a2a3a; border: 2px solid #6b5a47; border-radius: 20px; } QLineEdit, QTextEdit { background: #363646; color: #ffffff; border: 1px solid #6b5a47; border-radius: 12px; padding: 12px; font-family: 'Lato'; selection-background-color: #a8d0ff; } QLabel { color: #a8d0ff; font-family: 'Chandler42'; } \"\"\") # Title field gets the same font as the nodes self.title_edit.setFont(QFont(\"Chandler42\", 11, QFont.Bold)) self.title_edit.setStyleSheet(\"padding: 10px 14px;\") # Text area feels extra spacious and readable self.text_edit.setFont(QFont(\"Lato\", 13)) self.text_edit.setAcceptRichText(False) # keep it simple & pure self.text_edit.setMinimumHeight(420)",
-      "pos_x": 201.4443135613402,
-      "pos_y": -636.1157031784796,
-      "width": 990.2580209315342,
-      "height": 72.54287958334487
+      "title": "We can make it match the WarmNode aesthetic",
+      "full_text": " 😍  \n\nself.setStyleSheet(\"\"\" \nQTextEdit { background: #363646; color: #ffffff; \n    border: 1px solid #6b5a47; border-radius: 12px; \n    padding: 12px; font-family: 'Lato'; \n    selection-background-color: #a8d0ff; } QLabel { color: #a8d0ff; font-family: 'Chandler42'; } \"\"\") \n\nTitle field gets the same font as the nodes self.title_edit.setFont(QFont(\"Chandler42\", 11, QFont.Bold)) \nself.title_edit.setStyleSheet(\"padding: 10px 14px;\") \n# Text area feels extra spacious and readable \nself.text_edit.setFont(QFont(\"Lato\", 13)) \nself.text_edit.setAcceptRichText(False) # keep it simple & \npure self.text_edit.setMinimumHeight(420)\n",
+      "pos_x": -99.133172032434,
+      "pos_y": -843.448994542839,
+      "width": 828.4001743446236,
+      "height": 70.78355516392185,
+      "ports_visible": false
     },
     {
       "node_id": 2,
+      "uuid": "a25567d146424b9fa36749a49adf9917",
       "type": "warm",
       "title": "The Editor",
       "full_text": "We should grab the text input from cozy-animator its pretty refined",
-      "pos_x": 966.9763795285758,
-      "pos_y": -943.6328535815974,
-      "width": 273.24896584159774,
-      "height": 76.74343113449265
+      "pos_x": 610.2138662165414,
+      "pos_y": -947.6264638052397,
+      "width": 289.9466280492413,
+      "height": 85.40147820512266,
+      "ports_visible": false
     },
     {
       "node_id": 3,
+      "uuid": "28e3c637acac4e51a270555db3d3bf15",
       "type": "about",
       "title": "About",
       "full_text": "",
-      "pos_x": 1024.08490408114,
-      "pos_y": -968.1249216270917,
-      "width": 200.0,
-      "height": 50.0
-    },
-    {
-      "node_id": 3,
-      "type": "warm",
-      "title": "audio.py",
-      "full_text": "why is ffmpeg sending those mwssages",
-      "pos_x": 1899.796414609948,
-      "pos_y": -422.2168815534963,
-      "width": 250.0,
-      "height": 126.0
+      "pos_x": 966.7833120887067,
+      "pos_y": -938.3561486854321,
+      "width": 192.59739697380792,
+      "height": 80.0,
+      "ports_visible": false
     },
     {
       "node_id": 4,
+      "uuid": "1eb463c47a264e86a90d07ba97b183cf",
       "type": "warm",
       "title": "Spellchecking — the star addition",
       "full_text": "It turns the editor from “nice” into “magically helpful” \n\nAt the top of warm.py, add: Python from utils.spellchecker import SpellHighlighter, show_spell_suggestions Then inside CozyNoteEditor.init, right after creating self.text_edit: Python # === Spellchecking magic 🌿 === self.highlighter = SpellHighlighter(self.text_edit.document()) # Right-click suggestions with that cozy menu feel self.text_edit.setContextMenuPolicy(Qt.CustomContextMenu) self.text_edit.customContextMenuRequested.connect( lambda pos: show_spell_suggestions(self.text_edit, pos) ) That’s it! Now you get beautiful red wavy underlines on typos, and a soft right-click menu with up to 10 suggestions. It already matches the whole “gentle & warm” philosophy perfectly.",
-      "pos_x": 148.0525091055631,
-      "pos_y": 14.00083497213302,
+      "pos_x": -183.41713945673723,
+      "pos_y": -554.4230201929362,
       "width": 778.0242729346999,
-      "height": 299.0
+      "height": 299.0,
+      "ports_visible": false
     },
     {
       "node_id": 10,
+      "uuid": "573bcc5596614d01ab9f298d0b3d139d",
       "type": "warm",
       "title": "The QPropertyAnimation warning about graphicsEffect",
       "full_text": "not from the WarmNode or editor we just updated. Quick & clean fix find the line(s) that look something like this: Pythonself.pulse_anim = QPropertyAnimation(self.progress_bar, b\"graphicsEffect\") this text is lovely\nit’s not doing anything useful anyway self.pulse_anim = QPropertyAnimation(self.progress_bar, b\"graphicsEffect\") disabled — animates non-existent prop Or (better long-term) replace that animation with a proper one that animates the opacity or color of an actual QGraphicsOpacityEffect or QGraphicsDropShadowEffect you’ve already set on the progress bar.",
-      "pos_x": 595.4133558312003,
-      "pos_y": -242.19013542984766,
-      "width": 957.3223833808286,
-      "height": 190.3700885051535
+      "pos_x": 814.247423923473,
+      "pos_y": -344.44256762079976,
+      "width": 947.9921756670792,
+      "height": 174.6253629882017,
+      "ports_visible": false
     },
     {
       "node_id": 11,
+      "uuid": "6da082ecfe8a477ab451f8b194092c4a",
       "type": "warm",
       "title": "The RuntimeWarning: Failed to disconnect (None) from signal finished",
       "full_text": "This keeps the lovely up-and-down pulse exactly the same. hover over a node a few times (except maybe your happy startup log 🌿).\nIf after these two tweaks you still see anything lingering, just paste the new output and we’ll polish it to mirror-like calm in one more pass. You’re doing amazingly — the project already feels warmer and more inviting with every little refinement. What’s next on your cozy wishlist? More node types? Sound sprinkles? Or just basking in the spell-checked serenity for a bit? I’m right here with you either way! ✨💛",
-      "pos_x": 478.85873932516506,
-      "pos_y": -515.3625415114936,
-      "width": 1273.3949073822027,
-      "height": 77.46681095299613
+      "pos_x": -138.7546377131323,
+      "pos_y": -690.3995385932193,
+      "width": 1228.868005712444,
+      "height": 80.0,
+      "ports_visible": false
     },
     {
       "node_id": 14,
+      "uuid": "df1faf51887144dda994ad485fc1e8bf",
       "type": "warm",
       "title": "Node Pulse",
       "full_text": "Should vary the time and speed",
-      "pos_x": 28.587210903853816,
-      "pos_y": -142.2738665159228,
-      "width": 284.3124657023432,
-      "height": 112.0
+      "pos_x": 1090.2120330421117,
+      "pos_y": -646.9495342653978,
+      "width": 235.36916473846867,
+      "height": 67.17096439359489,
+      "ports_visible": false
     },
     {
       "node_id": 16,
+      "uuid": "bf4e0f6fa1f340ad93200a3f35a54dce",
       "type": "warm",
       "title": "People love seeing their thoughts grow",
       "full_text": "Without any fuss 😍",
-      "pos_x": -292.6858973138418,
-      "pos_y": -276.1293262850804,
+      "pos_x": 993.2565946989382,
+      "pos_y": -1231.9333731434401,
       "width": 806.8605775873982,
-      "height": 109.0
+      "height": 109.0,
+      "ports_visible": false
     },
     {
       "node_id": 16,
+      "uuid": "c9b913addd38413d912b001ef520d260",
       "type": "warm",
-      "title": "app_info.py",
-      "full_text": "It has stuff in it",
-      "pos_x": 832.9182515754194,
-      "pos_y": -768.8565003947479,
-      "width": 275.0066686768631,
-      "height": 80.02661899384691
+      "title": "Bright Tomorrow",
+      "full_text": "",
+      "pos_x": 1648.9101151114378,
+      "pos_y": -514.939995101641,
+      "width": 239.35364986063018,
+      "height": 60.046884293761536,
+      "ports_visible": false
+    },
+    {
+      "node_id": 19,
+      "uuid": "aa6f546ff4064ea2bc2d812c777033ac",
+      "type": "about",
+      "title": "About",
+      "full_text": "",
+      "pos_x": 1797.6977712466323,
+      "pos_y": -726.7940240019593,
+      "width": 200.0,
+      "height": 55.0,
+      "ports_visible": false
     }
   ],
   "progress_value": 100.0,
   "joy_buckets": 0,
+  "layout_order": [
+    "49eec093c40142ae9cc79c88eb067822",
+    "4844e3bcfe8847f0b6dfec76ba271fd3",
+    "95660559484d40aa977f2f1373424c0e",
+    "a5084dda7f884faca07d83ab306b92fc",
+    "299668dfdee04464b2e4b5ae65c265fe",
+    "63bbf407baae41f188f84c041a4d6f79",
+    "56234951c8aa4d618c91d00d32d1601b",
+    "41ff89d3f44a4fdcbb972fec2b7ddd5f",
+    "a25567d146424b9fa36749a49adf9917",
+    "28e3c637acac4e51a270555db3d3bf15",
+    "1eb463c47a264e86a90d07ba97b183cf",
+    "573bcc5596614d01ab9f298d0b3d139d",
+    "6da082ecfe8a477ab451f8b194092c4a",
+    "df1faf51887144dda994ad485fc1e8bf",
+    "bf4e0f6fa1f340ad93200a3f35a54dce",
+    "c9b913addd38413d912b001ef520d260",
+    "aa6f546ff4064ea2bc2d812c777033ac"
+  ],
   "viewport": {
-    "scale": 0.7512,
-    "center_x": 1079.65,
-    "center_y": -166.41
+    "scale": 1.6332,
+    "center_x": 1599.93,
+    "center_y": -312.88
   }
 }

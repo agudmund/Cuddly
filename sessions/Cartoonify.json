@@ -1,0 +1,183 @@
+{
+  "version": "1.0",
+  "nodes": [
+    {
+      "node_id": 12,
+      "uuid": "c8017bc5f4a4450eaaa4c4e3a3c89816",
+      "type": "warm",
+      "title": "New Thought",
+      "full_text": "",
+      "pos_x": 350.65349059611094,
+      "pos_y": 25.50207204335352,
+      "width": 250.0,
+      "height": 150.0,
+      "ports_visible": false
+    },
+    {
+      "node_id": 11,
+      "uuid": "382b1066ec25432d9e55514ba78d2895",
+      "type": "warm",
+      "title": "All Glory",
+      "full_text": "",
+      "pos_x": 125.91648071405805,
+      "pos_y": -313.9942620337903,
+      "width": 250.0,
+      "height": 150.0,
+      "ports_visible": false
+    },
+    {
+      "node_id": 8,
+      "uuid": "dfb6782cd75c4d06ad67a915720a281f",
+      "type": "warm",
+      "title": "Something entirely its own species",
+      "full_text": "As is costumary tradition of our people",
+      "pos_x": -486.8319342546496,
+      "pos_y": 83.62182981804085,
+      "width": 791.1954765751215,
+      "height": 113.6510500807754,
+      "ports_visible": false
+    },
+    {
+      "node_id": 7,
+      "uuid": "d22f65c677ed462589b127920746800b",
+      "type": "warm",
+      "title": "What is the chemical composition of this machine?",
+      "full_text": "And other questions of non-importance where asked in great volume.",
+      "pos_x": -740.923407281405,
+      "pos_y": -69.22079610696403,
+      "width": 950.726978998385,
+      "height": 115.67043618739899,
+      "ports_visible": false
+    },
+    {
+      "node_id": 6,
+      "uuid": "8e883f76802d481eacf61609823d2b7d",
+      "type": "warm",
+      "title": "Meanwhile, near the start of Mt. Fuji",
+      "full_text": "A press conference is being held.",
+      "pos_x": -285.16120724642644,
+      "pos_y": -317.37139212275633,
+      "width": 729.5445919805215,
+      "height": 114.4563057577036,
+      "ports_visible": false
+    },
+    {
+      "node_id": 5,
+      "uuid": "f258d4be0bdc453297469641cd99a60c",
+      "type": "warm",
+      "title": "The person who knows all your army secrets",
+      "full_text": "It is my honor\n  -Yours Truly",
+      "pos_x": -287.3283988822231,
+      "pos_y": -462.1818940436212,
+      "width": 830.1462928829202,
+      "height": 131.0,
+      "ports_visible": true
+    },
+    {
+      "node_id": 4,
+      "uuid": "7c6bae16bf82461da7789e999374d78a",
+      "type": "warm",
+      "title": "The humans tried acquiring it",
+      "full_text": "We must have it!  It will let us rule the world!!  Our armies will be invincible! They shouted.",
+      "pos_x": -263.4231499012809,
+      "pos_y": 227.9894522142065,
+      "width": 700.3231017770601,
+      "height": 112.0,
+      "ports_visible": false
+    },
+    {
+      "node_id": 1,
+      "uuid": "cbce95a8985e4b36a665755b0ad1f3d8",
+      "type": "warm",
+      "title": "In the land of Thurr",
+      "full_text": "During an architectural expedition machines where discovered.  \n\nMachines that someone had created with intent to destroy the world.  \n\nNone of the expedition members returned except the professor who managed to flee and take refuge in Japan.  The professor had one goal and one goal only, to use his two greatest discoveries, the elusive organic matter and the invincible machine, to oppose this attempt at disrupting the beautiful status quo.",
+      "pos_x": 29.275535551428902,
+      "pos_y": -560.0270113170254,
+      "width": 538.6399451974717,
+      "height": 264.0,
+      "ports_visible": false
+    },
+    {
+      "node_id": 2,
+      "uuid": "2bd30383f5fe4c9c8389022c01afa256",
+      "type": "warm",
+      "title": "Gentle Men",
+      "full_text": "This is the machine I have created and you call invincible.",
+      "pos_x": -917.8046673194797,
+      "pos_y": -232.061480501678,
+      "width": 460.0161550888531,
+      "height": 112.0,
+      "ports_visible": false
+    },
+    {
+      "node_id": 3,
+      "uuid": "0afb4d460fb4405c8223e944e783735d",
+      "type": "about",
+      "title": "About",
+      "full_text": "",
+      "pos_x": 95.9325006122601,
+      "pos_y": -561.8456574053481,
+      "width": 200.0,
+      "height": 50.0,
+      "ports_visible": false
+    },
+    {
+      "node_id": 9,
+      "uuid": "8f1679bf01e24d70a4bcc9531d06cf95",
+      "type": "warm",
+      "title": "This became a bit of a concern",
+      "full_text": "",
+      "pos_x": -149.366783687228,
+      "pos_y": 383.7976615657935,
+      "width": 617.528271405493,
+      "height": 81.34087237479798,
+      "ports_visible": false
+    },
+    {
+      "node_id": 10,
+      "uuid": "930c0bd8792d4d508cc4e829cc9f4cd8",
+      "type": "warm",
+      "title": "I remind you that this is the same person",
+      "full_text": "The person who made one of the most important discoveries in human history.",
+      "pos_x": -905.0852921645201,
+      "pos_y": -679.5578991732842,
+      "width": 799.5160702427444,
+      "height": 107.42957196159728,
+      "ports_visible": false
+    },
+    {
+      "node_id": 10,
+      "uuid": "298605f2234c4da1b4b7a14ad7749f40",
+      "type": "warm",
+      "title": "All Glory",
+      "full_text": "",
+      "pos_x": 325.9483583041121,
+      "pos_y": -189.67166082244185,
+      "width": 250.0,
+      "height": 150.0,
+      "ports_visible": false
+    }
+  ],
+  "progress_value": 100.0,
+  "joy_buckets": 0,
+  "layout_order": [
+    "c8017bc5f4a4450eaaa4c4e3a3c89816",
+    "382b1066ec25432d9e55514ba78d2895",
+    "dfb6782cd75c4d06ad67a915720a281f",
+    "d22f65c677ed462589b127920746800b",
+    "8e883f76802d481eacf61609823d2b7d",
+    "f258d4be0bdc453297469641cd99a60c",
+    "7c6bae16bf82461da7789e999374d78a",
+    "cbce95a8985e4b36a665755b0ad1f3d8",
+    "2bd30383f5fe4c9c8389022c01afa256",
+    "0afb4d460fb4405c8223e944e783735d",
+    "8f1679bf01e24d70a4bcc9531d06cf95",
+    "930c0bd8792d4d508cc4e829cc9f4cd8",
+    "298605f2234c4da1b4b7a14ad7749f40"
+  ],
+  "viewport": {
+    "scale": 1.2548,
+    "center_x": 62.96,
+    "center_y": -373.76
+  }
+}

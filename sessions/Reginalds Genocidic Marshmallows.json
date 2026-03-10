@@ -1,0 +1,102 @@
+{
+  "version": "1.0",
+  "nodes": [
+    {
+      "node_id": 3,
+      "type": "about",
+      "title": "About",
+      "full_text": "",
+      "pos_x": -221.35581455015677,
+      "pos_y": -93.37187649647024,
+      "width": 200.0,
+      "height": 50.0
+    },
+    {
+      "node_id": 1,
+      "type": "warm",
+      "title": "Yes It's a sad marshmallow care bear",
+      "full_text": "It just did something",
+      "pos_x": -314.0853817120958,
+      "pos_y": -87.86700001446435,
+      "width": 697.1963852385197,
+      "height": 112.0
+    },
+    {
+      "node_id": 2,
+      "type": "warm",
+      "title": "Marshmallow Cthulu had started attacking all the cities",
+      "full_text": "All the people were afraid, and their homes being destroyed\n\nAnd Marshmallow God was away on business.",
+      "pos_x": -704.1595184212995,
+      "pos_y": 54.676847780313864,
+      "width": 1046.5685612061131,
+      "height": 150.0
+    },
+    {
+      "node_id": 3,
+      "type": "warm",
+      "title": "So the people sent an army to fight marshmallow cthulu",
+      "full_text": "Which caused even greater destruction.\n\nMany battles between the armies and marshmallows were fought\n\nThis led to the actual apocalypse arriving \nAnd civilization as we knew ended",
+      "pos_x": -460.61381660231245,
+      "pos_y": 234.7733369156162,
+      "width": 1012.691347044467,
+      "height": 206.66358161944163
+    },
+    {
+      "node_id": 4,
+      "type": "warm",
+      "title": "But reginald knew what he had to do",
+      "full_text": "He stepped up, and fought both cthulu and the robot armies",
+      "pos_x": -592.5367220160733,
+      "pos_y": 489.5158405309438,
+      "width": 690.0142386795001,
+      "height": 122.49911008253127
+    },
+    {
+      "node_id": 5,
+      "type": "warm",
+      "title": "But it wasnt until after he won the war",
+      "full_text": "That he looked around and saw that even though he had become a mighty champion\nAnd saved mother Earth from destruction\nHe no longer had other marshmallows to play with\nAnd this made Reginald sad",
+      "pos_x": -183.6901585763711,
+      "pos_y": 647.1876093910982,
+      "width": 774.350301093071,
+      "height": 168.66358161944157
+    },
+    {
+      "node_id": 6,
+      "type": "warm",
+      "title": "At one point, Reginald had to make a choice",
+      "full_text": "To genocide everyone he had ever loved\nBecause they had taken up annihilating mankind\nSo it was either to watch everyone die\nOr end the war and forever be considered the only remaining evil\nFrom a war he did not fight.",
+      "pos_x": -944.1972204997606,
+      "pos_y": 837.8604461522148,
+      "width": 834.8522589115023,
+      "height": 188.0
+    },
+    {
+      "node_id": 7,
+      "type": "warm",
+      "title": "Reginald has seen some things",
+      "full_text": "But he survived them all.",
+      "pos_x": -60.50195781843149,
+      "pos_y": 863.527943408519,
+      "width": 603.8447836047646,
+      "height": 118.83232476020214
+    },
+    {
+      "node_id": 8,
+      "type": "warm",
+      "title": "Reginald is such a misunderstood marshmallow care bear",
+      "full_text": "He just wants everything to be a little sugary\nThe legend tells that he still to this day \nCollects broken marshmallows from the war, \nAnd hands them out as sprinkles on ice cream \nFor people who need an extra smile in their day",
+      "pos_x": -445.514416662994,
+      "pos_y": 1057.867565491965,
+      "width": 1029.1918809949482,
+      "height": 188.0
+    }
+  ],
+  "progress_value": 100.0,
+  "joy_buckets": 0,
+  "viewport": {
+    "scale": 0.2489,
+    "center_x": -172.76,
+    "center_y": 570.51
+  }
+}

@@ -2,37 +2,41 @@
   "version": "1.0",
   "nodes": [
     {
-      "node_id": 6,
+      "node_id": 8,
+      "uuid": "dc2f54eb4d0f47849f1d928686fba569",
       "type": "warm",
-      "title": "app_info.py",
-      "full_text": "It has stuff in it, mostly the things intended for the About Node",
-      "pos_x": 305.46623794212223,
-      "pos_y": -133.34594287875927,
-      "width": 323.76584074144125,
-      "height": 150.94571590694156
+      "title": "New Thought",
+      "full_text": "",
+      "pos_x": 163.23731138545955,
+      "pos_y": -486.968449931413,
+      "width": 250.0,
+      "height": 150.0
+    },
+    {
+      "node_id": 6,
+      "uuid": "46f5764148d8426b85da0163210de169",
+      "type": "warm",
+      "title": "All Glory",
+      "full_text": "",
+      "pos_x": -322.3593964334706,
+      "pos_y": 251.02880658436226,
+      "width": 403.63511659807955,
+      "height": 136.28257887517145
     },
     {
       "node_id": 4,
+      "uuid": "4fb7d76050374660958d39d3e73842ed",
       "type": "warm",
       "title": "The spellchecker doesnt have an option to add new words to dictionary",
       "full_text": "",
-      "pos_x": -940.6922527620459,
-      "pos_y": -301.29824352984605,
+      "pos_x": -900.911731500043,
+      "pos_y": -277.97862761763747,
       "width": 1264.7531681482883,
       "height": 73.39701153773404
     },
     {
-      "node_id": 3,
-      "type": "warm",
-      "title": "cozy-tree Encoding and File Reading",
-      "full_text": "Opening .gitignore with utf-8 is smart, but some edge-case files might have different encodings.\nSuggestion: Use errors='ignore' in open() to handle rare malformed files gracefully.",
-      "pos_x": -606.2038963495368,
-      "pos_y": 76.6029884622659,
-      "width": 728.5322489124267,
-      "height": 144.32570455835065
-    },
-    {
       "node_id": 1,
+      "uuid": "f6e4e299700b444b913937119595daa1",
       "type": "warm",
       "title": "The Nodes",
       "full_text": "They should auto resize on creating new nodes accordingly with the title width",
@@ -43,30 +47,52 @@
     },
     {
       "node_id": 2,
+      "uuid": "28c5e099c1f340b79c68c47600912faa",
       "type": "warm",
       "title": "cozy-tree .gitignore patterns",
       "full_text": "Current implementation uses fnmatch, which handles basic patterns (*, ?, []) but falls short on advanced Git syntax like ** (recursive), ! (negate), or trailing / for directories only.\nSuggestion: Consider integrating a library like pathspec (from GitPython or standalone) for accurate matching. It's lightweight and handles full .gitignore parsing. For example:Pythonfrom pathspec import PathSpec\n\n# In _load_gitignore_patterns:\npatterns = PathSpec.from_lines('gitwildmatch', f.readlines())\n# Then in _should_ignore:\nif patterns.match_file(rel_path):\n    return TrueThis would make it \"rock-solid\" as promised, without much added complexity. Since your environment has no pip, you could implement a basic ** handler manually if needed, but pathspec might not be available—stick to fnmatch for now if simplicity is key.\n",
-      "pos_x": 144.72497529067596,
-      "pos_y": 66.28910408907507,
+      "pos_x": 142.56784425970125,
+      "pos_y": 64.96996221152403,
       "width": 649.1955367885255,
       "height": 397.0
     },
     {
       "node_id": 3,
-      "type": "about",
-      "title": "About",
+      "uuid": "60d59af7756e473bb91d97ecdd833157",
+      "type": "warm",
+      "title": "cozy-tree Encoding and File Reading",
+      "full_text": "Opening .gitignore with utf-8 is smart, but some edge-case files might have different encodings.\nSuggestion: Use errors='ignore' in open() to handle rare malformed files gracefully.",
+      "pos_x": -606.2038963495368,
+      "pos_y": 76.6029884622659,
+      "width": 728.5322489124267,
+      "height": 144.32570455835065
+    },
+    {
+      "node_id": 7,
+      "uuid": "5f18fda2ee9547dab03fa950d7ffe9a8",
+      "type": "warm",
+      "title": "All Glory",
       "full_text": "",
-      "pos_x": -221.35581455015677,
-      "pos_y": -93.37187649647024,
-      "width": 200.0,
-      "height": 50.0
+      "pos_x": -626.8861454046639,
+      "pos_y": -493.82716049382725,
+      "width": 250.0,
+      "height": 150.0
     }
   ],
   "progress_value": 100.0,
   "joy_buckets": 0,
+  "layout_order": [
+    "dc2f54eb4d0f47849f1d928686fba569",
+    "46f5764148d8426b85da0163210de169",
+    "4fb7d76050374660958d39d3e73842ed",
+    "f6e4e299700b444b913937119595daa1",
+    "28c5e099c1f340b79c68c47600912faa",
+    "60d59af7756e473bb91d97ecdd833157",
+    "5f18fda2ee9547dab03fa950d7ffe9a8"
+  ],
   "viewport": {
     "scale": 0.729,
-    "center_x": -72.7,
-    "center_y": 149.52
+    "center_x": -111.11,
+    "center_y": -204.39
   }
 }
