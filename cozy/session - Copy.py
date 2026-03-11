@@ -13,13 +13,9 @@ from pathlib import Path
 from PySide6.QtWidgets import QGraphicsView
 from PySide6.QtCore import QPointF, QRectF, QSizeF
 
-from cozy.node_types import WarmNode, AboutNode, ImageNode, RenderNode
+from cozy.warm import WarmNode  
+from cozy.about import AboutNode
 from cozy.graphics_view import GraphicsView
-
-# Local helper to avoid circular imports; warm.py may import other things
-def _generate_uuid():
-    import uuid
-    return uuid.uuid4().hex
 
 from app_info import APP_NAME
 
@@ -27,15 +23,8 @@ class SessionManager:
     """Gentle save/load for the entire sketchbook session — human-editable JSON"""
 
     @staticmethod
-    def get_session_filename(display_name: str) -> str:
-        # 1. Create absolute path to ensure Windows finds it
-        base_path = Path(__file__).resolve().parent.parent # Goes from cozy/ to root/
-        sessions_dir = base_path / "sessions"
-        sessions_dir.mkdir(exist_ok=True)
-        
-        # 2. Match the exact filename style in your directory
-        # If the display name is "Cleanup", we want "Cleanup.json"
-        return str(sessions_dir / f"{display_name}.json")
+    def get_session_filename(display_name: str) -> str | None:
+        return f"sessions/{display_name}.json"
     
     @staticmethod
     def get_available_sessions(directory: str = "sessions") -> List[str]:
@@ -66,24 +55,23 @@ class SessionManager:
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
         
         nodes_data = []
-        layout_order = []
         for item in scene.items():
-            if isinstance(item, (WarmNode, AboutNode, ImageNode, RenderNode)):
-                node_uuid = getattr(item, 'uuid', None)
-                if not node_uuid:
-                    try:
-                        node_uuid = item.uuid = _generate_uuid()
-                    except Exception:
-                        node_uuid = str(getattr(item, 'node_id', 0))
-
-                nodes_data.append(item.to_dict())
-                layout_order.append(node_uuid)
+            if isinstance(item, (WarmNode, AboutNode)):
+                nodes_data.append({
+                    "node_id": getattr(item, 'node_id', 0),
+                    "type": "about" if isinstance(item, AboutNode) else "warm",
+                    "title": item.title,
+                    "full_text": item.full_text,
+                    "pos_x": item.scenePos().x(),
+                    "pos_y": item.scenePos().y(),
+                    "width": item.rect().width(),
+                    "height": item.rect().height()
+                })
         data = {
             "version": "1.0",
             "nodes": nodes_data,
             "progress_value": round(progress_value, 2),
-            "joy_buckets": int(joy_buckets),
-            "layout_order": layout_order
+            "joy_buckets": int(joy_buckets)
         }
 
         # Viewport logic remains largely the same, but ensure it's outside the node loop
@@ -118,81 +106,41 @@ class SessionManager:
         # 1. Clear old nodes
         # We target our specific node classes to avoid nuking UI elements
         for item in list(scene.items()):
-            if isinstance(item, (WarmNode, AboutNode, ImageNode, RenderNode)):
+            if isinstance(item, (WarmNode, AboutNode)):
                 scene.removeItem(item)
 
-        # 2. Define Registry
+        # 2. Define Registry (This makes adding Render/Image nodes easy!)
         NODE_TYPE_MAP = {
             "warm": WarmNode,
             "about": AboutNode,
-            "image": ImageNode,
-            "render": RenderNode,
+            # "render": RenderNode, # Future proofing!
+            # "image": ImageNode,
         }
 
         # 3. Restore nodes
-        # If layout_order was saved, use it to restore stacking/creation order
-        ordered_nodes = []
-        node_map = {nd.get("uuid") or str(nd.get("node_id")): nd for nd in data.get("nodes", [])}
-        layout_order = data.get("layout_order") or []
-
-        if layout_order:
-            for uid in layout_order:
-                nd = node_map.get(uid)
-                if nd:
-                    ordered_nodes.append(nd)
-        # Append any nodes not listed in layout_order (backwards compatibility)
-        for uid, nd in node_map.items():
-            if nd not in ordered_nodes:
-                ordered_nodes.append(nd)
-
-        created_nodes = {}  # Track nodes by UUID for RenderNode connection restoration
-
-        for node_data in ordered_nodes:
+        for node_data in data.get("nodes", []):
             try:
                 node_type_str = node_data.get("type", "warm")
-                node_class = NODE_TYPE_MAP.get(node_type_str, WarmNode)  # Default to Warm
+                node_class = NODE_TYPE_MAP.get(node_type_str, WarmNode) # Default to Warm
 
-                # Special handling for ImageNode (may have image_path)
-                kwargs = {
-                    "node_id": node_data.get("node_id", 0),
-                    "title": node_data.get("title", ""),
-                    "full_text": node_data.get("full_text", ""),
-                    "pos": QPointF(node_data.get("pos_x", 0), node_data.get("pos_y", 0)),
-                    "uuid": node_data.get("uuid"),
-                }
-
-                if node_class == ImageNode:
-                    kwargs["image_path"] = node_data.get("image_path")
-                elif node_class == RenderNode:
-                    kwargs["source_node_uuids"] = node_data.get("source_node_uuids", [])
-
-                node = node_class(**kwargs)
+                # Standard instantiation - assumes they share a common signature
+                node = node_class(
+                    node_id=node_data.get("node_id", 0),
+                    title=node_data.get("title", ""),
+                    full_text=node_data.get("full_text", ""),
+                    pos=QPointF(node_data.get("pos_x", 0), node_data.get("pos_y", 0))
+                )
 
                 # Apply geometry
                 width = node_data.get("width", node.rect().width())
                 height = node_data.get("height", node.rect().height())
                 node.prepareGeometryChange()
                 node.setRect(QRectF(node.rect().topLeft(), QSizeF(width, height)))
-
-                # Restore port visibility state
-                if node_data.get("ports_visible", False):
-                    node.ports_visible = True
-                    node._animate_ports()
-
+                
                 scene.addItem(node)
-                created_nodes[node.uuid] = node
             except KeyError as e:
                 print(f"❌ Skipping a node due to missing field: {e}")
                 continue
-
-        # 4. Reconnect RenderNode sources
-        for node in created_nodes.values():
-            if isinstance(node, RenderNode) and node.source_node_uuids:
-                for source_uuid in node.source_node_uuids:
-                    source_node = created_nodes.get(source_uuid)
-                    if source_node:
-                        node.source_nodes.append(source_node)
-                node.update_render()
 
         scene.setSceneRect(scene.itemsBoundingRect())
 
@@ -206,7 +154,3 @@ class SessionManager:
 
         return data
 
-def auto_backup_session(scene):
-    """Silent background save to a 'last_autosave' file."""
-    # We use a special name so we don't overwrite the user's main file
-    SessionManager.save_session(scene, "auto_backup_hidden")

@@ -85,3 +85,91 @@ QProgressBar::chunk {
 QProgressBar::chunk {
     background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #6b5a47, stop:1 #8a7a67);
 }
+
+/* The Project Name Combo Box */
+QComboBox#project_selector {
+    selection-background-color: #3d5a80;
+    background-color: #1e1e1e;
+    color: #e0e0ff;
+    border: 1px solid #6b5a47;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 15px;
+    font-weight: 600;
+}
+QComboBox#project_selector::drop-down {
+    border: none;
+    width: 30px;
+}
+
+/* Settings dialog and controls */
+QDialog#SettingsDialog {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+QLabel#statusLabel { color: #8a7a67; font-size: 13px; }
+QPushButton#settings_choice_btn, QPushButton#settings_reset_btn {
+    background-color: #3a3a3a;
+    border: 1px solid #6b5a47;
+    border-radius: 6px;
+    color: #e0f0e0;
+    padding: 6px 12px;
+}
+QLabel#sectionHeader { font-size: 15px; font-weight: bold; color: #d0a080; }
+QLabel#noteLabel { color: #8a7a67; font-size: 12px; font-style: italic; }
+
+/* About dialog */
+QDialog#AboutDialog { background-color: #1e1e1e; color: #e0e0e0; }
+QLabel#aboutTitle { font-size: 20px; font-weight: bold; color: #ffffff; }
+QLabel#aboutVersion { color: #8a7a67; font-size: 14px; }
+
+/* Cozy note editor styling (moved from inline styles in cozy/warm.py) */
+QDialog#CozyNoteEditor { background-color: #1e1e1e; color: #e0e0e0; }
+QTextEdit#cozyTextEdit {
+    background: #363646;
+    color: #ffffff;
+    border: 1px solid #6b5a47;
+    border-radius: 12px;
+    padding: 12px;
+    font-family: 'Lato';
+}
+QLineEdit#cozyTitleEdit { color: #a8d0ff; background: #1e1e1e; font-family: 'Chandler42'; font-size: 26px; }
+QLabel#wordCountLabel { color: #ffffff; font-family: 'Aegyptus'; font-size: 36px; }
+QPushButton#cozySaveBtn { font-family: 'Chandler42'; font-size: 14px; }
+QPushButton#settings_choice_btn, QPushButton#settings_reset_btn { background-color: #3a3a3a; border: 1px solid #6b5a47; border-radius: 6px; color: #e0f0e0; padding: 6px 12px; }
+QFrame#sectionSeparator { background-color: #333333; max-height: 1px; }
+
+/* Cozy widget defaults (applies to widgets with property cozy=true) */
+QPushButton[cozy="true"]{
+    background-color: #3a3a3a;
+    border: 1px solid #6b5a47;
+    border-radius: 6px;
+    color: #e0f0e0;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-family: Lato;
+
+}
+QPushButton[cozy="true"]:hover { background-color: #444444; }
+
+QProgressBar[cozy="true"] { background-color: #2a2a2a; border: 1px solid #6b5a47; border-radius: 6px; }
+QProgressBar[cozy="true"]::chunk { background-color: #ff69b4; border-radius: 5px; }
+
+/* About dialog additional labels */
+QLabel#aboutTitle { font-size: 20px; font-weight: bold; color: #ffffff; }
+QLabel#aboutVersion { color: #8a7a67; font-size: 14px; }
+QLabel[objectName="braincellLabel"] { font-size: 15px; font-weight: bold; color: #fff; text-align: center; }
+QLabel[objectName="aboutText"] { color: #d0d0d0; font-size: 13px; line-height: 1.4; }
+
+/* Main window extras */
+QLabel#saveFeedbackLabel { color: #a3be8c; font-weight: bold; margin-left: 5px; }
+QLabel#joyLeftLabel { color: #ffd1dc; font-size: 14px; font-weight: bold; }
+QLabel#joyValueLabel { color: #ffb6c1; font-size: 14px; }
+QProgressBar#mainProgressBar { background-color: #2a2a2a; border: 1px solid #4a3a3f; border-radius: 8px; }
+QProgressBar#mainProgressBar::chunk { background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #1e1e1e, stop:0.4 #5c3e4f, stop:0.7 #a56a85, stop:1 #d87a9e); border-radius: 7px; }
+
+/* Node type chooser popup */
+QWidget#nodeTypeChooser { background: #2a1f24; border: 2px solid #5c3e4f; border-radius: 16px; }
+QWidget#nodeTypeChooser QLabel { color: #ffd1dc; font-family: 'Chandler42'; font-size: 18px; }
+QWidget#nodeTypeChooser QPushButton { background: #4a3a3f; color: #ffb6c1; border: none; border-radius: 12px; padding: 12px; font-family: 'Chandler42'; font-size: 16px; }
+QWidget#nodeTypeChooser QPushButton:hover { background: #6a4a5f; }
