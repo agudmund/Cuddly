@@ -1,0 +1,174 @@
+✨ Cozy Snapshot — clean tree respecting .gitignore 🌱
+Generated: 2026-03-31 22:02:32
+Location:  C:\Users\thisg\Desktop\Cuddly
+├── 📁 An Extraordinary pile of old c# code snippets/
+│   ├── 📁 Unity/
+│   │   ├── 📄 Behave.cs
+│   │   ├── 📄 Exist.cs
+│   │   ├── 📄 GameController.cs
+│   │   ├── 📄 NamePicker.cs
+│   │   ├── 📄 NoidCtrl.cs
+│   │   ├── 📄 Sheep.cs
+│   │   └── 📄 Spawn.cs
+│   ├── 📄 Behave.cs
+│   ├── 📄 ColorPickers.cs
+│   ├── 📄 Egg.cs
+│   ├── 📄 Exist.cs
+│   ├── 📄 GameController.cs
+│   ├── 📄 Gate.cs
+│   ├── 📄 Hatch.cs
+│   ├── 📄 LookAtTarget.cs
+│   ├── 📄 NamePicker.cs
+│   ├── 📄 NoidCtrl.cs
+│   ├── 📄 PixelPicker.cs
+│   ├── 📄 Player.cs
+│   ├── 📄 scratch_notes.py
+│   ├── 📄 Sheep.cs
+│   ├── 📄 Spawn.cs
+│   └── 📄 Twiddlings.cs
+├── 📁 Audio/
+│   ├── 📄 ATTLAS_foley_old_book_page_flap_02.wav
+│   ├── 📄 Bellstab in C.wav
+│   ├── 📄 C_SoftHit1.wav
+│   ├── 📄 New Game Omnisound.wav
+│   ├── 📄 new_node_chime - works.wav
+│   └── 📄 new_node_chime.wav
+├── 📁 backup/
+│   ├── 📄 session_archive.json
+│   └── 📄 session_previous.json
+├── 📁 cozy/
+│   ├── 📄 __init__.py
+│   ├── 📄 about.py
+│   ├── 📄 audio.py
+│   ├── 📄 base_node.py
+│   ├── 📄 canvas.py
+│   ├── 📄 graphics_view.py
+│   ├── 📄 logging.py
+│   ├── 📄 nodal.py
+│   ├── 📄 node_types.py
+│   ├── 📄 session - Copy.py
+│   ├── 📄 session.py
+│   ├── 📄 session_helpers.py
+│   ├── 📄 warm.py
+│   ├── 📄 window.py
+│   └── 📄 worker.py
+├── 📁 dialogs/
+│   ├── 📄 __init__.py
+│   ├── 📄 about_dialog.py
+│   └── 📄 settings_dialog.py
+├── 📁 Documents/
+│   ├── 📁 Document Placeholder images/
+│   │   ├── 📄 furcon.jpg
+│   │   ├── 📄 Garden.JPG
+│   │   ├── 📄 Hamster Feeder.JPG
+│   │   └── 📄 Splash.PNG
+│   ├── 📁 Meet the Wuddlies/
+│   │   ├── 📄 Cuddly Duddly.png
+│   │   ├── 📄 Cuddly Fuddly Duddly.png
+│   │   ├── 📄 Cuddly Fuddly Duddly.psd
+│   │   ├── 📄 Cuddly Fuddly.png
+│   │   ├── 📄 Cuddly.png
+│   │   ├── 📄 Cuddly.psd
+│   │   ├── 📄 Duddly Fuddly.png
+│   │   ├── 📄 Duddly.png
+│   │   ├── 📄 Exponential Parallel Narrative Construction a.png
+│   │   ├── 📄 Exponential Parallel Narrative Construction.png
+│   │   ├── 📄 Exponential Parallel Narrative Construction.psd
+│   │   └── 📄 Fuddly.png
+│   ├── 📁 Page Spread/
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly10.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly11.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly12.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly13.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly14.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly15.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly16.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly17.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly18.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly19.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly2.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly20.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly21.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly22.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly23.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly24.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly25.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly26.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly27.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly28.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly29.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly3.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly30.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly31.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly32.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly33.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly34.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly35.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly36.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly37.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly4.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly5.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly6.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly7.png
+│   │   ├── 📄 Cuddly Duddly Fuddly Wuddly8.png
+│   │   └── 📄 Cuddly Duddly Fuddly Wuddly9.png
+│   ├── 📄 2018-06-05 16.36.22.jpg
+│   ├── 📄 Can you solve the cuddly duddly fuddly wuddly riddle - Dan Finkel.mp4
+│   ├── 📄 Cuddly Duddly Fuddly Wuddly - Mechanics.docx
+│   ├── 📄 Cuddly Duddly Fuddly Wuddly - Overview.indd
+│   ├── 📄 Cuddly Duddly Fuddly Wuddly - Overview.pdf
+│   ├── 📄 Cuddly Duddly Fuddly Wuddly 10.png
+│   ├── 📄 Cuddly Duddly Fuddly Wuddly.indd
+│   ├── 📄 Cuddly Duddly Fuddly Wuddly.pdf
+│   ├── 📄 Cuddly Duddly Fuddly Wuddly.png
+│   ├── 📄 Exponential Parallel Narrative Construction.png
+│   ├── 📄 Modesty Scale.png
+│   ├── 📄 POLYGON - Nature Pack - Asset Store.url
+│   ├── 📄 Spaceboy.jpg
+│   └── 📄 Wix Phrasing Test.url
+├── 📁 Images/
+│   └── 📄 Chalkboard.jpg
+├── 📁 Prefabs/
+│   ├── 📄 1x12 Texture.psd
+│   ├── 📄 1x2 Texture.psd
+│   ├── 📄 2x2 Hook Texture.psd
+│   ├── 📄 Axle.fbx
+│   ├── 📄 oneXtwelve.fbx
+│   ├── 📄 oneXtwo.fbx
+│   ├── 📄 openOutwardEdges.fbx
+│   ├── 📄 plug.fbx
+│   ├── 📄 sheep.obj
+│   ├── 📄 Steering Wheel.fbx
+│   ├── 📄 twoXtwo hook.fbx
+│   ├── 📄 Wedge Texture.psd
+│   └── 📄 Wedge.fbx
+├── 📁 sessions/
+│   ├── 📄 Bill The Bubble Head.json
+│   ├── 📄 Cartoonify.json
+│   ├── 📄 Cleanup.json
+│   ├── 📄 Cozy Times.json
+│   ├── 📄 Cuddly, Duddly, And Fuddly, The Wuddlies.json
+│   ├── 📄 Match Dot Com.json
+│   └── 📄 Reginalds Genocidic Marshmallows.json
+├── 📁 styles/
+│   ├── 📄 styles - Copy.qss
+│   └── 📄 styles.qss
+├── 📁 utils/
+│   ├── 📄 __init__.py
+│   ├── 📄 helpers.py
+│   └── 📄 settings.py
+├── 📄 .gitignore
+├── 📄 agent.py
+├── 📄 app_info.py
+├── 📄 cozy-tree.txt
+├── 📄 main - Shortcut.lnk
+├── 📄 main.py
+├── 📄 main_window.py
+├── 📄 README.md
+└── 📄 session.json
+
+────────────────────────────────────────────────────────────
+Saved by cozy-snapshot.py  •  gentle sibling to cozy-tree.py
+Hidden: .git, __pycache__, gitignored items, empty folders
+Double-click or run anytime — add --print to see live ♡

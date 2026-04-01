@@ -1,63 +1,4 @@
-/* Main Window & Central Layout */
-QMainWindow, QWidget#centralWidget {
-    background-color: #1e1e1e;
-}
 
-/* Typography Defaults */
-QLabel { color: #e0e0e0; }
-
-QLabel#titleLabel {
-    font-size: 18px;
-    font-weight: bold;
-    font-family: "Lato", sans-serif;
-}
-
-QLabel#statusLabel {
-    color: #8a7a67;
-    font-size: 13px;
-}
-
-/* The Cozy Preview Card */
-QFrame#PreviewCard {
-    border: 2px solid #6b5a47;
-    border-radius: 12px;
-    background-color: #2a2a3a;
-    padding: 1px;
-}
-
-QLabel#NodeTitle {
-    color: #a8d0ff;
-    font-size: 15px;
-    background: transparent;
-}
-
-QLabel#WelcomeLabel {
-    border: 1px dashed #8a7a67;
-    border-radius: 10px;
-    background-color: #2a2a3a;
-    color: #e8f0ff;
-    padding: 12px;
-    font-size: 14px;
-    min-height: 100px; /* Add this to prevent 'scaling downward' */
-}
-
-/* ScrollBar Aesthetic */
-QScrollBar:vertical {
-    background: #1e1e2a;
-    width: 10px;
-    border-radius: 5px;
-}
-QScrollBar::handle:vertical {
-    background: #6b5a47;
-    min-height: 20px;
-    border-radius: 5px;
-}
-QScrollBar::handle:vertical:hover { background: #8a7a67; }
-QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,
-QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
-    background: none;
-    height: 0px;
-}
 
 /* UI Elements (Buttons/Progress) */
 QPushButton {
@@ -67,7 +8,6 @@ QPushButton {
     color: #e0e0e0;
     padding: 5px;
 }
-QPushButton:hover { background-color: #444444; }
 
 QProgressBar {
     border: 1px solid #3a3a3a;
