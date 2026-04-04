@@ -5,20 +5,6 @@
       "node_id": 0,
       "node_type": "value",
       "title": "Value",
-      "uuid": "cd24b263e2164257bfcc37af0f9961b0",
-      "x": 314.61538461538476,
-      "y": 102.30769230769226,
-      "width": 130.0,
-      "height": 80.0,
-      "z_value": 100.0,
-      "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
-      "current_frame": 7
-    },
-    {
-      "node_id": 0,
-      "node_type": "value",
-      "title": "Value",
       "uuid": "39fe01bde8a9485c922feae2932ed161",
       "x": 314.61538461538476,
       "y": 102.30769230769226,
@@ -26,22 +12,36 @@
       "height": 80.0,
       "z_value": 100.0,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
-      "current_frame": 0
+      "emoji": "\ud83d\ude01",
+      "current_frame": 7
+    },
+    {
+      "node_id": 0,
+      "node_type": "value",
+      "title": "Value",
+      "uuid": "cd24b263e2164257bfcc37af0f9961b0",
+      "x": 314.61538461538476,
+      "y": 102.30769230769226,
+      "width": 130.0,
+      "height": 80.0,
+      "z_value": 100.0,
+      "ports_visible": false,
+      "emoji": "\ud83d\ude01",
+      "current_frame": 7
     },
     {
       "node_id": 0,
       "node_type": "about",
       "title": "Note",
-      "uuid": "e6547396d1d6462da99052a10c9de07b",
-      "x": -178.2949070718837,
-      "y": 94.81142358840202,
-      "width": 120.0,
-      "height": 55.07958894184458,
+      "uuid": "ea3f6cbf39a544b8a41ebf92f4799837",
+      "x": -310.26481026480803,
+      "y": -177.36827736827723,
+      "width": 108.0,
+      "height": 52.0,
       "z_value": 10.0,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
-      "label": "Bloom",
+      "emoji": "\u2728",
+      "label": "Growth",
       "depth_front": true,
       "node_tint": ""
     },
@@ -56,7 +56,7 @@
       "height": 52.0,
       "z_value": 10.0,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\udc9b",
       "label": "Clay",
       "depth_front": true,
       "node_tint": ""
@@ -65,33 +65,17 @@
       "node_id": 0,
       "node_type": "about",
       "title": "Note",
-      "uuid": "ea3f6cbf39a544b8a41ebf92f4799837",
-      "x": -310.26481026480803,
-      "y": -177.36827736827723,
-      "width": 108.0,
-      "height": 52.0,
+      "uuid": "e6547396d1d6462da99052a10c9de07b",
+      "x": -178.2949070718837,
+      "y": 94.81142358840202,
+      "width": 120.0,
+      "height": 55.07958894184458,
       "z_value": 10.0,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
-      "label": "Growth",
+      "emoji": "\ud83e\udd17",
+      "label": "Bloom",
       "depth_front": true,
       "node_tint": ""
-    },
-    {
-      "node_id": 0,
-      "node_type": "image",
-      "title": "Image",
-      "uuid": "207ce7c68f5641a9a9c9dc402f027797",
-      "x": 439.2465192465161,
-      "y": 43.01392301392298,
-      "width": 219.02812320943974,
-      "height": 221.28604613216072,
-      "z_value": 0.0,
-      "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
-      "image_b64": "",
-      "caption": "Dark chalkboard with chalk residue",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Images\\Chalkboard.jpg"
     },
     {
       "node_id": 0,
@@ -104,10 +88,26 @@
       "height": 220.0,
       "z_value": 0.0,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude17",
       "image_b64": "",
       "caption": "Share icon inside circular border",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Images\\app_icon.png"
+    },
+    {
+      "node_id": 0,
+      "node_type": "image",
+      "title": "Image",
+      "uuid": "207ce7c68f5641a9a9c9dc402f027797",
+      "x": 439.2465192465161,
+      "y": 43.01392301392298,
+      "width": 219.02812320943974,
+      "height": 221.28604613216072,
+      "z_value": 0.0,
+      "ports_visible": false,
+      "emoji": "\ud83d\ude0e",
+      "image_b64": "",
+      "caption": "Dark chalkboard with chalk residue",
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Images\\Chalkboard.jpg"
     },
     {
       "node_id": 0,
@@ -120,7 +120,7 @@
       "height": 248.75115552411035,
       "z_value": -9.957000000000024,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83e\uddf8",
       "body_text": "And then one day it started branching out and spawning its own node types, like in that other thing where someone was trying to point out how infinity is infinately variable and according to multiverse theory all possible versions of the universe also exist, but if truly all variations exist than that means that out there is another universe exactly identical to ours because that is also an option, so the node realized it can spawn its own node type and just you know... started swarming and charming all over the place."
     },
     {
@@ -134,7 +134,7 @@
       "height": 52.0,
       "z_value": -9.958000000000023,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude17",
       "label": "Endless Potential",
       "depth_front": false,
       "node_tint": ""
@@ -150,7 +150,7 @@
       "height": 637.0442412607629,
       "z_value": -9.961000000000022,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83e\udd70",
       "image_b64": "",
       "caption": "Cuddly Duddly Fuddly Wuddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Cuddly Duddly Fuddly Wuddly.png"
@@ -166,7 +166,7 @@
       "height": 842.7681312613479,
       "z_value": -9.962000000000021,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83e\udd70",
       "image_b64": "",
       "caption": "Modesty Scale",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Modesty Scale.png"
@@ -182,7 +182,7 @@
       "height": 1288.6110946471572,
       "z_value": -9.96300000000002,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude0d",
       "image_b64": "",
       "caption": "Cuddly Fuddly Duddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Fuddly Duddly.png"
@@ -198,7 +198,7 @@
       "height": 447.23847239424686,
       "z_value": -9.96400000000002,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83e\udee4",
       "image_b64": "",
       "caption": "Duddly Fuddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Duddly Fuddly.png"
@@ -214,7 +214,7 @@
       "height": 446.47058823529414,
       "z_value": -9.96500000000002,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83e\udd70",
       "image_b64": "",
       "caption": "Cuddly Fuddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Fuddly.png"
@@ -230,7 +230,7 @@
       "height": 568.4299027452676,
       "z_value": -9.966000000000019,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude17",
       "image_b64": "",
       "caption": "Cuddly Duddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Duddly.png"
@@ -246,7 +246,7 @@
       "height": 493.52941176470597,
       "z_value": -9.967000000000018,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83e\udd70",
       "image_b64": "",
       "caption": "Fuddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Fuddly.png"
@@ -262,7 +262,7 @@
       "height": 503.6933671770032,
       "z_value": -9.968000000000018,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\udc9c",
       "image_b64": "",
       "caption": "Duddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Duddly.png"
@@ -278,7 +278,7 @@
       "height": 389.11764705882354,
       "z_value": -9.969000000000017,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude12",
       "image_b64": "",
       "caption": "Cuddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly.png"
@@ -294,7 +294,7 @@
       "height": 940.2384937996428,
       "z_value": -9.971000000000016,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude18",
       "image_b64": "",
       "caption": "Exponential Parallel Narrative Construction",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Exponential Parallel Narrative Construction a.png"
@@ -310,7 +310,7 @@
       "height": 52.0,
       "z_value": -9.972000000000016,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\udc9b",
       "label": "Made with \u2764\ufe0f by Yours Truly, Grok, and Gemini (February 2026\u2013present)",
       "depth_front": false,
       "node_tint": ""
@@ -326,7 +326,7 @@
       "height": 52.0,
       "z_value": -9.973000000000015,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\udccc",
       "label": "But many were aggressively fluffed.",
       "depth_front": false,
       "node_tint": ""
@@ -342,7 +342,7 @@
       "height": 52.0,
       "z_value": -9.974000000000014,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude0d",
       "label": "> Cushions harmed: 0",
       "depth_front": false,
       "node_tint": ""
@@ -350,16 +350,16 @@
     {
       "node_id": 0,
       "node_type": "about",
-      "title": "Current version: v0.0.3 \u2014 The Interlinki",
+      "title": "Current version: v0.0.5 \u2014 The Breath of air Era",
       "uuid": "f70f3e04390f482db9102225068333ef",
-      "x": -392.4535843808636,
-      "y": -532.4797708768001,
+      "x": -459.7050928339795,
+      "y": -530.003165487507,
       "width": 517.0,
       "height": 52.0,
       "z_value": -9.975000000000014,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
-      "label": "Current version: v0.0.3 \u2014 The Interlinking Era",
+      "emoji": "\ud83d\ude09",
+      "label": "Current version: v0.0.5 \u2014 The Breath of air Era",
       "depth_front": false,
       "node_tint": ""
     },
@@ -368,13 +368,13 @@
       "node_type": "about",
       "title": "Slow, joyful building. No rush. Strip do",
       "uuid": "13611c0e7b3f459c8ca96855e82a43bd",
-      "x": -368.0309216172327,
-      "y": -649.4608843192914,
+      "x": -356.4734298005313,
+      "y": -637.9033925025897,
       "width": 787.0,
       "height": 52.0,
       "z_value": -9.976000000000013,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude09",
       "label": "Slow, joyful building. No rush. Strip down, rebuild, affirm the cozy core.",
       "depth_front": false,
       "node_tint": ""
@@ -390,7 +390,7 @@
       "height": 52.0,
       "z_value": -9.978000000000012,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude09",
       "label": "- Sound design beginnings \u2014 gentle chimes and page flaps in Audio/",
       "depth_front": false,
       "node_tint": ""
@@ -406,7 +406,7 @@
       "height": 52.0,
       "z_value": -9.979000000000012,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude09",
       "label": "- Creative pile \u2014 audio snippets, images, old code treasures, documents, and lore about the Wuddlies",
       "depth_front": false,
       "node_tint": ""
@@ -422,7 +422,7 @@
       "height": 52.0,
       "z_value": -9.980000000000011,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83e\udd70",
       "label": "- Early MAUI experiment (`CuddlyGoesToMaui`) \u2014 dreaming of cross-platform cuddles someday",
       "depth_front": false,
       "node_tint": ""
@@ -438,7 +438,7 @@
       "height": 52.0,
       "z_value": -9.98100000000001,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude0f",
       "label": "- **Python nodal canvas** \u2014 drag, connect, write warm thoughts (the heart of the project)",
       "depth_front": false,
       "node_tint": ""
@@ -454,7 +454,7 @@
       "height": 52.0,
       "z_value": -9.98200000000001,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\u2764",
       "label": "## What's here right now",
       "depth_front": false,
       "node_tint": ""
@@ -462,15 +462,15 @@
     {
       "node_id": 0,
       "node_type": "about",
-      "title": "A cozy nodal playground where ideas gent",
+      "title": "A cozy nodal playground where ideas gently interconnect, thoughts get fluffed, and creativity finds a soft place to rest.",
       "uuid": "40d2242069ac46158817ffee1865ecfb",
-      "x": 840.7522874291317,
-      "y": -1528.2698918914557,
+      "x": 839.1012171696023,
+      "y": -1528.2698918914562,
       "width": 1256.0,
       "height": 52.0,
       "z_value": -9.984000000000009,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude2e",
       "label": "A cozy nodal playground where ideas gently interconnect, thoughts get fluffed, and creativity finds a soft place to rest.",
       "depth_front": false,
       "node_tint": ""
@@ -486,7 +486,7 @@
       "height": 52.0,
       "z_value": -9.987000000000007,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude32",
       "label": "Soft",
       "depth_front": false,
       "node_tint": ""
@@ -502,7 +502,7 @@
       "height": 157.75143002502637,
       "z_value": -9.988000000000007,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude17",
       "body_text": "/* Node type chooser popup */\nQWidget#nodeTypeChooser { background: #2a1f24; border: 2px solid #5c3e4f; border-radius: 16px; }\nQWidget#nodeTypeChooser QLabel { color: #ffd1dc; font-family: 'Chandler42'; font-size: 18px; }\nQWidget#nodeTypeChooser QPushButton { background: #4a3a3f; color: #ffb6c1; border: none; border-radius: 12px; padding: 12px; font-family: 'Chandler42'; font-size: 16px; }\nQWidget#nodeTypeChooser QPushButton:hover { background: #6a4a5f; }\n"
     },
     {
@@ -516,7 +516,7 @@
       "height": 109.49521343590277,
       "z_value": -9.989000000000006,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude0f",
       "body_text": "QProgressBar::chunk {\n    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #6b5a47, stop:1 #8a7a67);\n}"
     },
     {
@@ -530,7 +530,7 @@
       "height": 207.62556057303505,
       "z_value": -9.990000000000006,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83e\udee7",
       "body_text": "QLabel#WelcomeLabel {\n    border: 1px dashed #8a7a67;\n    border-radius: 10px;\n    background-color: #2a2a3a;\n    color: #e8f0ff;\n    padding: 12px;\n    font-size: 14px;\n    min-height: 100px; /* Add this to prevent 'scaling downward' */\n}"
     },
     {
@@ -544,23 +544,8 @@
       "height": 200.0,
       "z_value": -9.991000000000005,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
-      "body_text": "/* The Cozy Preview Card */\nQFrame#PreviewCard {\n    border: 2px solid #6b5a47;\n    border-radius: 12px;\n    background-color: #2a2a3a;\n    padding: 1px;\n}"
-    },
-    {
-      "node_id": 0,
-      "node_type": "tree",
-      "title": "Cuddly",
-      "uuid": "8ace8e5b95c746f2bbffe0970678dfab",
-      "x": -1138.713538713539,
-      "y": -398.17089817089834,
-      "width": 575.4905687362115,
-      "height": 2353.1161540561557,
-      "z_value": -9.992000000000004,
-      "ports_visible": false,
       "emoji": "\u2728",
-      "tree_text": "\u251c\u2500\u2500 \ud83d\udcc1 An Extraordinary pile of old c# code snippets/\n\u2502   \u251c\u2500\u2500 \ud83d\udcc1 Unity/\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Behave.cs\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Exist.cs\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 GameController.cs\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 NamePicker.cs\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 NoidCtrl.cs\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Sheep.cs\n\u2502   \u2502   \u2514\u2500\u2500 \ud83d\udcc4 Spawn.cs\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Behave.cs\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 ColorPickers.cs\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Egg.cs\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Exist.cs\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 GameController.cs\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Gate.cs\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Hatch.cs\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 LookAtTarget.cs\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 NamePicker.cs\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 NoidCtrl.cs\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 PixelPicker.cs\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Player.cs\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 scratch_notes.py\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Sheep.cs\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Spawn.cs\n\u2502   \u2514\u2500\u2500 \ud83d\udcc4 Twiddlings.cs\n\u251c\u2500\u2500 \ud83d\udcc1 Audio/\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 ATTLAS_foley_old_book_page_flap_02.wav\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Bellstab in C.wav\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 C_SoftHit1.wav\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 New Game Omnisound.wav\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 new_node_chime - works.wav\n\u2502   \u2514\u2500\u2500 \ud83d\udcc4 new_node_chime.wav\n\u251c\u2500\u2500 \ud83d\udcc1 cozy/\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 __init__.py\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 about.py\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 audio.py\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 base_node.py\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 canvas.py\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 graphics_view.py\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 logging.py\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 nodal.py\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 node_types.py\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 session - Copy.py\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 session.py\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 session_helpers.py\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 warm.py\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 window.py\n\u2502   \u2514\u2500\u2500 \ud83d\udcc4 worker.py\n\u251c\u2500\u2500 \ud83d\udcc1 dialogs/\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 __init__.py\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 about_dialog.py\n\u2502   \u2514\u2500\u2500 \ud83d\udcc4 settings_dialog.py\n\u251c\u2500\u2500 \ud83d\udcc1 Documents/\n\u2502   \u251c\u2500\u2500 \ud83d\udcc1 Meet the Wuddlies/\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Fuddly Duddly.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Fuddly Duddly.psd\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Fuddly.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly.psd\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Duddly Fuddly.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Duddly.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Exponential Parallel Narrative Construction a.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Exponential Parallel Narrative Construction.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Exponential Parallel Narrative Construction.psd\n\u2502   \u2502   \u2514\u2500\u2500 \ud83d\udcc4 Fuddly.png\n\u2502   \u251c\u2500\u2500 \ud83d\udcc1 Page Spread/\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly10.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly11.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly12.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly13.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly14.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly15.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly16.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly17.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly18.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly19.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly2.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly20.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly21.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly22.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly23.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly24.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly25.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly26.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly27.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly28.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly29.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly3.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly30.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly31.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly32.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly33.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly34.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly35.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly36.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly37.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly4.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly5.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly6.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly7.png\n\u2502   \u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly8.png\n\u2502   \u2502   \u2514\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly9.png\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 2018-06-05 16.36.22.jpg\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Can you solve the cuddly duddly fuddly wuddly riddle - Dan Finkel.mp4\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly - Mechanics.docx\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly - Overview.indd\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly - Overview.pdf\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly 10.png\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly.indd\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly.pdf\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly Duddly Fuddly Wuddly.png\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Exponential Parallel Narrative Construction.png\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Modesty Scale.png\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 POLYGON - Nature Pack - Asset Store.url\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Spaceboy.jpg\n\u2502   \u2514\u2500\u2500 \ud83d\udcc4 Wix Phrasing Test.url\n\u251c\u2500\u2500 \ud83d\udcc1 Prefabs/\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 1x12 Texture.psd\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 1x2 Texture.psd\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 2x2 Hook Texture.psd\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Axle.fbx\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 oneXtwelve.fbx\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 oneXtwo.fbx\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 openOutwardEdges.fbx\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 plug.fbx\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 sheep.obj\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Steering Wheel.fbx\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 twoXtwo hook.fbx\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Wedge Texture.psd\n\u2502   \u2514\u2500\u2500 \ud83d\udcc4 Wedge.fbx\n\u251c\u2500\u2500 \ud83d\udcc1 sessions/\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Bill The Bubble Head.json\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cartoonify.json\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cleanup.json\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cozy Times.json\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Cuddly, Duddly, And Fuddly, The Wuddlies.json\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 Match Dot Com.json\n\u2502   \u2514\u2500\u2500 \ud83d\udcc4 Reginalds Genocidic Marshmallows.json\n\u251c\u2500\u2500 \ud83d\udcc1 utils/\n\u2502   \u251c\u2500\u2500 \ud83d\udcc4 helpers.py\n\u2502   \u2514\u2500\u2500 \ud83d\udcc4 settings.py\n\u251c\u2500\u2500 \ud83d\udcc4 agent.py\n\u251c\u2500\u2500 \ud83d\udcc4 app_info.py\n\u251c\u2500\u2500 \ud83d\udcc4 main.py\n\u251c\u2500\u2500 \ud83d\udcc4 main_window.py",
-      "project_path": "C:\\Users\\thisg\\Desktop\\Cuddly"
+      "body_text": "/* The Cozy Preview Card */\nQFrame#PreviewCard {\n    border: 2px solid #6b5a47;\n    border-radius: 12px;\n    background-color: #2a2a3a;\n    padding: 1px;\n}"
     },
     {
       "node_id": 0,
@@ -573,37 +558,21 @@
       "height": 145.05827995671478,
       "z_value": -9.993000000000004,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude0d",
       "body_text": "I should totally create a bloom node that can read its input from an image node and then drive that into the settings.toml and will change the sprinkles into any images scatter"
-    },
-    {
-      "node_id": 0,
-      "node_type": "about",
-      "title": "And I still havent tended to the AboutNode's Highlighter",
-      "uuid": "8e1012eecda74b41882092d7906a4087",
-      "x": -528.2316407316364,
-      "y": 1133.9578214578212,
-      "width": 658.5050505050505,
-      "height": 54.02020202020208,
-      "z_value": -9.994000000000003,
-      "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
-      "label": "And I still havent tended to the AboutNode's Highlighter",
-      "depth_front": false,
-      "node_tint": ""
     },
     {
       "node_id": 0,
       "node_type": "about",
       "title": "We should totally speed up the curve speed while its in motion",
       "uuid": "2bdfee8da8fc4dd2b06fe810cd704b50",
-      "x": -527.2966147966133,
-      "y": 1070.6422331422332,
+      "x": -528.010979138094,
+      "y": 1075.6427835325985,
       "width": 660.7309369917218,
       "height": 58.06083893198408,
       "z_value": -9.995000000000003,
       "ports_visible": false,
-      "emoji": "\ud83c\udf3f",
+      "emoji": "\ud83d\ude2e",
       "label": "We should totally speed up the curve speed while its in motion",
       "depth_front": false,
       "node_tint": ""
@@ -611,114 +580,114 @@
   ],
   "connections": [
     {
-      "start_uuid": "ea3f6cbf39a544b8a41ebf92f4799837",
-      "end_uuid": "e6547396d1d6462da99052a10c9de07b"
-    },
-    {
       "start_uuid": "e6547396d1d6462da99052a10c9de07b",
-      "end_uuid": "a3fa0ced92d74f03b94e49b2eb13f824"
-    },
-    {
-      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
-      "end_uuid": "220761ad91914afc82283f696bf0a9db"
-    },
-    {
-      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
-      "end_uuid": "0731cdc511af469aa68270520e02510c"
-    },
-    {
-      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
-      "end_uuid": "dab397b7663f476aa759158abc3da1a2"
-    },
-    {
-      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
-      "end_uuid": "220761ad91914afc82283f696bf0a9db"
-    },
-    {
-      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
-      "end_uuid": "0731cdc511af469aa68270520e02510c"
-    },
-    {
-      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
-      "end_uuid": "9bdcafa08e3640a6bb2bab1748f7d57c"
-    },
-    {
-      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
-      "end_uuid": "220761ad91914afc82283f696bf0a9db"
-    },
-    {
-      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
-      "end_uuid": "dab397b7663f476aa759158abc3da1a2"
-    },
-    {
-      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
-      "end_uuid": "9bdcafa08e3640a6bb2bab1748f7d57c"
-    },
-    {
-      "start_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e",
-      "end_uuid": "1000f64e3b49401caaaa8f7c0b5a91ec"
-    },
-    {
-      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
-      "end_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da"
-    },
-    {
-      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
-      "end_uuid": "f70f3e04390f482db9102225068333ef"
-    },
-    {
-      "start_uuid": "2ebcf46afd9549488a5fa469c0704ed5",
-      "end_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e"
-    },
-    {
-      "start_uuid": "cf1a479bc9a140bea6f4d8615704ec28",
-      "end_uuid": "2ebcf46afd9549488a5fa469c0704ed5"
-    },
-    {
-      "start_uuid": "98cdc223d47847efb3a244d9c8b4d77d",
-      "end_uuid": "cf1a479bc9a140bea6f4d8615704ec28"
-    },
-    {
-      "start_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f",
-      "end_uuid": "98cdc223d47847efb3a244d9c8b4d77d"
-    },
-    {
-      "start_uuid": "9945553f06594b7fbbeab315fbe41e3c",
-      "end_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f"
-    },
-    {
-      "start_uuid": "6be29a6557ac40759db9728c02d21637",
-      "end_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f"
-    },
-    {
-      "start_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da",
-      "end_uuid": "40d2242069ac46158817ffee1865ecfb"
-    },
-    {
-      "start_uuid": "40d2242069ac46158817ffee1865ecfb",
-      "end_uuid": "9945553f06594b7fbbeab315fbe41e3c"
-    },
-    {
-      "start_uuid": "40d2242069ac46158817ffee1865ecfb",
-      "end_uuid": "6be29a6557ac40759db9728c02d21637"
-    },
-    {
-      "start_uuid": "f70f3e04390f482db9102225068333ef",
-      "end_uuid": "8ace8e5b95c746f2bbffe0970678dfab"
-    },
-    {
-      "start_uuid": "8ace8e5b95c746f2bbffe0970678dfab",
-      "end_uuid": "ea3f6cbf39a544b8a41ebf92f4799837"
+      "end_uuid": "3d0d931a8e584be0b0e6ba26783627c4"
     },
     {
       "start_uuid": "3d0d931a8e584be0b0e6ba26783627c4",
       "end_uuid": "207ce7c68f5641a9a9c9dc402f027797"
     },
     {
+      "start_uuid": "40d2242069ac46158817ffee1865ecfb",
+      "end_uuid": "6be29a6557ac40759db9728c02d21637"
+    },
+    {
+      "start_uuid": "40d2242069ac46158817ffee1865ecfb",
+      "end_uuid": "9945553f06594b7fbbeab315fbe41e3c"
+    },
+    {
+      "start_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da",
+      "end_uuid": "40d2242069ac46158817ffee1865ecfb"
+    },
+    {
+      "start_uuid": "6be29a6557ac40759db9728c02d21637",
+      "end_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f"
+    },
+    {
+      "start_uuid": "9945553f06594b7fbbeab315fbe41e3c",
+      "end_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f"
+    },
+    {
+      "start_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f",
+      "end_uuid": "98cdc223d47847efb3a244d9c8b4d77d"
+    },
+    {
+      "start_uuid": "98cdc223d47847efb3a244d9c8b4d77d",
+      "end_uuid": "cf1a479bc9a140bea6f4d8615704ec28"
+    },
+    {
+      "start_uuid": "cf1a479bc9a140bea6f4d8615704ec28",
+      "end_uuid": "2ebcf46afd9549488a5fa469c0704ed5"
+    },
+    {
+      "start_uuid": "2ebcf46afd9549488a5fa469c0704ed5",
+      "end_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e"
+    },
+    {
+      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
+      "end_uuid": "f70f3e04390f482db9102225068333ef"
+    },
+    {
+      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
+      "end_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da"
+    },
+    {
+      "start_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e",
+      "end_uuid": "1000f64e3b49401caaaa8f7c0b5a91ec"
+    },
+    {
+      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
+      "end_uuid": "9bdcafa08e3640a6bb2bab1748f7d57c"
+    },
+    {
+      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
+      "end_uuid": "dab397b7663f476aa759158abc3da1a2"
+    },
+    {
+      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
+      "end_uuid": "220761ad91914afc82283f696bf0a9db"
+    },
+    {
+      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
+      "end_uuid": "9bdcafa08e3640a6bb2bab1748f7d57c"
+    },
+    {
+      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
+      "end_uuid": "0731cdc511af469aa68270520e02510c"
+    },
+    {
+      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
+      "end_uuid": "220761ad91914afc82283f696bf0a9db"
+    },
+    {
+      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
+      "end_uuid": "dab397b7663f476aa759158abc3da1a2"
+    },
+    {
+      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
+      "end_uuid": "0731cdc511af469aa68270520e02510c"
+    },
+    {
+      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
+      "end_uuid": "220761ad91914afc82283f696bf0a9db"
+    },
+    {
       "start_uuid": "e6547396d1d6462da99052a10c9de07b",
-      "end_uuid": "3d0d931a8e584be0b0e6ba26783627c4"
+      "end_uuid": "a3fa0ced92d74f03b94e49b2eb13f824"
+    },
+    {
+      "start_uuid": "ea3f6cbf39a544b8a41ebf92f4799837",
+      "end_uuid": "e6547396d1d6462da99052a10c9de07b"
+    },
+    {
+      "start_uuid": "f70f3e04390f482db9102225068333ef",
+      "end_uuid": "ea3f6cbf39a544b8a41ebf92f4799837"
     }
   ],
-  "viewport": {},
-  "checksum": "18039d7d991582bd"
+  "viewport": {
+    "camera_x": 1447.1630824769775,
+    "camera_y": -1397.6309746911143,
+    "camera_zoom": 1.211335488879076
+  },
+  "checksum": "d487d82ad895cd82"
 }
