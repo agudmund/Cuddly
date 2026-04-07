@@ -3,34 +3,6 @@
   "nodes": [
     {
       "node_id": 0,
-      "node_type": "value",
-      "title": "Value",
-      "uuid": "cd24b263e2164257bfcc37af0f9961b0",
-      "x": 314.61538461538476,
-      "y": 102.30769230769226,
-      "width": 130.0,
-      "height": 80.0,
-      "z_value": 100.0,
-      "ports_visible": false,
-      "emoji": "\u2764",
-      "current_frame": 7
-    },
-    {
-      "node_id": 0,
-      "node_type": "value",
-      "title": "Value",
-      "uuid": "39fe01bde8a9485c922feae2932ed161",
-      "x": 314.61538461538476,
-      "y": 102.30769230769226,
-      "width": 130.0,
-      "height": 80.0,
-      "z_value": 100.0,
-      "ports_visible": false,
-      "emoji": "\u2728",
-      "current_frame": 7
-    },
-    {
-      "node_id": 0,
       "node_type": "about",
       "title": "Note",
       "uuid": "e6547396d1d6462da99052a10c9de07b",
@@ -40,7 +12,8 @@
       "height": 55.07958894184458,
       "z_value": 10.0,
       "ports_visible": false,
-      "emoji": "\ud83d\ude25",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude18",
       "label": "Bloom",
       "depth_front": true,
       "node_tint": ""
@@ -56,7 +29,8 @@
       "height": 52.0,
       "z_value": 10.0,
       "ports_visible": false,
-      "emoji": "\ud83d\ude42\u200d\u2194\ufe0f",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude2e",
       "label": "Clay",
       "depth_front": true,
       "node_tint": ""
@@ -72,7 +46,8 @@
       "height": 52.0,
       "z_value": 10.0,
       "ports_visible": false,
-      "emoji": "\ud83d\ude1a",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude25",
       "label": "Growth",
       "depth_front": true,
       "node_tint": ""
@@ -88,10 +63,13 @@
       "height": 221.28604613216072,
       "z_value": 0.0,
       "ports_visible": false,
-      "emoji": "\ud83d\ude0b",
+      "shelf_visible": false,
+      "emoji": "\ud83d\udc9b",
       "image_b64": "",
       "caption": "Dark chalkboard with chalk residue",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Images\\Chalkboard.jpg"
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Images\\Chalkboard.jpg",
+      "show_border": false,
+      "depth_front": false
     },
     {
       "node_id": 0,
@@ -104,10 +82,13 @@
       "height": 220.0,
       "z_value": 0.0,
       "ports_visible": false,
-      "emoji": "\ud83e\udd72",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude12",
       "image_b64": "",
       "caption": "Share icon inside circular border",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Images\\app_icon.png"
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Images\\app_icon.png",
+      "show_border": false,
+      "depth_front": false
     },
     {
       "node_id": 0,
@@ -120,6 +101,7 @@
       "height": 248.75115552411035,
       "z_value": -9.957000000000024,
       "ports_visible": false,
+      "shelf_visible": true,
       "emoji": "\ud83e\uddf8",
       "body_text": "And then one day it started branching out and spawning its own node types, like in that other thing where someone was trying to point out how infinity is infinately variable and according to multiverse theory all possible versions of the universe also exist, but if truly all variations exist than that means that out there is another universe exactly identical to ours because that is also an option, so the node realized it can spawn its own node type and just you know... started swarming and charming all over the place."
     },
@@ -134,7 +116,8 @@
       "height": 52.0,
       "z_value": -9.958000000000023,
       "ports_visible": false,
-      "emoji": "\ud83d\udccc",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude42\u200d\u2194\ufe0f",
       "label": "Endless Potential",
       "depth_front": false,
       "node_tint": ""
@@ -150,10 +133,13 @@
       "height": 637.0442412607629,
       "z_value": -9.961000000000022,
       "ports_visible": false,
-      "emoji": "\u2764",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude12",
       "image_b64": "",
       "caption": "Cuddly Duddly Fuddly Wuddly",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Cuddly Duddly Fuddly Wuddly.png"
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Cuddly Duddly Fuddly Wuddly.png",
+      "show_border": false,
+      "depth_front": false
     },
     {
       "node_id": 0,
@@ -166,10 +152,13 @@
       "height": 842.7681312613479,
       "z_value": -9.962000000000021,
       "ports_visible": false,
-      "emoji": "\ud83e\uddf8",
+      "shelf_visible": false,
+      "emoji": "\u2728",
       "image_b64": "",
       "caption": "Modesty Scale",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Modesty Scale.png"
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Modesty Scale.png",
+      "show_border": false,
+      "depth_front": false
     },
     {
       "node_id": 0,
@@ -182,10 +171,13 @@
       "height": 1288.6110946471572,
       "z_value": -9.96300000000002,
       "ports_visible": false,
-      "emoji": "\ud83d\udc9b",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude2e",
       "image_b64": "",
       "caption": "Cuddly Fuddly Duddly",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Fuddly Duddly.png"
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Fuddly Duddly.png",
+      "show_border": false,
+      "depth_front": false
     },
     {
       "node_id": 0,
@@ -198,10 +190,13 @@
       "height": 447.23847239424686,
       "z_value": -9.96400000000002,
       "ports_visible": false,
-      "emoji": "\ud83d\ude2c",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude0a",
       "image_b64": "",
       "caption": "Duddly Fuddly",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Duddly Fuddly.png"
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Duddly Fuddly.png",
+      "show_border": false,
+      "depth_front": false
     },
     {
       "node_id": 0,
@@ -214,10 +209,13 @@
       "height": 446.47058823529414,
       "z_value": -9.96500000000002,
       "ports_visible": false,
-      "emoji": "\u2764",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude0d",
       "image_b64": "",
       "caption": "Cuddly Fuddly",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Fuddly.png"
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Fuddly.png",
+      "show_border": false,
+      "depth_front": false
     },
     {
       "node_id": 0,
@@ -230,10 +228,13 @@
       "height": 568.4299027452676,
       "z_value": -9.966000000000019,
       "ports_visible": false,
-      "emoji": "\ud83d\ude12",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude0e",
       "image_b64": "",
       "caption": "Cuddly Duddly",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Duddly.png"
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Duddly.png",
+      "show_border": false,
+      "depth_front": false
     },
     {
       "node_id": 0,
@@ -246,10 +247,13 @@
       "height": 493.52941176470597,
       "z_value": -9.967000000000018,
       "ports_visible": false,
-      "emoji": "\ud83d\ude2f",
+      "shelf_visible": false,
+      "emoji": "\ud83d\udccc",
       "image_b64": "",
       "caption": "Fuddly",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Fuddly.png"
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Fuddly.png",
+      "show_border": false,
+      "depth_front": false
     },
     {
       "node_id": 0,
@@ -262,10 +266,13 @@
       "height": 503.6933671770032,
       "z_value": -9.968000000000018,
       "ports_visible": false,
-      "emoji": "\ud83d\ude07",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude42\u200d\u2194\ufe0f",
       "image_b64": "",
       "caption": "Duddly",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Duddly.png"
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Duddly.png",
+      "show_border": false,
+      "depth_front": false
     },
     {
       "node_id": 0,
@@ -278,10 +285,13 @@
       "height": 389.11764705882354,
       "z_value": -9.969000000000017,
       "ports_visible": false,
-      "emoji": "\ud83d\ude25",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude18",
       "image_b64": "",
       "caption": "Cuddly",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly.png"
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly.png",
+      "show_border": false,
+      "depth_front": false
     },
     {
       "node_id": 0,
@@ -294,10 +304,13 @@
       "height": 940.2384937996428,
       "z_value": -9.971000000000016,
       "ports_visible": false,
-      "emoji": "\ud83d\ude25",
+      "shelf_visible": false,
+      "emoji": "\ud83e\udd72",
       "image_b64": "",
       "caption": "Exponential Parallel Narrative Construction",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Exponential Parallel Narrative Construction a.png"
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Exponential Parallel Narrative Construction a.png",
+      "show_border": false,
+      "depth_front": false
     },
     {
       "node_id": 0,
@@ -310,7 +323,8 @@
       "height": 52.0,
       "z_value": -9.972000000000016,
       "ports_visible": false,
-      "emoji": "\ud83e\udd17",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude42\u200d\u2194\ufe0f",
       "label": "Made with \u2764\ufe0f by Yours Truly, Grok, and Gemini (February 2026\u2013present)",
       "depth_front": false,
       "node_tint": ""
@@ -326,7 +340,8 @@
       "height": 52.0,
       "z_value": -9.973000000000015,
       "ports_visible": false,
-      "emoji": "\ud83e\udd17",
+      "shelf_visible": false,
+      "emoji": "\ud83d\udc9b",
       "label": "But many were aggressively fluffed.",
       "depth_front": false,
       "node_tint": ""
@@ -342,7 +357,8 @@
       "height": 52.0,
       "z_value": -9.974000000000014,
       "ports_visible": false,
-      "emoji": "\ud83d\ude1a",
+      "shelf_visible": false,
+      "emoji": "\ud83e\uddf8",
       "label": "> Cushions harmed: 0",
       "depth_front": false,
       "node_tint": ""
@@ -358,7 +374,8 @@
       "height": 52.0,
       "z_value": -9.975000000000014,
       "ports_visible": false,
-      "emoji": "\ud83d\ude01",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude0d",
       "label": "Current version: v0.0.5 \u2014 The Breath of air Era",
       "depth_front": false,
       "node_tint": ""
@@ -374,7 +391,8 @@
       "height": 52.0,
       "z_value": -9.976000000000013,
       "ports_visible": false,
-      "emoji": "\ud83d\udc9c",
+      "shelf_visible": false,
+      "emoji": "\u2728",
       "label": "Slow, joyful building. No rush. Strip down, rebuild, affirm the cozy core.",
       "depth_front": false,
       "node_tint": ""
@@ -390,7 +408,8 @@
       "height": 52.0,
       "z_value": -9.978000000000012,
       "ports_visible": false,
-      "emoji": "\ud83d\udc9c",
+      "shelf_visible": false,
+      "emoji": "\ud83d\udc96",
       "label": "- Sound design beginnings \u2014 gentle chimes and page flaps in Audio/",
       "depth_front": false,
       "node_tint": ""
@@ -406,7 +425,8 @@
       "height": 52.0,
       "z_value": -9.979000000000012,
       "ports_visible": false,
-      "emoji": "\ud83d\ude2f",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude17",
       "label": "- Creative pile \u2014 audio snippets, images, old code treasures, documents, and lore about the Wuddlies",
       "depth_front": false,
       "node_tint": ""
@@ -422,7 +442,8 @@
       "height": 52.0,
       "z_value": -9.980000000000011,
       "ports_visible": false,
-      "emoji": "\ud83d\ude25",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude0e",
       "label": "- Early MAUI experiment (`CuddlyGoesToMaui`) \u2014 dreaming of cross-platform cuddles someday",
       "depth_front": false,
       "node_tint": ""
@@ -438,7 +459,8 @@
       "height": 52.0,
       "z_value": -9.98100000000001,
       "ports_visible": false,
-      "emoji": "\u2728",
+      "shelf_visible": false,
+      "emoji": "\ud83e\udd17",
       "label": "- **Python nodal canvas** \u2014 drag, connect, write warm thoughts (the heart of the project)",
       "depth_front": false,
       "node_tint": ""
@@ -454,7 +476,8 @@
       "height": 52.0,
       "z_value": -9.98200000000001,
       "ports_visible": false,
-      "emoji": "\ud83d\ude0f",
+      "shelf_visible": false,
+      "emoji": "\ud83e\udee7",
       "label": "## What's here right now",
       "depth_front": false,
       "node_tint": ""
@@ -470,7 +493,8 @@
       "height": 52.0,
       "z_value": -9.984000000000009,
       "ports_visible": false,
-      "emoji": "\ud83d\ude0b",
+      "shelf_visible": false,
+      "emoji": "\ud83d\ude01",
       "label": "A cozy nodal playground where ideas gently interconnect, thoughts get fluffed, and creativity finds a soft place to rest.",
       "depth_front": false,
       "node_tint": ""
@@ -486,7 +510,8 @@
       "height": 52.0,
       "z_value": -9.987000000000007,
       "ports_visible": false,
-      "emoji": "\ud83d\ude2f",
+      "shelf_visible": false,
+      "emoji": "\ud83d\udccc",
       "label": "Soft",
       "depth_front": false,
       "node_tint": ""
@@ -502,6 +527,7 @@
       "height": 157.75143002502637,
       "z_value": -9.988000000000007,
       "ports_visible": false,
+      "shelf_visible": true,
       "emoji": "\ud83d\ude17",
       "body_text": "/* Node type chooser popup */\nQWidget#nodeTypeChooser { background: #2a1f24; border: 2px solid #5c3e4f; border-radius: 16px; }\nQWidget#nodeTypeChooser QLabel { color: #ffd1dc; font-family: 'Chandler42'; font-size: 18px; }\nQWidget#nodeTypeChooser QPushButton { background: #4a3a3f; color: #ffb6c1; border: none; border-radius: 12px; padding: 12px; font-family: 'Chandler42'; font-size: 16px; }\nQWidget#nodeTypeChooser QPushButton:hover { background: #6a4a5f; }\n"
     },
@@ -516,6 +542,7 @@
       "height": 109.49521343590277,
       "z_value": -9.989000000000006,
       "ports_visible": false,
+      "shelf_visible": true,
       "emoji": "\ud83d\ude0f",
       "body_text": "QProgressBar::chunk {\n    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #6b5a47, stop:1 #8a7a67);\n}"
     },
@@ -530,6 +557,7 @@
       "height": 207.62556057303505,
       "z_value": -9.990000000000006,
       "ports_visible": false,
+      "shelf_visible": true,
       "emoji": "\ud83e\udee7",
       "body_text": "QLabel#WelcomeLabel {\n    border: 1px dashed #8a7a67;\n    border-radius: 10px;\n    background-color: #2a2a3a;\n    color: #e8f0ff;\n    padding: 12px;\n    font-size: 14px;\n    min-height: 100px; /* Add this to prevent 'scaling downward' */\n}"
     },
@@ -544,6 +572,7 @@
       "height": 200.0,
       "z_value": -9.991000000000005,
       "ports_visible": false,
+      "shelf_visible": true,
       "emoji": "\u2728",
       "body_text": "/* The Cozy Preview Card */\nQFrame#PreviewCard {\n    border: 2px solid #6b5a47;\n    border-radius: 12px;\n    background-color: #2a2a3a;\n    padding: 1px;\n}"
     },
@@ -558,6 +587,7 @@
       "height": 145.05827995671478,
       "z_value": -9.993000000000004,
       "ports_visible": false,
+      "shelf_visible": true,
       "emoji": "\ud83d\ude0d",
       "body_text": "I should totally create a bloom node that can read its input from an image node and then drive that into the settings.toml and will change the sprinkles into any images scatter"
     },
@@ -572,7 +602,8 @@
       "height": 58.06083893198408,
       "z_value": -9.995000000000003,
       "ports_visible": false,
-      "emoji": "\ud83e\udee7",
+      "shelf_visible": false,
+      "emoji": "\ud83e\udd72",
       "label": "We should totally speed up the curve speed while its in motion",
       "depth_front": false,
       "node_tint": ""
@@ -685,9 +716,9 @@
     }
   ],
   "viewport": {
-    "camera_x": 1340.9921079842952,
-    "camera_y": -833.0405519296382,
-    "camera_zoom": 0.2953037513361992
+    "camera_x": 4280.0,
+    "camera_y": 1150.0,
+    "camera_zoom": 0.1
   },
-  "checksum": "5f9a78e1a023d421"
+  "checksum": "8f24dec5c7383146"
 }
