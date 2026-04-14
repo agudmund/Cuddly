@@ -1,20 +1,21 @@
 {
   "version": "1.0",
+  "description": "",
   "nodes": [
     {
       "node_id": 0,
       "node_type": "about",
       "title": "Note",
-      "uuid": "e6547396d1d6462da99052a10c9de07b",
-      "x": -178.2949070718837,
-      "y": 94.81142358840202,
-      "width": 120.0,
-      "height": 55.07958894184458,
+      "uuid": "ea3f6cbf39a544b8a41ebf92f4799837",
+      "x": -310.26481026480803,
+      "y": -177.36827736827723,
+      "width": 108.0,
+      "height": 52.0,
       "z_value": 10.0,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude18",
-      "label": "Bloom",
+      "emoji": "\ud83d\ude09",
+      "label": "Growth",
       "depth_front": true,
       "node_tint": ""
     },
@@ -30,7 +31,7 @@
       "z_value": 10.0,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude2e",
+      "emoji": "\ud83d\udc9c",
       "label": "Clay",
       "depth_front": true,
       "node_tint": ""
@@ -39,37 +40,18 @@
       "node_id": 0,
       "node_type": "about",
       "title": "Note",
-      "uuid": "ea3f6cbf39a544b8a41ebf92f4799837",
-      "x": -310.26481026480803,
-      "y": -177.36827736827723,
-      "width": 108.0,
-      "height": 52.0,
+      "uuid": "e6547396d1d6462da99052a10c9de07b",
+      "x": -178.2949070718837,
+      "y": 94.81142358840202,
+      "width": 120.0,
+      "height": 55.07958894184458,
       "z_value": 10.0,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude25",
-      "label": "Growth",
+      "emoji": "\u2728",
+      "label": "Bloom",
       "depth_front": true,
       "node_tint": ""
-    },
-    {
-      "node_id": 0,
-      "node_type": "image",
-      "title": "Image",
-      "uuid": "207ce7c68f5641a9a9c9dc402f027797",
-      "x": 439.2465192465161,
-      "y": 43.01392301392298,
-      "width": 219.02812320943974,
-      "height": 221.28604613216072,
-      "z_value": 0.0,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "emoji": "\ud83d\udc9b",
-      "image_b64": "",
-      "caption": "Dark chalkboard with chalk residue",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Images\\Chalkboard.jpg",
-      "show_border": false,
-      "depth_front": false
     },
     {
       "node_id": 0,
@@ -87,6 +69,25 @@
       "image_b64": "",
       "caption": "Share icon inside circular border",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Images\\app_icon.png",
+      "show_border": false,
+      "depth_front": false
+    },
+    {
+      "node_id": 0,
+      "node_type": "image",
+      "title": "Image",
+      "uuid": "207ce7c68f5641a9a9c9dc402f027797",
+      "x": 439.2465192465161,
+      "y": 43.01392301392298,
+      "width": 219.02812320943974,
+      "height": 221.28604613216072,
+      "z_value": 0.0,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "emoji": "\ud83d\udc96",
+      "image_b64": "",
+      "caption": "Dark chalkboard with chalk residue",
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Images\\Chalkboard.jpg",
       "show_border": false,
       "depth_front": false
     },
@@ -117,7 +118,7 @@
       "z_value": -9.958000000000023,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude42\u200d\u2194\ufe0f",
+      "emoji": "\ud83d\ude01",
       "label": "Endless Potential",
       "depth_front": false,
       "node_tint": ""
@@ -134,7 +135,7 @@
       "z_value": -9.961000000000022,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude12",
+      "emoji": "\ud83d\ude07",
       "image_b64": "",
       "caption": "Cuddly Duddly Fuddly Wuddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Cuddly Duddly Fuddly Wuddly.png",
@@ -153,7 +154,7 @@
       "z_value": -9.962000000000021,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\u2728",
+      "emoji": "\ud83d\udc9c",
       "image_b64": "",
       "caption": "Modesty Scale",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Modesty Scale.png",
@@ -172,7 +173,7 @@
       "z_value": -9.96300000000002,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude2e",
+      "emoji": "\ud83d\ude01",
       "image_b64": "",
       "caption": "Cuddly Fuddly Duddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Fuddly Duddly.png",
@@ -191,7 +192,7 @@
       "z_value": -9.96400000000002,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude0a",
+      "emoji": "\ud83d\ude09",
       "image_b64": "",
       "caption": "Duddly Fuddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Duddly Fuddly.png",
@@ -210,7 +211,7 @@
       "z_value": -9.96500000000002,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude0d",
+      "emoji": "\ud83d\ude42\u200d\u2194\ufe0f",
       "image_b64": "",
       "caption": "Cuddly Fuddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Fuddly.png",
@@ -229,7 +230,7 @@
       "z_value": -9.966000000000019,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude0e",
+      "emoji": "\ud83e\uddf8",
       "image_b64": "",
       "caption": "Cuddly Duddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Duddly.png",
@@ -248,7 +249,7 @@
       "z_value": -9.967000000000018,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\udccc",
+      "emoji": "\ud83d\ude0b",
       "image_b64": "",
       "caption": "Fuddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Fuddly.png",
@@ -267,7 +268,7 @@
       "z_value": -9.968000000000018,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude42\u200d\u2194\ufe0f",
+      "emoji": "\ud83d\ude0a",
       "image_b64": "",
       "caption": "Duddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Duddly.png",
@@ -286,7 +287,7 @@
       "z_value": -9.969000000000017,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude18",
+      "emoji": "\ud83d\ude0b",
       "image_b64": "",
       "caption": "Cuddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly.png",
@@ -305,7 +306,7 @@
       "z_value": -9.971000000000016,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83e\udd72",
+      "emoji": "\ud83d\ude07",
       "image_b64": "",
       "caption": "Exponential Parallel Narrative Construction",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Exponential Parallel Narrative Construction a.png",
@@ -324,7 +325,7 @@
       "z_value": -9.972000000000016,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude42\u200d\u2194\ufe0f",
+      "emoji": "\ud83e\udd17",
       "label": "Made with \u2764\ufe0f by Yours Truly, Grok, and Gemini (February 2026\u2013present)",
       "depth_front": false,
       "node_tint": ""
@@ -341,7 +342,7 @@
       "z_value": -9.973000000000015,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\udc9b",
+      "emoji": "\ud83d\ude2f",
       "label": "But many were aggressively fluffed.",
       "depth_front": false,
       "node_tint": ""
@@ -358,7 +359,7 @@
       "z_value": -9.974000000000014,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83e\uddf8",
+      "emoji": "\ud83e\udd72",
       "label": "> Cushions harmed: 0",
       "depth_front": false,
       "node_tint": ""
@@ -375,7 +376,7 @@
       "z_value": -9.975000000000014,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude0d",
+      "emoji": "\ud83d\ude25",
       "label": "Current version: v0.0.5 \u2014 The Breath of air Era",
       "depth_front": false,
       "node_tint": ""
@@ -392,7 +393,7 @@
       "z_value": -9.976000000000013,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\u2728",
+      "emoji": "\ud83d\ude2c",
       "label": "Slow, joyful building. No rush. Strip down, rebuild, affirm the cozy core.",
       "depth_front": false,
       "node_tint": ""
@@ -426,7 +427,7 @@
       "z_value": -9.979000000000012,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude17",
+      "emoji": "\ud83d\ude2c",
       "label": "- Creative pile \u2014 audio snippets, images, old code treasures, documents, and lore about the Wuddlies",
       "depth_front": false,
       "node_tint": ""
@@ -443,7 +444,7 @@
       "z_value": -9.980000000000011,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude0e",
+      "emoji": "\ud83e\udee7",
       "label": "- Early MAUI experiment (`CuddlyGoesToMaui`) \u2014 dreaming of cross-platform cuddles someday",
       "depth_front": false,
       "node_tint": ""
@@ -460,7 +461,7 @@
       "z_value": -9.98100000000001,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83e\udd17",
+      "emoji": "\ud83d\ude01",
       "label": "- **Python nodal canvas** \u2014 drag, connect, write warm thoughts (the heart of the project)",
       "depth_front": false,
       "node_tint": ""
@@ -477,7 +478,7 @@
       "z_value": -9.98200000000001,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83e\udee7",
+      "emoji": "\ud83d\ude0d",
       "label": "## What's here right now",
       "depth_front": false,
       "node_tint": ""
@@ -494,7 +495,7 @@
       "z_value": -9.984000000000009,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\ude01",
+      "emoji": "\ud83e\udee4",
       "label": "A cozy nodal playground where ideas gently interconnect, thoughts get fluffed, and creativity finds a soft place to rest.",
       "depth_front": false,
       "node_tint": ""
@@ -511,7 +512,7 @@
       "z_value": -9.987000000000007,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83d\udccc",
+      "emoji": "\ud83d\ude32",
       "label": "Soft",
       "depth_front": false,
       "node_tint": ""
@@ -603,7 +604,7 @@
       "z_value": -9.995000000000003,
       "ports_visible": false,
       "shelf_visible": false,
-      "emoji": "\ud83e\udd72",
+      "emoji": "\ud83d\udc9c",
       "label": "We should totally speed up the curve speed while its in motion",
       "depth_front": false,
       "node_tint": ""
@@ -611,114 +612,114 @@
   ],
   "connections": [
     {
-      "start_uuid": "f70f3e04390f482db9102225068333ef",
-      "end_uuid": "ea3f6cbf39a544b8a41ebf92f4799837"
-    },
-    {
-      "start_uuid": "ea3f6cbf39a544b8a41ebf92f4799837",
-      "end_uuid": "e6547396d1d6462da99052a10c9de07b"
-    },
-    {
       "start_uuid": "e6547396d1d6462da99052a10c9de07b",
-      "end_uuid": "a3fa0ced92d74f03b94e49b2eb13f824"
-    },
-    {
-      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
-      "end_uuid": "220761ad91914afc82283f696bf0a9db"
-    },
-    {
-      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
-      "end_uuid": "0731cdc511af469aa68270520e02510c"
-    },
-    {
-      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
-      "end_uuid": "dab397b7663f476aa759158abc3da1a2"
-    },
-    {
-      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
-      "end_uuid": "220761ad91914afc82283f696bf0a9db"
-    },
-    {
-      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
-      "end_uuid": "0731cdc511af469aa68270520e02510c"
-    },
-    {
-      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
-      "end_uuid": "9bdcafa08e3640a6bb2bab1748f7d57c"
-    },
-    {
-      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
-      "end_uuid": "220761ad91914afc82283f696bf0a9db"
-    },
-    {
-      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
-      "end_uuid": "dab397b7663f476aa759158abc3da1a2"
-    },
-    {
-      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
-      "end_uuid": "9bdcafa08e3640a6bb2bab1748f7d57c"
-    },
-    {
-      "start_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e",
-      "end_uuid": "1000f64e3b49401caaaa8f7c0b5a91ec"
-    },
-    {
-      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
-      "end_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da"
-    },
-    {
-      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
-      "end_uuid": "f70f3e04390f482db9102225068333ef"
-    },
-    {
-      "start_uuid": "2ebcf46afd9549488a5fa469c0704ed5",
-      "end_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e"
-    },
-    {
-      "start_uuid": "cf1a479bc9a140bea6f4d8615704ec28",
-      "end_uuid": "2ebcf46afd9549488a5fa469c0704ed5"
-    },
-    {
-      "start_uuid": "98cdc223d47847efb3a244d9c8b4d77d",
-      "end_uuid": "cf1a479bc9a140bea6f4d8615704ec28"
-    },
-    {
-      "start_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f",
-      "end_uuid": "98cdc223d47847efb3a244d9c8b4d77d"
-    },
-    {
-      "start_uuid": "9945553f06594b7fbbeab315fbe41e3c",
-      "end_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f"
-    },
-    {
-      "start_uuid": "6be29a6557ac40759db9728c02d21637",
-      "end_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f"
-    },
-    {
-      "start_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da",
-      "end_uuid": "40d2242069ac46158817ffee1865ecfb"
-    },
-    {
-      "start_uuid": "40d2242069ac46158817ffee1865ecfb",
-      "end_uuid": "9945553f06594b7fbbeab315fbe41e3c"
-    },
-    {
-      "start_uuid": "40d2242069ac46158817ffee1865ecfb",
-      "end_uuid": "6be29a6557ac40759db9728c02d21637"
+      "end_uuid": "3d0d931a8e584be0b0e6ba26783627c4"
     },
     {
       "start_uuid": "3d0d931a8e584be0b0e6ba26783627c4",
       "end_uuid": "207ce7c68f5641a9a9c9dc402f027797"
     },
     {
+      "start_uuid": "40d2242069ac46158817ffee1865ecfb",
+      "end_uuid": "6be29a6557ac40759db9728c02d21637"
+    },
+    {
+      "start_uuid": "40d2242069ac46158817ffee1865ecfb",
+      "end_uuid": "9945553f06594b7fbbeab315fbe41e3c"
+    },
+    {
+      "start_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da",
+      "end_uuid": "40d2242069ac46158817ffee1865ecfb"
+    },
+    {
+      "start_uuid": "6be29a6557ac40759db9728c02d21637",
+      "end_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f"
+    },
+    {
+      "start_uuid": "9945553f06594b7fbbeab315fbe41e3c",
+      "end_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f"
+    },
+    {
+      "start_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f",
+      "end_uuid": "98cdc223d47847efb3a244d9c8b4d77d"
+    },
+    {
+      "start_uuid": "98cdc223d47847efb3a244d9c8b4d77d",
+      "end_uuid": "cf1a479bc9a140bea6f4d8615704ec28"
+    },
+    {
+      "start_uuid": "cf1a479bc9a140bea6f4d8615704ec28",
+      "end_uuid": "2ebcf46afd9549488a5fa469c0704ed5"
+    },
+    {
+      "start_uuid": "2ebcf46afd9549488a5fa469c0704ed5",
+      "end_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e"
+    },
+    {
+      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
+      "end_uuid": "f70f3e04390f482db9102225068333ef"
+    },
+    {
+      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
+      "end_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da"
+    },
+    {
+      "start_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e",
+      "end_uuid": "1000f64e3b49401caaaa8f7c0b5a91ec"
+    },
+    {
+      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
+      "end_uuid": "9bdcafa08e3640a6bb2bab1748f7d57c"
+    },
+    {
+      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
+      "end_uuid": "dab397b7663f476aa759158abc3da1a2"
+    },
+    {
+      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
+      "end_uuid": "220761ad91914afc82283f696bf0a9db"
+    },
+    {
+      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
+      "end_uuid": "9bdcafa08e3640a6bb2bab1748f7d57c"
+    },
+    {
+      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
+      "end_uuid": "0731cdc511af469aa68270520e02510c"
+    },
+    {
+      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
+      "end_uuid": "220761ad91914afc82283f696bf0a9db"
+    },
+    {
+      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
+      "end_uuid": "dab397b7663f476aa759158abc3da1a2"
+    },
+    {
+      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
+      "end_uuid": "0731cdc511af469aa68270520e02510c"
+    },
+    {
+      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
+      "end_uuid": "220761ad91914afc82283f696bf0a9db"
+    },
+    {
       "start_uuid": "e6547396d1d6462da99052a10c9de07b",
-      "end_uuid": "3d0d931a8e584be0b0e6ba26783627c4"
+      "end_uuid": "a3fa0ced92d74f03b94e49b2eb13f824"
+    },
+    {
+      "start_uuid": "ea3f6cbf39a544b8a41ebf92f4799837",
+      "end_uuid": "e6547396d1d6462da99052a10c9de07b"
+    },
+    {
+      "start_uuid": "f70f3e04390f482db9102225068333ef",
+      "end_uuid": "ea3f6cbf39a544b8a41ebf92f4799837"
     }
   ],
   "viewport": {
-    "camera_x": 4280.0,
-    "camera_y": 1150.0,
-    "camera_zoom": 0.1
+    "camera_x": 4858.931927449465,
+    "camera_y": 477.20761481833654,
+    "camera_zoom": 1.00166046214909
   },
-  "checksum": "8f24dec5c7383146"
+  "checksum": "c646e92c112821aa"
 }
