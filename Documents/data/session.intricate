@@ -6,15 +6,15 @@
       "node_id": 0,
       "node_type": "about",
       "title": "Note",
-      "uuid": "ea3f6cbf39a544b8a41ebf92f4799837",
-      "x": -310.26481026480803,
-      "y": -177.36827736827723,
-      "width": 108.0,
-      "height": 52.0,
+      "uuid": "e6547396d1d6462da99052a10c9de07b",
+      "x": -178.2949070718837,
+      "y": 94.81142358840202,
+      "width": 120.0,
+      "height": 55.07958894184458,
       "z_value": 10.0,
       "ports_visible": false,
       "shelf_visible": false,
-      "label": "Growth",
+      "label": "Bloom",
       "depth_front": true,
       "node_tint": ""
     },
@@ -38,15 +38,15 @@
       "node_id": 0,
       "node_type": "about",
       "title": "Note",
-      "uuid": "e6547396d1d6462da99052a10c9de07b",
-      "x": -178.2949070718837,
-      "y": 94.81142358840202,
-      "width": 120.0,
-      "height": 55.07958894184458,
+      "uuid": "ea3f6cbf39a544b8a41ebf92f4799837",
+      "x": -310.26481026480803,
+      "y": -177.36827736827723,
+      "width": 108.0,
+      "height": 52.0,
       "z_value": 10.0,
       "ports_visible": false,
       "shelf_visible": false,
-      "label": "Bloom",
+      "label": "Growth",
       "depth_front": true,
       "node_tint": ""
     },
@@ -66,8 +66,170 @@
       "cache_key": "",
       "caption": "Share icon inside circular border",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Images\\app_icon.png",
-      "show_border": false,
+      "source_size": 0,
+      "source_mtime": 0.0,
+      "show_border": true,
       "depth_front": false
+    },
+    {
+      "node_id": 0,
+      "node_type": "about",
+      "title": "Note",
+      "uuid": "95ad6c22028843e5bd7bcba4fff43338",
+      "x": 5102.14626391097,
+      "y": 672.9775153304565,
+      "width": 537.0,
+      "height": 52.0,
+      "z_value": -9.94700000000003,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "label": "source drifted \u2014 cache no longer matches\nCuddly.png",
+      "depth_front": false,
+      "node_tint": ""
+    },
+    {
+      "node_id": 0,
+      "node_type": "about",
+      "title": "Note",
+      "uuid": "13c083131fbb4c40a31e8621b5e7fd0d",
+      "x": 4156.4512714153,
+      "y": 254.7041645063207,
+      "width": 927.0,
+      "height": 52.0,
+      "z_value": -9.948000000000029,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "label": "source drifted \u2014 cache no longer matches\nExponential Parallel Narrative Construction a.png",
+      "depth_front": false,
+      "node_tint": ""
+    },
+    {
+      "node_id": 0,
+      "node_type": "about",
+      "title": "Note",
+      "uuid": "01f90654a3bf46fa8bae45921993400e",
+      "x": 1993.8928003633882,
+      "y": 1418.583215008028,
+      "width": 537.0,
+      "height": 52.0,
+      "z_value": -9.949000000000028,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "label": "source drifted \u2014 cache no longer matches\nDuddly.png",
+      "depth_front": false,
+      "node_tint": ""
+    },
+    {
+      "node_id": 0,
+      "node_type": "about",
+      "title": "Note",
+      "uuid": "ee2233f8bdd940aaa412b1d4813f7eae",
+      "x": 2976.2207585737024,
+      "y": 921.4414857568504,
+      "width": 607.0,
+      "height": 52.0,
+      "z_value": -9.950000000000028,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "label": "source drifted \u2014 cache no longer matches\nCuddly Duddly.png",
+      "depth_front": false,
+      "node_tint": ""
+    },
+    {
+      "node_id": 0,
+      "node_type": "about",
+      "title": "Note",
+      "uuid": "e83d5410a1d14dbd974c0e3c884e178d",
+      "x": 5417.857142857145,
+      "y": 3032.8571428571436,
+      "width": 537.0,
+      "height": 52.0,
+      "z_value": -9.951000000000027,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "label": "source drifted \u2014 cache no longer matches\nFuddly.png",
+      "depth_front": false,
+      "node_tint": ""
+    },
+    {
+      "node_id": 0,
+      "node_type": "about",
+      "title": "Note",
+      "uuid": "ab13c912fe5c4c26b4b6ebf3e2ada252",
+      "x": 5699.7899159663875,
+      "y": 1895.8823529411766,
+      "width": 607.0,
+      "height": 52.0,
+      "z_value": -9.952000000000027,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "label": "source drifted \u2014 cache no longer matches\nCuddly Fuddly.png",
+      "depth_front": false,
+      "node_tint": ""
+    },
+    {
+      "node_id": 0,
+      "node_type": "about",
+      "title": "Note",
+      "uuid": "21924d4d6a294f6f8c91c32eabad6598",
+      "x": 4186.890756302522,
+      "y": 2283.6951282606024,
+      "width": 677.0,
+      "height": 52.0,
+      "z_value": -9.953000000000026,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "label": "source drifted \u2014 cache no longer matches\nCuddly Fuddly Duddly.png",
+      "depth_front": false,
+      "node_tint": ""
+    },
+    {
+      "node_id": 0,
+      "node_type": "about",
+      "title": "Note",
+      "uuid": "85bd0b263a3c4d2f9c5b97bdf5a8497b",
+      "x": 3234.6638655462175,
+      "y": 3150.2216656715564,
+      "width": 607.0,
+      "height": 52.0,
+      "z_value": -9.954000000000025,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "label": "source drifted \u2014 cache no longer matches\nDuddly Fuddly.png",
+      "depth_front": false,
+      "node_tint": ""
+    },
+    {
+      "node_id": 0,
+      "node_type": "about",
+      "title": "Note",
+      "uuid": "a02e5d13ce9a475ab7a319bdffb8ebc9",
+      "x": 451.2048192771099,
+      "y": -744.1605780163461,
+      "width": 747.0,
+      "height": 52.0,
+      "z_value": -9.955000000000025,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "label": "source drifted \u2014 cache no longer matches\nCuddly Duddly Fuddly Wuddly.png",
+      "depth_front": false,
+      "node_tint": ""
+    },
+    {
+      "node_id": 0,
+      "node_type": "about",
+      "title": "Note",
+      "uuid": "ca8ec598bf254162a76bd91028070d97",
+      "x": 1313.6051305542805,
+      "y": 196.71224486647827,
+      "width": 607.0,
+      "height": 52.0,
+      "z_value": -9.956000000000024,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "label": "source drifted \u2014 cache no longer matches\nModesty Scale.png",
+      "depth_front": false,
+      "node_tint": ""
     },
     {
       "node_id": 0,
@@ -115,7 +277,9 @@
       "cache_key": "b84c2dfa0bc922aa6fb0d9106b10b065240dbefba578b2ffe78e5afdf0dd8cf6",
       "caption": "Cuddly Duddly Fuddly Wuddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Cuddly Duddly Fuddly Wuddly.png",
-      "show_border": false,
+      "source_size": 24704,
+      "source_mtime": 1769549127.7405355,
+      "show_border": true,
       "depth_front": false
     },
     {
@@ -134,7 +298,9 @@
       "cache_key": "70e649a06fe330e7e4b5575527f860ae5690812e9b708b6cc41f96fac2eae4ed",
       "caption": "Modesty Scale",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Modesty Scale.png",
-      "show_border": false,
+      "source_size": 148267,
+      "source_mtime": 1769549128.163939,
+      "show_border": true,
       "depth_front": false
     },
     {
@@ -153,7 +319,9 @@
       "cache_key": "a200ab557bb065dc0c128b03d915912a8acec79b2ad623c58c0a20e37ac7b75b",
       "caption": "Cuddly Fuddly Duddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Fuddly Duddly.png",
-      "show_border": false,
+      "source_size": 85870,
+      "source_mtime": 1769549127.7641394,
+      "show_border": true,
       "depth_front": false
     },
     {
@@ -172,7 +340,9 @@
       "cache_key": "dee5497c204a105ce097cc8e35be35d60fb5f00d37c7b0313f53f00974d3ea38",
       "caption": "Duddly Fuddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Duddly Fuddly.png",
-      "show_border": false,
+      "source_size": 77189,
+      "source_mtime": 1769549128.0315304,
+      "show_border": true,
       "depth_front": false
     },
     {
@@ -191,7 +361,9 @@
       "cache_key": "4caa5a9842f7520284bf3116dcc6badfbd6e713df7fa087bd17c64b9efe83022",
       "caption": "Cuddly Fuddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Fuddly.png",
-      "show_border": false,
+      "source_size": 62425,
+      "source_mtime": 1769549127.799067,
+      "show_border": true,
       "depth_front": false
     },
     {
@@ -210,7 +382,9 @@
       "cache_key": "4596f231e22e3c70012e0bb5d18cbd6f863a03c79cc880673d04575d3ffb60d1",
       "caption": "Cuddly Duddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Duddly.png",
-      "show_border": false,
+      "source_size": 118635,
+      "source_mtime": 1769549127.7641394,
+      "show_border": true,
       "depth_front": false
     },
     {
@@ -229,7 +403,9 @@
       "cache_key": "c7f5b20598a3687d8b588c5e8b4dfa5cfb8661a8ff3955b9a6afcc2030f4c999",
       "caption": "Fuddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Fuddly.png",
-      "show_border": false,
+      "source_size": 101401,
+      "source_mtime": 1769549128.162975,
+      "show_border": true,
       "depth_front": false
     },
     {
@@ -248,7 +424,9 @@
       "cache_key": "fa362773173f9e9f2d7e687c4a1e4365aa3e3e328869b8daec38f2182224e517",
       "caption": "Duddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Duddly.png",
-      "show_border": false,
+      "source_size": 119703,
+      "source_mtime": 1769549128.0336134,
+      "show_border": true,
       "depth_front": false
     },
     {
@@ -267,7 +445,9 @@
       "cache_key": "176a610a22a69eb437fe7350b02bd189dc561d8f851993e789a3fbdcd62cc4d6",
       "caption": "Cuddly",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly.png",
-      "show_border": false,
+      "source_size": 88801,
+      "source_mtime": 1769549127.8010669,
+      "show_border": true,
       "depth_front": false
     },
     {
@@ -286,7 +466,9 @@
       "cache_key": "d966835f5c8238170d5a55a2977e53f1eb50b412c79f1fcb22349be35d3e2466",
       "caption": "Exponential Parallel Narrative Construction",
       "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Exponential Parallel Narrative Construction a.png",
-      "show_border": false,
+      "source_size": 976006,
+      "source_mtime": 1769549128.04117,
+      "show_border": true,
       "depth_front": false
     },
     {
@@ -570,110 +752,153 @@
   ],
   "connections": [
     {
-      "start_uuid": "e6547396d1d6462da99052a10c9de07b",
-      "end_uuid": "3d0d931a8e584be0b0e6ba26783627c4"
+      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
+      "end_uuid": "95ad6c22028843e5bd7bcba4fff43338"
     },
     {
-      "start_uuid": "40d2242069ac46158817ffee1865ecfb",
-      "end_uuid": "6be29a6557ac40759db9728c02d21637"
+      "start_uuid": "6b9ef02d55aa41debf05e62f6821f735",
+      "end_uuid": "13c083131fbb4c40a31e8621b5e7fd0d"
     },
     {
-      "start_uuid": "40d2242069ac46158817ffee1865ecfb",
-      "end_uuid": "9945553f06594b7fbbeab315fbe41e3c"
+      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
+      "end_uuid": "01f90654a3bf46fa8bae45921993400e"
+    },
+    {
+      "start_uuid": "9bdcafa08e3640a6bb2bab1748f7d57c",
+      "end_uuid": "ee2233f8bdd940aaa412b1d4813f7eae"
+    },
+    {
+      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
+      "end_uuid": "e83d5410a1d14dbd974c0e3c884e178d"
+    },
+    {
+      "start_uuid": "dab397b7663f476aa759158abc3da1a2",
+      "end_uuid": "ab13c912fe5c4c26b4b6ebf3e2ada252"
+    },
+    {
+      "start_uuid": "220761ad91914afc82283f696bf0a9db",
+      "end_uuid": "21924d4d6a294f6f8c91c32eabad6598"
+    },
+    {
+      "start_uuid": "0731cdc511af469aa68270520e02510c",
+      "end_uuid": "85bd0b263a3c4d2f9c5b97bdf5a8497b"
     },
     {
       "start_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da",
-      "end_uuid": "40d2242069ac46158817ffee1865ecfb"
+      "end_uuid": "a02e5d13ce9a475ab7a319bdffb8ebc9"
     },
     {
-      "start_uuid": "6be29a6557ac40759db9728c02d21637",
-      "end_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f"
+      "start_uuid": "7cd9f8354ff04778b7cdd3083bf29711",
+      "end_uuid": "ca8ec598bf254162a76bd91028070d97"
     },
     {
-      "start_uuid": "9945553f06594b7fbbeab315fbe41e3c",
-      "end_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f"
-    },
-    {
-      "start_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f",
-      "end_uuid": "98cdc223d47847efb3a244d9c8b4d77d"
-    },
-    {
-      "start_uuid": "98cdc223d47847efb3a244d9c8b4d77d",
-      "end_uuid": "cf1a479bc9a140bea6f4d8615704ec28"
-    },
-    {
-      "start_uuid": "cf1a479bc9a140bea6f4d8615704ec28",
-      "end_uuid": "2ebcf46afd9549488a5fa469c0704ed5"
-    },
-    {
-      "start_uuid": "2ebcf46afd9549488a5fa469c0704ed5",
-      "end_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e"
-    },
-    {
-      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
-      "end_uuid": "f70f3e04390f482db9102225068333ef"
-    },
-    {
-      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
-      "end_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da"
-    },
-    {
-      "start_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e",
-      "end_uuid": "1000f64e3b49401caaaa8f7c0b5a91ec"
-    },
-    {
-      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
-      "end_uuid": "9bdcafa08e3640a6bb2bab1748f7d57c"
-    },
-    {
-      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
-      "end_uuid": "dab397b7663f476aa759158abc3da1a2"
-    },
-    {
-      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
-      "end_uuid": "220761ad91914afc82283f696bf0a9db"
-    },
-    {
-      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
-      "end_uuid": "9bdcafa08e3640a6bb2bab1748f7d57c"
-    },
-    {
-      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
-      "end_uuid": "0731cdc511af469aa68270520e02510c"
-    },
-    {
-      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
-      "end_uuid": "220761ad91914afc82283f696bf0a9db"
-    },
-    {
-      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
-      "end_uuid": "dab397b7663f476aa759158abc3da1a2"
-    },
-    {
-      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
-      "end_uuid": "0731cdc511af469aa68270520e02510c"
-    },
-    {
-      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
-      "end_uuid": "220761ad91914afc82283f696bf0a9db"
-    },
-    {
-      "start_uuid": "e6547396d1d6462da99052a10c9de07b",
-      "end_uuid": "a3fa0ced92d74f03b94e49b2eb13f824"
+      "start_uuid": "f70f3e04390f482db9102225068333ef",
+      "end_uuid": "ea3f6cbf39a544b8a41ebf92f4799837"
     },
     {
       "start_uuid": "ea3f6cbf39a544b8a41ebf92f4799837",
       "end_uuid": "e6547396d1d6462da99052a10c9de07b"
     },
     {
-      "start_uuid": "f70f3e04390f482db9102225068333ef",
-      "end_uuid": "ea3f6cbf39a544b8a41ebf92f4799837"
+      "start_uuid": "e6547396d1d6462da99052a10c9de07b",
+      "end_uuid": "a3fa0ced92d74f03b94e49b2eb13f824"
+    },
+    {
+      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
+      "end_uuid": "220761ad91914afc82283f696bf0a9db"
+    },
+    {
+      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
+      "end_uuid": "0731cdc511af469aa68270520e02510c"
+    },
+    {
+      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
+      "end_uuid": "dab397b7663f476aa759158abc3da1a2"
+    },
+    {
+      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
+      "end_uuid": "220761ad91914afc82283f696bf0a9db"
+    },
+    {
+      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
+      "end_uuid": "0731cdc511af469aa68270520e02510c"
+    },
+    {
+      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
+      "end_uuid": "9bdcafa08e3640a6bb2bab1748f7d57c"
+    },
+    {
+      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
+      "end_uuid": "220761ad91914afc82283f696bf0a9db"
+    },
+    {
+      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
+      "end_uuid": "dab397b7663f476aa759158abc3da1a2"
+    },
+    {
+      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
+      "end_uuid": "9bdcafa08e3640a6bb2bab1748f7d57c"
+    },
+    {
+      "start_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e",
+      "end_uuid": "1000f64e3b49401caaaa8f7c0b5a91ec"
+    },
+    {
+      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
+      "end_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da"
+    },
+    {
+      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
+      "end_uuid": "f70f3e04390f482db9102225068333ef"
+    },
+    {
+      "start_uuid": "2ebcf46afd9549488a5fa469c0704ed5",
+      "end_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e"
+    },
+    {
+      "start_uuid": "cf1a479bc9a140bea6f4d8615704ec28",
+      "end_uuid": "2ebcf46afd9549488a5fa469c0704ed5"
+    },
+    {
+      "start_uuid": "98cdc223d47847efb3a244d9c8b4d77d",
+      "end_uuid": "cf1a479bc9a140bea6f4d8615704ec28"
+    },
+    {
+      "start_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f",
+      "end_uuid": "98cdc223d47847efb3a244d9c8b4d77d"
+    },
+    {
+      "start_uuid": "9945553f06594b7fbbeab315fbe41e3c",
+      "end_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f"
+    },
+    {
+      "start_uuid": "6be29a6557ac40759db9728c02d21637",
+      "end_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f"
+    },
+    {
+      "start_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da",
+      "end_uuid": "40d2242069ac46158817ffee1865ecfb"
+    },
+    {
+      "start_uuid": "40d2242069ac46158817ffee1865ecfb",
+      "end_uuid": "9945553f06594b7fbbeab315fbe41e3c"
+    },
+    {
+      "start_uuid": "40d2242069ac46158817ffee1865ecfb",
+      "end_uuid": "6be29a6557ac40759db9728c02d21637"
+    },
+    {
+      "start_uuid": "e6547396d1d6462da99052a10c9de07b",
+      "end_uuid": "3d0d931a8e584be0b0e6ba26783627c4"
     }
   ],
   "viewport": {
-    "camera_x": 2550.632911392405,
-    "camera_y": 1129.1139240506327,
+    "camera_x": 2549.3670886075947,
+    "camera_y": 1127.8481012658226,
     "camera_zoom": 0.79
   },
-  "checksum": "44e4d55791881e33"
+  "ui_migrations": [
+    "image_border_default_on_v1"
+  ],
+  "checksum": "1bfbf3058fade14a"
 }
