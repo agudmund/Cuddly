@@ -570,8 +570,8 @@
       "uuid": "cf9324995cd1452b843fcc72f9e472e6",
       "x": 0.0,
       "y": 0.0,
-      "width": 776.0,
-      "height": 538.0,
+      "width": 776,
+      "height": 538,
       "z_value": 0.0,
       "ports_visible": false,
       "shelf_visible": true,
@@ -686,13 +686,13 @@
     }
   ],
   "viewport": {
-    "camera_x": 2587.492683546767,
-    "camera_y": -77.00871081984587,
-    "camera_zoom": 0.06492771982246402
+    "camera_x": 1213.3356287963306,
+    "camera_y": -1790.6120832422864,
+    "camera_zoom": 0.6634602832841783
   },
   "ui_migrations": [
     "image_border_default_on_v1"
   ],
   "last_browse_dirs": {},
-  "checksum": "465de2e60779d673"
+  "checksum": "ffdab5e8a9fde0e0"
 }
