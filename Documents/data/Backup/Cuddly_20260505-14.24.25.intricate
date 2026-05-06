@@ -50,54 +50,6 @@
       "node_id": 0,
       "node_type": "about",
       "title": "Note",
-      "uuid": "a02e5d13ce9a475ab7a319bdffb8ebc9",
-      "x": 451.2048192771099,
-      "y": -744.1605780163461,
-      "width": 747.0,
-      "height": 52.0,
-      "z_value": -9.955000000000025,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "label": "source drifted \u2014 cache no longer matches\nCuddly Duddly Fuddly Wuddly.png",
-      "depth_front": false,
-      "node_tint": ""
-    },
-    {
-      "node_id": 0,
-      "node_type": "about",
-      "title": "Note",
-      "uuid": "ca8ec598bf254162a76bd91028070d97",
-      "x": 1313.6051305542805,
-      "y": 196.71224486647827,
-      "width": 607.0,
-      "height": 52.0,
-      "z_value": -9.956000000000024,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "label": "source drifted \u2014 cache no longer matches\nModesty Scale.png",
-      "depth_front": false,
-      "node_tint": ""
-    },
-    {
-      "node_id": 0,
-      "node_type": "about",
-      "title": "Note",
-      "uuid": "21924d4d6a294f6f8c91c32eabad6598",
-      "x": 4186.890756302522,
-      "y": 2283.6951282606024,
-      "width": 677.0,
-      "height": 52.0,
-      "z_value": -9.953000000000026,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "label": "source drifted \u2014 cache no longer matches\nCuddly Fuddly Duddly.png",
-      "depth_front": false,
-      "node_tint": ""
-    },
-    {
-      "node_id": 0,
-      "node_type": "about",
-      "title": "Note",
       "uuid": "19a86c3d6705455f9678d9a868e72cc6",
       "x": 398.55882313110806,
       "y": 1161.323030113962,
@@ -183,22 +135,6 @@
       "node_id": 0,
       "node_type": "about",
       "title": "Note",
-      "uuid": "85bd0b263a3c4d2f9c5b97bdf5a8497b",
-      "x": 3234.6638655462175,
-      "y": 3150.2216656715564,
-      "width": 607.0,
-      "height": 52.0,
-      "z_value": -9.954000000000025,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "label": "source drifted \u2014 cache no longer matches\nDuddly Fuddly.png",
-      "depth_front": false,
-      "node_tint": ""
-    },
-    {
-      "node_id": 0,
-      "node_type": "about",
-      "title": "Note",
       "uuid": "d7a07d10346d4520b7c711850f422fd3",
       "x": 142.48274248274305,
       "y": -148.20794820794833,
@@ -225,22 +161,6 @@
       "shelf_visible": false,
       "label": "Bloom",
       "depth_front": true,
-      "node_tint": ""
-    },
-    {
-      "node_id": 0,
-      "node_type": "about",
-      "title": "Note",
-      "uuid": "13c083131fbb4c40a31e8621b5e7fd0d",
-      "x": 4156.4512714153,
-      "y": 254.7041645063207,
-      "width": 927.0,
-      "height": 52.0,
-      "z_value": -9.948000000000029,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "label": "source drifted \u2014 cache no longer matches\nExponential Parallel Narrative Construction a.png",
-      "depth_front": false,
       "node_tint": ""
     },
     {
@@ -314,8 +234,8 @@
       "uuid": "40d2242069ac46158817ffee1865ecfb",
       "x": 839.1012171696023,
       "y": -1528.2698918914562,
-      "width": 1256.0,
-      "height": 52.0,
+      "width": 1249.9710030867263,
+      "height": 33.9130092601788,
       "z_value": -9.984000000000009,
       "ports_visible": false,
       "shelf_visible": false,
@@ -421,38 +341,6 @@
       "source_mtime": 1769549127.7641394,
       "show_border": true,
       "depth_front": false
-    },
-    {
-      "node_id": 0,
-      "node_type": "about",
-      "title": "Note",
-      "uuid": "ab13c912fe5c4c26b4b6ebf3e2ada252",
-      "x": 5699.7899159663875,
-      "y": 1895.8823529411766,
-      "width": 607.0,
-      "height": 52.0,
-      "z_value": -9.952000000000027,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "label": "source drifted \u2014 cache no longer matches\nCuddly Fuddly.png",
-      "depth_front": false,
-      "node_tint": ""
-    },
-    {
-      "node_id": 0,
-      "node_type": "about",
-      "title": "Note",
-      "uuid": "e83d5410a1d14dbd974c0e3c884e178d",
-      "x": 5417.857142857145,
-      "y": 3032.8571428571436,
-      "width": 537.0,
-      "height": 52.0,
-      "z_value": -9.951000000000027,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "label": "source drifted \u2014 cache no longer matches\nFuddly.png",
-      "depth_front": false,
-      "node_tint": ""
     },
     {
       "node_id": 0,
@@ -674,16 +562,27 @@
       "source_mtime": 1769549128.0336134,
       "show_border": true,
       "depth_front": false
+    },
+    {
+      "node_id": 0,
+      "node_type": "info",
+      "title": "Intricate",
+      "uuid": "cf9324995cd1452b843fcc72f9e472e6",
+      "x": 0.0,
+      "y": 0.0,
+      "width": 776.0,
+      "height": 538.0,
+      "z_value": 0.0,
+      "ports_visible": false,
+      "shelf_visible": true,
+      "depth_front": false,
+      "node_tint": ""
     }
   ],
   "connections": [
     {
       "start_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f",
       "end_uuid": "98cdc223d47847efb3a244d9c8b4d77d"
-    },
-    {
-      "start_uuid": "220761ad91914afc82283f696bf0a9db",
-      "end_uuid": "21924d4d6a294f6f8c91c32eabad6598"
     },
     {
       "start_uuid": "98cdc223d47847efb3a244d9c8b4d77d",
@@ -702,20 +601,12 @@
       "end_uuid": "0731cdc511af469aa68270520e02510c"
     },
     {
-      "start_uuid": "dab397b7663f476aa759158abc3da1a2",
-      "end_uuid": "ab13c912fe5c4c26b4b6ebf3e2ada252"
-    },
-    {
       "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
       "end_uuid": "dab397b7663f476aa759158abc3da1a2"
     },
     {
       "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
       "end_uuid": "95ad6c22028843e5bd7bcba4fff43338"
-    },
-    {
-      "start_uuid": "6b9ef02d55aa41debf05e62f6821f735",
-      "end_uuid": "13c083131fbb4c40a31e8621b5e7fd0d"
     },
     {
       "start_uuid": "7ed28d29e949467391b2e02610906f1d",
@@ -736,10 +627,6 @@
     {
       "start_uuid": "40d2242069ac46158817ffee1865ecfb",
       "end_uuid": "6be29a6557ac40759db9728c02d21637"
-    },
-    {
-      "start_uuid": "0731cdc511af469aa68270520e02510c",
-      "end_uuid": "85bd0b263a3c4d2f9c5b97bdf5a8497b"
     },
     {
       "start_uuid": "7ed28d29e949467391b2e02610906f1d",
@@ -778,10 +665,6 @@
       "end_uuid": "dab397b7663f476aa759158abc3da1a2"
     },
     {
-      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
-      "end_uuid": "e83d5410a1d14dbd974c0e3c884e178d"
-    },
-    {
       "start_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da",
       "end_uuid": "40d2242069ac46158817ffee1865ecfb"
     },
@@ -794,30 +677,22 @@
       "end_uuid": "2ebcf46afd9549488a5fa469c0704ed5"
     },
     {
-      "start_uuid": "7cd9f8354ff04778b7cdd3083bf29711",
-      "end_uuid": "ca8ec598bf254162a76bd91028070d97"
-    },
-    {
       "start_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e",
       "end_uuid": "1000f64e3b49401caaaa8f7c0b5a91ec"
     },
     {
       "start_uuid": "e6547396d1d6462da99052a10c9de07b",
       "end_uuid": "3d0d931a8e584be0b0e6ba26783627c4"
-    },
-    {
-      "start_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da",
-      "end_uuid": "a02e5d13ce9a475ab7a319bdffb8ebc9"
     }
   ],
   "viewport": {
-    "camera_x": 1941.1273257644516,
-    "camera_y": 887.1455035894833,
-    "camera_zoom": 0.37761562071222254
+    "camera_x": 4354.712119372805,
+    "camera_y": -711.2903533069705,
+    "camera_zoom": 0.6439001989421635
   },
   "ui_migrations": [
     "image_border_default_on_v1"
   ],
   "last_browse_dirs": {},
-  "checksum": "be2687bb36749f2b"
+  "checksum": "e472f09a8c43139b"
 }
