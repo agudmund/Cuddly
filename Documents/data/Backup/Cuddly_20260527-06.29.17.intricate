@@ -1,6 +1,7 @@
 {
   "version": "1.0",
   "description": "",
+  "description_signature": null,
   "nodes": [
     {
       "node_id": 0,
@@ -85,8 +86,8 @@
       "uuid": "7ebda235d5de4b16b8f1c2a1241dc00e",
       "x": 3755.317031599141,
       "y": -843.1475446638465,
-      "width": 248.0,
-      "height": 52.0,
+      "width": 229.36357152907567,
+      "height": 31.810535823164628,
       "z_value": -9.974000000000014,
       "ports_visible": false,
       "shelf_visible": false,
@@ -101,8 +102,8 @@
       "uuid": "1000f64e3b49401caaaa8f7c0b5a91ec",
       "x": 3722.6872892652004,
       "y": -728.1617153968717,
-      "width": 417.0,
-      "height": 52.0,
+      "width": 384.3862501758813,
+      "height": 34.916607234985804,
       "z_value": -9.973000000000015,
       "ports_visible": false,
       "shelf_visible": false,
@@ -202,8 +203,8 @@
       "uuid": "2ebcf46afd9549488a5fa469c0704ed5",
       "x": 2911.1280906746883,
       "y": -810.4740971869345,
-      "width": 716.0,
-      "height": 52.0,
+      "width": 691.1514287054333,
+      "height": 30.25750011725404,
       "z_value": -9.978000000000012,
       "ports_visible": false,
       "shelf_visible": false,
@@ -218,8 +219,8 @@
       "uuid": "cf1a479bc9a140bea6f4d8615704ec28",
       "x": 3054.1476000999232,
       "y": -957.1304127599719,
-      "width": 1057.0,
-      "height": 52.0,
+      "width": 1039.9166072349858,
+      "height": 31.810535823164628,
       "z_value": -9.979000000000012,
       "ports_visible": false,
       "shelf_visible": false,
@@ -570,8 +571,8 @@
       "uuid": "cf9324995cd1452b843fcc72f9e472e6",
       "x": 0.0,
       "y": 0.0,
-      "width": 776,
-      "height": 538,
+      "width": 776.0,
+      "height": 538.0,
       "z_value": 0.0,
       "ports_visible": false,
       "shelf_visible": true,
@@ -686,13 +687,13 @@
     }
   ],
   "viewport": {
-    "camera_x": 1216.3501272529675,
-    "camera_y": -1790.6120832422864,
-    "camera_zoom": 0.6634602832841783
+    "camera_x": 3717.967479949535,
+    "camera_y": -80.75785670734162,
+    "camera_zoom": 0.6439001989421635
   },
   "ui_migrations": [
     "image_border_default_on_v1"
   ],
   "last_browse_dirs": {},
-  "checksum": "6a5b29be519448e4"
+  "checksum": "17caa482c3b2808f"
 }
