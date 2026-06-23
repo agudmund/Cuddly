@@ -1,5 +1,6 @@
 {
   "version": "1.0",
+  "display_name": "Cuddly",
   "description": "a soft little dev-journal of Cuddly Fuddly Duddly, half changelog and half creative pile, fluffing itself into shape",
   "description_signature": {
     "n_nodes": 33,
@@ -723,13 +724,13 @@
     }
   ],
   "viewport": {
-    "camera_x": 3716.4144442436245,
-    "camera_y": -1048.2991014895306,
-    "camera_zoom": 0.6439001989421635
+    "camera_x": 5369.038655585725,
+    "camera_y": 2058.469160028339,
+    "camera_zoom": 0.09871413375811885
   },
   "ui_migrations": [
     "image_border_default_on_v1"
   ],
   "last_browse_dirs": {},
-  "checksum": "a3fbdd5585637bc8"
+  "checksum": "9913c654638d6606"
 }
