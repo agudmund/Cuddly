@@ -42,77 +42,158 @@
   "nodes": [
     {
       "node_id": 0,
-      "node_type": "warm",
-      "title": "Infinite Wisdom",
-      "uuid": "3d0d931a8e584be0b0e6ba26783627c4",
-      "x": 207.94102177454704,
-      "y": -90.29709492016904,
-      "width": 227.81334823011076,
-      "height": 168.0,
-      "z_value": -9.993000000000004,
-      "ports_visible": false,
-      "shelf_visible": true,
-      "body_text": "I should totally create a bloom node that can read its input from an image node and then drive that into the settings.toml and will change the sprinkles into any images scatter"
-    },
-    {
-      "node_id": 0,
-      "node_type": "warm",
-      "title": "Evolve",
-      "uuid": "f3ce2c7803ef480380bd22459547aff2",
-      "x": -200.35272149935355,
-      "y": 1143.25307899741,
-      "width": 559.228355235627,
-      "height": 117.07561204576064,
-      "z_value": -9.989000000000006,
-      "ports_visible": false,
-      "shelf_visible": true,
-      "body_text": "QProgressBar::chunk {\n    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #6b5a47, stop:1 #8a7a67);\n}"
-    },
-    {
-      "node_id": 0,
-      "node_type": "about",
-      "title": "We should totally speed up the curve speed while its in motion",
-      "uuid": "2bdfee8da8fc4dd2b06fe810cd704b50",
-      "x": -528.010979138094,
-      "y": 1075.6427835325985,
-      "width": 651.954061247189,
-      "height": 33.19302432247352,
-      "z_value": -9.995000000000003,
+      "node_type": "image",
+      "title": "Image",
+      "uuid": "6b9ef02d55aa41debf05e62f6821f735",
+      "x": 4156.4512714153,
+      "y": -705.5343292933221,
+      "width": 753.7644664276947,
+      "height": 940.2384937996428,
+      "z_value": -9.971000000000016,
       "ports_visible": false,
       "shelf_visible": false,
-      "label": "We should totally speed up the curve speed while its in motion",
+      "image_b64": "",
+      "cache_key": "d966835f5c8238170d5a55a2977e53f1eb50b412c79f1fcb22349be35d3e2466",
+      "caption": "Exponential Parallel Narrative Construction",
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Exponential Parallel Narrative Construction a.png",
+      "source_size": 976006,
+      "source_mtime": 1769549128.04117,
+      "show_border": true,
+      "depth_front": false
+    },
+    {
+      "node_id": 0,
+      "node_type": "image",
+      "title": "Image",
+      "uuid": "0731cdc511af469aa68270520e02510c",
+      "x": 3234.6638655462175,
+      "y": 2682.9831932773095,
+      "width": 676.5993203010667,
+      "height": 447.23847239424686,
+      "z_value": -9.96400000000002,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "image_b64": "",
+      "cache_key": "dee5497c204a105ce097cc8e35be35d60fb5f00d37c7b0313f53f00974d3ea38",
+      "caption": "Duddly Fuddly",
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Duddly Fuddly.png",
+      "source_size": 77189,
+      "source_mtime": 1769549128.0315304,
+      "show_border": true,
+      "depth_front": false
+    },
+    {
+      "node_id": 0,
+      "node_type": "image",
+      "title": "Image",
+      "uuid": "9bdcafa08e3640a6bb2bab1748f7d57c",
+      "x": 2976.2207585737024,
+      "y": 333.0115830115828,
+      "width": 854.6829708884452,
+      "height": 568.4299027452676,
+      "z_value": -9.966000000000019,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "image_b64": "",
+      "cache_key": "4596f231e22e3c70012e0bb5d18cbd6f863a03c79cc880673d04575d3ffb60d1",
+      "caption": "Cuddly Duddly",
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Duddly.png",
+      "source_size": 118635,
+      "source_mtime": 1769549127.7641394,
+      "show_border": true,
+      "depth_front": false
+    },
+    {
+      "node_id": 0,
+      "node_type": "image",
+      "title": "Image",
+      "uuid": "76e27f619fb4458785f8a4d80a2e4847",
+      "x": 5102.14626391097,
+      "y": 263.85986827163305,
+      "width": 582.9411764705883,
+      "height": 389.11764705882354,
+      "z_value": -9.969000000000017,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "image_b64": "",
+      "cache_key": "176a610a22a69eb437fe7350b02bd189dc561d8f851993e789a3fbdcd62cc4d6",
+      "caption": "Cuddly",
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly.png",
+      "source_size": 88801,
+      "source_mtime": 1769549127.8010669,
+      "show_border": true,
+      "depth_front": false
+    },
+    {
+      "node_id": 0,
+      "node_type": "image",
+      "title": "Image",
+      "uuid": "dab397b7663f476aa759158abc3da1a2",
+      "x": 5699.7899159663875,
+      "y": 1429.4117647058824,
+      "width": 806.4705882352937,
+      "height": 446.47058823529414,
+      "z_value": -9.96500000000002,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "image_b64": "",
+      "cache_key": "4caa5a9842f7520284bf3116dcc6badfbd6e713df7fa087bd17c64b9efe83022",
+      "caption": "Cuddly Fuddly",
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Fuddly.png",
+      "source_size": 62425,
+      "source_mtime": 1769549127.799067,
+      "show_border": true,
+      "depth_front": false
+    },
+    {
+      "node_id": 0,
+      "node_type": "image",
+      "title": "Image",
+      "uuid": "7ed28d29e949467391b2e02610906f1d",
+      "x": 1993.8928003633882,
+      "y": 894.8898478310248,
+      "width": 649.195612433705,
+      "height": 503.6933671770032,
+      "z_value": -9.968000000000018,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "image_b64": "",
+      "cache_key": "fa362773173f9e9f2d7e687c4a1e4365aa3e3e328869b8daec38f2182224e517",
+      "caption": "Duddly",
+      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Duddly.png",
+      "source_size": 119703,
+      "source_mtime": 1769549128.0336134,
+      "show_border": true,
+      "depth_front": false
+    },
+    {
+      "node_id": 0,
+      "node_type": "info",
+      "title": "Intricate",
+      "uuid": "cf9324995cd1452b843fcc72f9e472e6",
+      "x": 0.0,
+      "y": 0.0,
+      "width": 776.0,
+      "height": 538.0,
+      "z_value": 0.0,
+      "ports_visible": false,
+      "shelf_visible": true,
       "depth_front": false,
       "node_tint": ""
     },
     {
       "node_id": 0,
       "node_type": "about",
-      "title": "Note",
-      "uuid": "19a86c3d6705455f9678d9a868e72cc6",
-      "x": 398.55882313110806,
-      "y": 1161.323030113962,
-      "width": 60.185174393459874,
-      "height": 32.2604463437458,
-      "z_value": -9.987000000000007,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "label": "Soft",
-      "depth_front": false,
-      "node_tint": ""
-    },
-    {
-      "node_id": 0,
-      "node_type": "about",
-      "title": "Current version: v0.0.5 \u2014 The Breath of air Era",
-      "uuid": "f70f3e04390f482db9102225068333ef",
-      "x": -459.7050928339795,
-      "y": -530.003165487507,
-      "width": 517.0,
+      "title": "Made with \u2764\ufe0f by Yours Truly, Grok, and G",
+      "uuid": "9945553f06594b7fbbeab315fbe41e3c",
+      "x": 2300.1833189391145,
+      "y": -1190.2883696994081,
+      "width": 740.0,
       "height": 52.0,
-      "z_value": -9.975000000000014,
+      "z_value": -9.972000000000016,
       "ports_visible": false,
       "shelf_visible": false,
-      "label": "Current version: v0.0.5 \u2014 The Breath of air Era",
+      "label": "Made with \u2764\ufe0f by Yours Truly, Grok, and Gemini (February 2026\u2013present)",
       "depth_front": false,
       "node_tint": ""
     },
@@ -129,6 +210,22 @@
       "ports_visible": false,
       "shelf_visible": false,
       "label": "> Cushions harmed: 0",
+      "depth_front": false,
+      "node_tint": ""
+    },
+    {
+      "node_id": 0,
+      "node_type": "about",
+      "title": "Current version: v0.0.5 \u2014 The Breath of air Era",
+      "uuid": "f70f3e04390f482db9102225068333ef",
+      "x": -459.7050928339795,
+      "y": -530.003165487507,
+      "width": 517.0,
+      "height": 52.0,
+      "z_value": -9.975000000000014,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "label": "Current version: v0.0.5 \u2014 The Breath of air Era",
       "depth_front": false,
       "node_tint": ""
     },
@@ -189,22 +286,6 @@
       "node_id": 0,
       "node_type": "about",
       "title": "Note",
-      "uuid": "e6547396d1d6462da99052a10c9de07b",
-      "x": -178.2949070718837,
-      "y": 94.81142358840202,
-      "width": 120.0,
-      "height": 55.07958894184458,
-      "z_value": 10.0,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "label": "Bloom",
-      "depth_front": true,
-      "node_tint": ""
-    },
-    {
-      "node_id": 0,
-      "node_type": "about",
-      "title": "Note",
       "uuid": "ea3f6cbf39a544b8a41ebf92f4799837",
       "x": -310.26481026480803,
       "y": -177.36827736827723,
@@ -221,15 +302,31 @@
       "node_id": 0,
       "node_type": "about",
       "title": "Note",
-      "uuid": "95ad6c22028843e5bd7bcba4fff43338",
-      "x": 5102.14626391097,
-      "y": 672.9775153304565,
-      "width": 537.0,
-      "height": 52.0,
-      "z_value": -9.94700000000003,
+      "uuid": "e6547396d1d6462da99052a10c9de07b",
+      "x": -178.2949070718837,
+      "y": 94.81142358840202,
+      "width": 120.0,
+      "height": 55.07958894184458,
+      "z_value": 10.0,
       "ports_visible": false,
       "shelf_visible": false,
-      "label": "source drifted \u2014 cache no longer matches\nCuddly.png",
+      "label": "Bloom",
+      "depth_front": true,
+      "node_tint": ""
+    },
+    {
+      "node_id": 0,
+      "node_type": "about",
+      "title": "A cozy nodal playground where ideas gently interconnect, thoughts get fluffed, and creativity finds a soft place to rest.",
+      "uuid": "40d2242069ac46158817ffee1865ecfb",
+      "x": 839.1012171696023,
+      "y": -1528.2698918914562,
+      "width": 1249.9710030867263,
+      "height": 33.9130092601788,
+      "z_value": -9.984000000000009,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "label": "A cozy nodal playground where ideas gently interconnect, thoughts get fluffed, and creativity finds a soft place to rest.",
       "depth_front": false,
       "node_tint": ""
     },
@@ -252,6 +349,22 @@
     {
       "node_id": 0,
       "node_type": "about",
+      "title": "Note",
+      "uuid": "95ad6c22028843e5bd7bcba4fff43338",
+      "x": 5102.14626391097,
+      "y": 672.9775153304565,
+      "width": 537.0,
+      "height": 52.0,
+      "z_value": -9.94700000000003,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "label": "source drifted \u2014 cache no longer matches\nCuddly.png",
+      "depth_front": false,
+      "node_tint": ""
+    },
+    {
+      "node_id": 0,
+      "node_type": "about",
       "title": "- Creative pile \u2014 audio snippets, images",
       "uuid": "cf1a479bc9a140bea6f4d8615704ec28",
       "x": 3054.1476000999232,
@@ -262,22 +375,6 @@
       "ports_visible": false,
       "shelf_visible": false,
       "label": "- Creative pile \u2014 audio snippets, images, old code treasures, documents, and lore about the Wuddlies",
-      "depth_front": false,
-      "node_tint": ""
-    },
-    {
-      "node_id": 0,
-      "node_type": "about",
-      "title": "A cozy nodal playground where ideas gently interconnect, thoughts get fluffed, and creativity finds a soft place to rest.",
-      "uuid": "40d2242069ac46158817ffee1865ecfb",
-      "x": 839.1012171696023,
-      "y": -1528.2698918914562,
-      "width": 1249.9710030867263,
-      "height": 33.9130092601788,
-      "z_value": -9.984000000000009,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "label": "A cozy nodal playground where ideas gently interconnect, thoughts get fluffed, and creativity finds a soft place to rest.",
       "depth_front": false,
       "node_tint": ""
     },
@@ -300,16 +397,16 @@
     {
       "node_id": 0,
       "node_type": "about",
-      "title": "- **Python nodal canvas** \u2014 drag, connec",
-      "uuid": "f92ae5ff31ce4ebfaad0f3828338be5f",
-      "x": 3134.8025781353203,
-      "y": -1209.2421828184447,
+      "title": "- Early MAUI experiment (`CuddlyGoesToMa",
+      "uuid": "98cdc223d47847efb3a244d9c8b4d77d",
+      "x": 3466.2365649050835,
+      "y": -1106.053709140964,
       "width": 947.0,
       "height": 52.0,
-      "z_value": -9.98100000000001,
+      "z_value": -9.980000000000011,
       "ports_visible": false,
       "shelf_visible": false,
-      "label": "- **Python nodal canvas** \u2014 drag, connect, write warm thoughts (the heart of the project)",
+      "label": "- Early MAUI experiment (`CuddlyGoesToMaui`) \u2014 dreaming of cross-platform cuddles someday",
       "depth_front": false,
       "node_tint": ""
     },
@@ -332,16 +429,32 @@
     {
       "node_id": 0,
       "node_type": "about",
-      "title": "- Early MAUI experiment (`CuddlyGoesToMa",
-      "uuid": "98cdc223d47847efb3a244d9c8b4d77d",
-      "x": 3466.2365649050835,
-      "y": -1106.053709140964,
+      "title": "- **Python nodal canvas** \u2014 drag, connec",
+      "uuid": "f92ae5ff31ce4ebfaad0f3828338be5f",
+      "x": 3134.8025781353203,
+      "y": -1209.2421828184447,
       "width": 947.0,
       "height": 52.0,
-      "z_value": -9.980000000000011,
+      "z_value": -9.98100000000001,
       "ports_visible": false,
       "shelf_visible": false,
-      "label": "- Early MAUI experiment (`CuddlyGoesToMaui`) \u2014 dreaming of cross-platform cuddles someday",
+      "label": "- **Python nodal canvas** \u2014 drag, connect, write warm thoughts (the heart of the project)",
+      "depth_front": false,
+      "node_tint": ""
+    },
+    {
+      "node_id": 0,
+      "node_type": "about",
+      "title": "Note",
+      "uuid": "cffe3c93e5864562a28f3d29ba6b46a1",
+      "x": -1298.461538461538,
+      "y": -476.92307692307685,
+      "width": 218.0,
+      "height": 52.0,
+      "z_value": -9.958000000000023,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "label": "Endless Potential",
       "depth_front": false,
       "node_tint": ""
     },
@@ -403,22 +516,6 @@
     },
     {
       "node_id": 0,
-      "node_type": "about",
-      "title": "Note",
-      "uuid": "cffe3c93e5864562a28f3d29ba6b46a1",
-      "x": -1298.461538461538,
-      "y": -476.92307692307685,
-      "width": 218.0,
-      "height": 52.0,
-      "z_value": -9.958000000000023,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "label": "Endless Potential",
-      "depth_front": false,
-      "node_tint": ""
-    },
-    {
-      "node_id": 0,
       "node_type": "image",
       "title": "Image",
       "uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da",
@@ -461,186 +558,77 @@
     },
     {
       "node_id": 0,
-      "node_type": "image",
-      "title": "Image",
-      "uuid": "9bdcafa08e3640a6bb2bab1748f7d57c",
-      "x": 2976.2207585737024,
-      "y": 333.0115830115828,
-      "width": 854.6829708884452,
-      "height": 568.4299027452676,
-      "z_value": -9.966000000000019,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "image_b64": "",
-      "cache_key": "4596f231e22e3c70012e0bb5d18cbd6f863a03c79cc880673d04575d3ffb60d1",
-      "caption": "Cuddly Duddly",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Duddly.png",
-      "source_size": 118635,
-      "source_mtime": 1769549127.7641394,
-      "show_border": true,
-      "depth_front": false
-    },
-    {
-      "node_id": 0,
-      "node_type": "image",
-      "title": "Image",
-      "uuid": "0731cdc511af469aa68270520e02510c",
-      "x": 3234.6638655462175,
-      "y": 2682.9831932773095,
-      "width": 676.5993203010667,
-      "height": 447.23847239424686,
-      "z_value": -9.96400000000002,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "image_b64": "",
-      "cache_key": "dee5497c204a105ce097cc8e35be35d60fb5f00d37c7b0313f53f00974d3ea38",
-      "caption": "Duddly Fuddly",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Duddly Fuddly.png",
-      "source_size": 77189,
-      "source_mtime": 1769549128.0315304,
-      "show_border": true,
-      "depth_front": false
-    },
-    {
-      "node_id": 0,
-      "node_type": "image",
-      "title": "Image",
-      "uuid": "6b9ef02d55aa41debf05e62f6821f735",
-      "x": 4156.4512714153,
-      "y": -705.5343292933221,
-      "width": 753.7644664276947,
-      "height": 940.2384937996428,
-      "z_value": -9.971000000000016,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "image_b64": "",
-      "cache_key": "d966835f5c8238170d5a55a2977e53f1eb50b412c79f1fcb22349be35d3e2466",
-      "caption": "Exponential Parallel Narrative Construction",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Exponential Parallel Narrative Construction a.png",
-      "source_size": 976006,
-      "source_mtime": 1769549128.04117,
-      "show_border": true,
-      "depth_front": false
-    },
-    {
-      "node_id": 0,
-      "node_type": "image",
-      "title": "Image",
-      "uuid": "dab397b7663f476aa759158abc3da1a2",
-      "x": 5699.7899159663875,
-      "y": 1429.4117647058824,
-      "width": 806.4705882352937,
-      "height": 446.47058823529414,
-      "z_value": -9.96500000000002,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "image_b64": "",
-      "cache_key": "4caa5a9842f7520284bf3116dcc6badfbd6e713df7fa087bd17c64b9efe83022",
-      "caption": "Cuddly Fuddly",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly Fuddly.png",
-      "source_size": 62425,
-      "source_mtime": 1769549127.799067,
-      "show_border": true,
-      "depth_front": false
-    },
-    {
-      "node_id": 0,
-      "node_type": "image",
-      "title": "Image",
-      "uuid": "76e27f619fb4458785f8a4d80a2e4847",
-      "x": 5102.14626391097,
-      "y": 263.85986827163305,
-      "width": 582.9411764705883,
-      "height": 389.11764705882354,
-      "z_value": -9.969000000000017,
-      "ports_visible": false,
-      "shelf_visible": false,
-      "image_b64": "",
-      "cache_key": "176a610a22a69eb437fe7350b02bd189dc561d8f851993e789a3fbdcd62cc4d6",
-      "caption": "Cuddly",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Cuddly.png",
-      "source_size": 88801,
-      "source_mtime": 1769549127.8010669,
-      "show_border": true,
-      "depth_front": false
-    },
-    {
-      "node_id": 0,
       "node_type": "about",
-      "title": "Made with \u2764\ufe0f by Yours Truly, Grok, and G",
-      "uuid": "9945553f06594b7fbbeab315fbe41e3c",
-      "x": 2300.1833189391145,
-      "y": -1190.2883696994081,
-      "width": 740.0,
-      "height": 52.0,
-      "z_value": -9.972000000000016,
+      "title": "Note",
+      "uuid": "19a86c3d6705455f9678d9a868e72cc6",
+      "x": 398.55882313110806,
+      "y": 1161.323030113962,
+      "width": 60.185174393459874,
+      "height": 32.2604463437458,
+      "z_value": -9.987000000000007,
       "ports_visible": false,
       "shelf_visible": false,
-      "label": "Made with \u2764\ufe0f by Yours Truly, Grok, and Gemini (February 2026\u2013present)",
+      "label": "Soft",
       "depth_front": false,
       "node_tint": ""
     },
     {
       "node_id": 0,
-      "node_type": "image",
-      "title": "Image",
-      "uuid": "7ed28d29e949467391b2e02610906f1d",
-      "x": 1993.8928003633882,
-      "y": 894.8898478310248,
-      "width": 649.195612433705,
-      "height": 503.6933671770032,
-      "z_value": -9.968000000000018,
+      "node_type": "warm",
+      "title": "Evolve",
+      "uuid": "f3ce2c7803ef480380bd22459547aff2",
+      "x": -200.35272149935355,
+      "y": 1143.25307899741,
+      "width": 559.228355235627,
+      "height": 117.07561204576064,
+      "z_value": -9.989000000000006,
       "ports_visible": false,
-      "shelf_visible": false,
-      "image_b64": "",
-      "cache_key": "fa362773173f9e9f2d7e687c4a1e4365aa3e3e328869b8daec38f2182224e517",
-      "caption": "Duddly",
-      "source_path": "C:\\Users\\thisg\\Desktop\\Cuddly\\Documents\\Meet the Wuddlies\\Duddly.png",
-      "source_size": 119703,
-      "source_mtime": 1769549128.0336134,
-      "show_border": true,
-      "depth_front": false
+      "shelf_visible": true,
+      "body_text": "QProgressBar::chunk {\n    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #6b5a47, stop:1 #8a7a67);\n}"
     },
     {
       "node_id": 0,
-      "node_type": "info",
-      "title": "Intricate",
-      "uuid": "cf9324995cd1452b843fcc72f9e472e6",
-      "x": 0.0,
-      "y": 0.0,
-      "width": 776.0,
-      "height": 538.0,
-      "z_value": 0.0,
+      "node_type": "warm",
+      "title": "Infinite Wisdom",
+      "uuid": "3d0d931a8e584be0b0e6ba26783627c4",
+      "x": 207.94102177454704,
+      "y": -90.29709492016904,
+      "width": 227.81334823011076,
+      "height": 168.0,
+      "z_value": -9.993000000000004,
       "ports_visible": false,
       "shelf_visible": true,
+      "body_text": "I should totally create a bloom node that can read its input from an image node and then drive that into the settings.toml and will change the sprinkles into any images scatter"
+    },
+    {
+      "node_id": 0,
+      "node_type": "about",
+      "title": "We should totally speed up the curve speed while its in motion",
+      "uuid": "2bdfee8da8fc4dd2b06fe810cd704b50",
+      "x": -528.010979138094,
+      "y": 1075.6427835325985,
+      "width": 651.954061247189,
+      "height": 33.19302432247352,
+      "z_value": -9.995000000000003,
+      "ports_visible": false,
+      "shelf_visible": false,
+      "label": "We should totally speed up the curve speed while its in motion",
       "depth_front": false,
       "node_tint": ""
     }
   ],
   "connections": [
     {
-      "start_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f",
-      "end_uuid": "98cdc223d47847efb3a244d9c8b4d77d"
-    },
-    {
-      "start_uuid": "98cdc223d47847efb3a244d9c8b4d77d",
-      "end_uuid": "cf1a479bc9a140bea6f4d8615704ec28"
-    },
-    {
-      "start_uuid": "9945553f06594b7fbbeab315fbe41e3c",
-      "end_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f"
-    },
-    {
       "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
       "end_uuid": "220761ad91914afc82283f696bf0a9db"
     },
     {
-      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
-      "end_uuid": "0731cdc511af469aa68270520e02510c"
-    },
-    {
       "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
       "end_uuid": "dab397b7663f476aa759158abc3da1a2"
+    },
+    {
+      "start_uuid": "9945553f06594b7fbbeab315fbe41e3c",
+      "end_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f"
     },
     {
       "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
@@ -655,52 +643,20 @@
       "end_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f"
     },
     {
-      "start_uuid": "ea3f6cbf39a544b8a41ebf92f4799837",
-      "end_uuid": "e6547396d1d6462da99052a10c9de07b"
+      "start_uuid": "98cdc223d47847efb3a244d9c8b4d77d",
+      "end_uuid": "cf1a479bc9a140bea6f4d8615704ec28"
     },
     {
-      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
-      "end_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da"
+      "start_uuid": "f92ae5ff31ce4ebfaad0f3828338be5f",
+      "end_uuid": "98cdc223d47847efb3a244d9c8b4d77d"
     },
     {
-      "start_uuid": "40d2242069ac46158817ffee1865ecfb",
-      "end_uuid": "6be29a6557ac40759db9728c02d21637"
-    },
-    {
-      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
+      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
       "end_uuid": "0731cdc511af469aa68270520e02510c"
     },
     {
       "start_uuid": "40d2242069ac46158817ffee1865ecfb",
-      "end_uuid": "9945553f06594b7fbbeab315fbe41e3c"
-    },
-    {
-      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
-      "end_uuid": "220761ad91914afc82283f696bf0a9db"
-    },
-    {
-      "start_uuid": "f70f3e04390f482db9102225068333ef",
-      "end_uuid": "ea3f6cbf39a544b8a41ebf92f4799837"
-    },
-    {
-      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
-      "end_uuid": "9bdcafa08e3640a6bb2bab1748f7d57c"
-    },
-    {
-      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
-      "end_uuid": "220761ad91914afc82283f696bf0a9db"
-    },
-    {
-      "start_uuid": "2ebcf46afd9549488a5fa469c0704ed5",
-      "end_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e"
-    },
-    {
-      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
-      "end_uuid": "f70f3e04390f482db9102225068333ef"
-    },
-    {
-      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
-      "end_uuid": "dab397b7663f476aa759158abc3da1a2"
+      "end_uuid": "6be29a6557ac40759db9728c02d21637"
     },
     {
       "start_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da",
@@ -711,26 +667,70 @@
       "end_uuid": "a3fa0ced92d74f03b94e49b2eb13f824"
     },
     {
-      "start_uuid": "cf1a479bc9a140bea6f4d8615704ec28",
-      "end_uuid": "2ebcf46afd9549488a5fa469c0704ed5"
+      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
+      "end_uuid": "220761ad91914afc82283f696bf0a9db"
+    },
+    {
+      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
+      "end_uuid": "fe7571f5e3aa4c7fa81e471bd2ad11da"
+    },
+    {
+      "start_uuid": "13611c0e7b3f459c8ca96855e82a43bd",
+      "end_uuid": "f70f3e04390f482db9102225068333ef"
+    },
+    {
+      "start_uuid": "2ebcf46afd9549488a5fa469c0704ed5",
+      "end_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e"
     },
     {
       "start_uuid": "7ebda235d5de4b16b8f1c2a1241dc00e",
       "end_uuid": "1000f64e3b49401caaaa8f7c0b5a91ec"
     },
     {
+      "start_uuid": "40d2242069ac46158817ffee1865ecfb",
+      "end_uuid": "9945553f06594b7fbbeab315fbe41e3c"
+    },
+    {
+      "start_uuid": "f70f3e04390f482db9102225068333ef",
+      "end_uuid": "ea3f6cbf39a544b8a41ebf92f4799837"
+    },
+    {
+      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
+      "end_uuid": "0731cdc511af469aa68270520e02510c"
+    },
+    {
       "start_uuid": "e6547396d1d6462da99052a10c9de07b",
       "end_uuid": "3d0d931a8e584be0b0e6ba26783627c4"
+    },
+    {
+      "start_uuid": "7ed28d29e949467391b2e02610906f1d",
+      "end_uuid": "220761ad91914afc82283f696bf0a9db"
+    },
+    {
+      "start_uuid": "cf1a479bc9a140bea6f4d8615704ec28",
+      "end_uuid": "2ebcf46afd9549488a5fa469c0704ed5"
+    },
+    {
+      "start_uuid": "76e27f619fb4458785f8a4d80a2e4847",
+      "end_uuid": "9bdcafa08e3640a6bb2bab1748f7d57c"
+    },
+    {
+      "start_uuid": "683245d3e333430fbafd85d2a33f1fa7",
+      "end_uuid": "dab397b7663f476aa759158abc3da1a2"
+    },
+    {
+      "start_uuid": "ea3f6cbf39a544b8a41ebf92f4799837",
+      "end_uuid": "e6547396d1d6462da99052a10c9de07b"
     }
   ],
   "viewport": {
-    "camera_x": 5369.038655585725,
-    "camera_y": 2058.469160028339,
-    "camera_zoom": 0.09871413375811885
+    "camera_x": 8555.55507922546,
+    "camera_y": -1163.97965175256,
+    "camera_zoom": 1.5428104755062795
   },
   "ui_migrations": [
     "image_border_default_on_v1"
   ],
   "last_browse_dirs": {},
-  "checksum": "9913c654638d6606"
+  "checksum": "a91a3dd91aa80b18"
 }
