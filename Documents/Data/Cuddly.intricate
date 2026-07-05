@@ -724,13 +724,13 @@
     }
   ],
   "viewport": {
-    "camera_x": 8555.55507922546,
-    "camera_y": -1163.97965175256,
+    "camera_x": 8555.166178573356,
+    "camera_y": -1164.1092853032615,
     "camera_zoom": 1.5428104755062795
   },
   "ui_migrations": [
     "image_border_default_on_v1"
   ],
   "last_browse_dirs": {},
-  "checksum": "a91a3dd91aa80b18"
+  "checksum": "a2b25c5cd0b84ee0"
 }
