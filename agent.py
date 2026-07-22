@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+-Cuddly - agent.py cookie agents wandering a graphics scene
+-The last of the cookie agents found its path across the crumbs and settled in somebody's lap, For Enjoying
+-Built using a single shared braincell by Yours Truly and various Intelligences
+"""
+
 import sys
 import numpy as np
 import math

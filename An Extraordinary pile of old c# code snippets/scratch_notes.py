@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+-Cuddly - An Extraordinary pile of old c# code snippets/scratch_notes.py loose snippet shavings
+-The last of the scratch notes kept its breathing pulse long after the window it belonged to was gone, For Enjoying
+-Built using a single shared braincell by Yours Truly and various Intelligences
+"""
 
     def _toggle_breath_pulse(self, enable: bool):
         if enable and self.progress_bar.value() == 100:
