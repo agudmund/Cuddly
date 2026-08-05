@@ -104,8 +104,13 @@ def _completions_script() -> str:
         from wuddlies.model import load_model
         from wuddlies.train import WEIGHT_PATH
         regions = load_model(WEIGHT_PATH).regions
-    except Exception:
-        pass
+    except Exception as e:
+        # Degrade gracefully (a completer without region names still
+        # completes verbs and flags) but SAY SO: a silent swallow here
+        # would ship a quietly poorer artifact and read as success, which
+        # is the family's most expensive shape of bug.
+        print(f"[desk] no regions baked in: {type(e).__name__} - {e}",
+              file=sys.stderr)
     verbs = {
         "harvest": "pull every raw source aboard",
         "cook": "raw harvest -> corpus.tsv + ledger",
