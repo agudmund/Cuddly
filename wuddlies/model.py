@@ -209,7 +209,8 @@ class WuddlyModel:
     # ── training ──────────────────────────────────────────────────────────
 
     def loss_and_step(self, ctx, reg, typ, gen, ori, target, lr: float,
-                      cul=None, pidx=None, plen=None) -> float:
+                      cul=None, pidx=None, plen=None,
+                      return_grads: bool = False):
         """One cross-entropy training step with hand-rolled Adam. Returns loss."""
         b = ctx.shape[0]
         if cul is None:
@@ -266,6 +267,10 @@ class WuddlyModel:
             dpool = (dx_p @ self.p["Wp"].T) / np.maximum(plen, 1)[:, None]
             mask = (pidx > 0)[..., None]
             np.add.at(g["Ec"], pidx, dpool[:, None, :] * mask)
+
+        if return_grads:
+            # The gradient auditor's door: analytic grads, nothing applied.
+            return loss, g
 
         self._adam_t += 1
         b1c = 1.0 - 0.9 ** self._adam_t
