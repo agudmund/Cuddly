@@ -68,6 +68,21 @@
     python -m wuddlies sample --type fullname --world population --count 20
     python -m wuddlies bias --world population
 
+**Generational time (`--generations`): the drift flows down the years.**
+Lineages descend from one seed: in surname worlds the house token flows
+verbatim, in patronymic worlds each child's name is minted from their own
+parent's actual given (four generations deep on the first pour: Sarah to
+Lupe Sarahsdóttir to Murt Lupesson to Malak Murtsson, nothing stored
+anywhere), and a per-generation drift chance (`--gen-drift`) mutates a
+settlement's program mid-history with a generation stamp in the log. The
+first drifting pour produced a complete cultural micro-history unprompted:
+one settlement flipped to family-first for a single generation and flipped
+back, then wore its particle from sson through son to sun across a
+great-grandchild's name; another lost a diacritic in one sibling line
+while the other line kept the old spelling, elders and young diverging
+inside a single family tree. The two-NPCs-spawn-more-NPCs use case stands:
+descent has a convention, and the convention runs.
+
 **The operator language, v1, and the first emergence brick (founding
 drift).** A naming convention is now a small declarative program (token
 source, order, per-gender child suffixes, inheritance marker) executed by
