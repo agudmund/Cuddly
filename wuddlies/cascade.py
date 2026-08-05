@@ -38,6 +38,7 @@ programs serialized per population: the save-format of invented cultures.
 
 from __future__ import annotations
 
+import sys
 import unicodedata
 
 import numpy as np
@@ -331,6 +332,8 @@ def pour_history(model: WuddlyModel, families_seq: np.random.SeedSequence,
                         pj["id"] += f"+initial({promoted['initial']})"
                         programs[j] = pj
             drift_log.extend(plog)
+        print(f"[world] generation {gen} poured: {len(level)} souls",
+              file=sys.stderr, flush=True)
         frontier = next_frontier
     for fam in fams:
         fam.pop("_kid_seq", None)
@@ -345,12 +348,29 @@ def pour_world(model: WuddlyModel, world_seed: int, settlements: int = 3,
                confluences: int = 0,
                roots: tuple[str, str] | None = None,
                promotions_on: bool = True,
-               temperature: float = 0.9) -> dict:
+               temperature: float = 0.9,
+               max_souls: int = 25000) -> dict:
     """One number in, one coherent history out, drift log included.
     `souls` caps children-per-parent when children_max is not given. The
     last `confluences` settlements are founded by TWO herds meeting: their
     programs recombine, and each family carries its own root region."""
     children_max = children_max or max(1, souls - 1)
+    # Honest growth arithmetic BEFORE pouring: generations are exponential,
+    # and a silent hour of grinding is not a world, it is a mistake with no
+    # narrator (field lesson, a 20-generation x3-children request, 2026-08-05).
+    mean_kids = (1 + children_max) / 2
+    expected = settlements * families * sum(mean_kids ** g
+                                            for g in range(1, generations + 1))
+    if expected > max_souls:
+        raise SystemExit(
+            f"[world] this world would pour ~{int(expected):,} souls "
+            f"({settlements} settlements x {families} families x up-to-"
+            f"{children_max} children over {generations} generations); "
+            f"the cap is {max_souls:,}.\n"
+            f"[world] for a deep DYNASTY pour a lineal saga: --children 1 "
+            f"(one heir per generation = "
+            f"{settlements * families * generations} souls).\n"
+            f"[world] or raise the cap deliberately with --max-souls.")
     root = np.random.SeedSequence(world_seed)
     out = {"seed": world_seed, "world": world, "generations": generations,
            "settlements": []}
