@@ -48,6 +48,48 @@ HIDDEN = 224
 TYPES = ("given", "surname")
 GENDERS = ("U", "M", "F")
 
+# ── the world-mix presets (the fourth floor) ──────────────────────────────
+# Fair versus realistic is a FLAG, never a training choice: the weight
+# learns each region's internal distribution truthfully, and these presets
+# only decide the cross-region mix at pour time.
+#   archive     the corpus as it honestly is (damped source mass)
+#   population  soft-proportional to real population, clamped so no giant
+#               dominates, scaled by data richness so thin regions are
+#               never hammered into repetition
+#   equal       every sufficiently-fed region gets an equal voice (the v1
+#               stand-in for Grok's equal-language-family target, which
+#               arrives with the family-axis floor)
+WORLD_MODES = ("archive", "population", "equal")
+RICHNESS_FLOOR = 50      # unique names a region needs for a full voice
+POP_CLAMP = 0.12         # no region may exceed this share in population mode
+POP_ABSENT = 0.002       # nominal share for regions missing from the table
+
+# Approximate populations in millions, mid-2020s. REFERENCE-GRADE ONLY: it
+# steers a pour preset and flags audit deltas, never poses as a data source.
+# Baked into the weight's metadata so the file stays self-contained.
+APPROX_POP_M = {
+    "CN": 1425, "IN": 1440, "US": 342, "ID": 284, "PK": 245, "NG": 229,
+    "BR": 217, "BD": 174, "RU": 144, "MX": 130, "ET": 129, "JP": 123,
+    "PH": 119, "EG": 116, "VN": 100, "CD": 102, "IR": 91, "TR": 87,
+    "DE": 84, "TH": 72, "GB": 68, "TZ": 68, "FR": 66, "ZA": 63, "IT": 59,
+    "KE": 56, "MM": 54, "KR": 52, "CO": 52, "SD": 49, "UG": 48, "ES": 48,
+    "AR": 46, "DZ": 46, "IQ": 46, "AF": 42, "CA": 39, "MA": 38, "PL": 37,
+    "UA": 37, "AO": 36, "UZ": 35, "MY": 34, "PE": 34, "GH": 34, "YE": 34,
+    "SA": 33, "MZ": 33, "NP": 31, "MG": 30, "CI": 29, "CM": 29, "VE": 28,
+    "NE": 27, "AU": 26, "TW": 23, "ML": 23, "BF": 23, "SY": 23, "LK": 22,
+    "KZ": 20, "CL": 20, "RO": 19, "EC": 18, "GT": 18, "SN": 18, "NL": 18,
+    "TD": 18, "SO": 18, "KH": 17, "ZW": 16, "GN": 14, "RW": 14, "BJ": 14,
+    "TN": 12, "BE": 12, "JO": 11, "CU": 11, "HT": 12, "BO": 12, "DO": 11,
+    "SS": 11, "AZ": 10, "SE": 11, "HU": 10, "GR": 10, "PT": 10, "CZ": 11,
+    "IL": 10, "AE": 10, "TJ": 10, "PG": 10, "AT": 9, "CH": 9, "TG": 9,
+    "HN": 10, "HK": 8, "LA": 8, "LY": 7, "PY": 7, "KG": 7, "NI": 7,
+    "RS": 7, "TM": 7, "BG": 6, "LB": 6, "DK": 6, "FI": 6, "SG": 6,
+    "NO": 6, "SK": 5, "PS": 5, "IE": 5, "OM": 5, "CR": 5, "NZ": 5,
+    "KW": 4, "HR": 4, "GE": 4, "UY": 3, "BA": 3, "AM": 3, "AL": 3,
+    "MD": 3, "LT": 3, "QA": 3, "MK": 2, "SI": 2, "LV": 2, "BH": 2,
+    "EE": 1, "CY": 1, "ME": 0.6, "LU": 0.7, "MT": 0.5, "IS": 0.4,
+}
+
 
 class WuddlyModel:
     """The librarian's brain: parameters plus forward / backward / sample."""
@@ -58,11 +100,13 @@ class WuddlyModel:
                  rng: np.random.Generator | None = None,
                  k: int = K, dim_char: int = DIM_CHAR,
                  dim_region: int = DIM_REGION, dim_type: int = DIM_TYPE,
-                 dim_gender: int = DIM_GENDER, hidden: int = HIDDEN):
+                 dim_gender: int = DIM_GENDER, hidden: int = HIDDEN,
+                 region_richness: list[int] | None = None):
         self.chars = list(chars)                      # index CHAR_BASE + i
         self.regions = list(regions)
         self.region_weights = list(region_weights or [1.0] * len(regions))
         self.gender_prior = list(gender_prior or [0.0, 0.5, 0.5])
+        self.region_richness = list(region_richness or [0] * len(regions))
         self.char_to_idx = {c: CHAR_BASE + i for i, c in enumerate(self.chars)}
         self.vocab = CHAR_BASE + len(self.chars)
         self.k, self.dim_char, self.dim_region = k, dim_char, dim_region
@@ -174,19 +218,41 @@ class WuddlyModel:
 
     # ── sampling ──────────────────────────────────────────────────────────
 
+    def region_draw_weights(self, world: str = "archive") -> np.ndarray:
+        """The cross-region mix for a world preset, normalised to sum 1."""
+        if world not in WORLD_MODES:
+            raise ValueError(f"unknown world mode '{world}' (choose from {WORLD_MODES})")
+        rich = np.asarray(self.region_richness, dtype=np.float64)
+        voice = np.minimum(1.0, rich / RICHNESS_FLOOR)     # thin regions speak softly
+        if world == "archive":
+            w = np.asarray(self.region_weights, dtype=np.float64)
+        elif world == "equal":
+            w = voice.copy()
+        else:  # population
+            pop = np.asarray([APPROX_POP_M.get(r, 0.0) for r in self.regions])
+            share = np.where(pop > 0, pop / max(pop.sum(), 1e-9), POP_ABSENT)
+            w = np.minimum(share, POP_CLAMP) * voice
+        total = w.sum()
+        if total <= 0:
+            w = np.ones(len(self.regions), dtype=np.float64)
+            total = w.sum()
+        return w / total
+
     def sample_name(self, rng: np.random.Generator, region: str | None = None,
                     name_type: str = "given", gender: str | None = None,
                     temperature: float = 0.9, max_len: int = 24,
-                    condition=None, return_details: bool = False):
+                    condition=None, return_details: bool = False,
+                    world: str = "archive"):
         """Draw one name. Deterministic for a given rng state and arguments.
         With return_details, returns (name, region, gender) so an audit can
-        see which region and gender each draw actually used."""
+        see which region and gender each draw actually used. The `world`
+        preset decides the cross-region mix when no region is pinned."""
         if condition is not None:
             raise ValueError("current weights carry no float-condition head yet; "
                              "the socket is reserved for wiring in the dish")
         if region is None:
-            w = np.asarray(self.region_weights, dtype=np.float64)
-            reg_i = int(rng.choice(len(self.regions), p=w / w.sum()))
+            w = self.region_draw_weights(world)
+            reg_i = int(rng.choice(len(self.regions), p=w))
         else:
             reg_i = self.regions.index(region)
         typ_i = TYPES.index(name_type)
@@ -233,6 +299,7 @@ def save_model(model: WuddlyModel, path: str | Path, extra_meta: dict | None = N
         "chars": json.dumps(model.chars, ensure_ascii=False),
         "regions": json.dumps(model.regions),
         "region_weights": json.dumps(model.region_weights),
+        "region_richness": json.dumps(model.region_richness),
         "gender_prior": json.dumps(model.gender_prior),
         "dims": json.dumps({"K": model.k, "char": model.dim_char,
                             "region": model.dim_region, "type": model.dim_type,
@@ -272,6 +339,7 @@ def load_model(path: str | Path) -> WuddlyModel:
         chars=json.loads(meta["chars"]),
         regions=json.loads(meta["regions"]),
         region_weights=json.loads(meta["region_weights"]),
+        region_richness=json.loads(meta.get("region_richness", "[]")) or None,
         gender_prior=json.loads(meta["gender_prior"]),
         k=int(dims.get("K", K)), dim_char=int(dims.get("char", DIM_CHAR)),
         dim_region=int(dims.get("region", DIM_REGION)),

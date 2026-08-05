@@ -98,6 +98,13 @@ def build_examples(rows, k: int, min_char_rows: int = 5, val_frac: float = 0.02,
     region_idx = {r: i for i, r in enumerate(regions)}
 
     row_w = np.asarray([float(r[4]) for r in kept]) ** 0.5
+    # The gem guard: census mega-names (a 4.4-million-count Michael) eat the
+    # gradient even after sqrt damping. A ceiling at the weight distribution's
+    # own top permille flattens the head just enough for the rare tail to keep
+    # its voice; ordering survives, and ignorance is never trained.
+    gem_ceiling = float(np.percentile(row_w, 99.5))
+    gem_clipped = int((row_w > gem_ceiling).sum())
+    row_w = np.minimum(row_w, gem_ceiling)
     region_tot = np.zeros(len(regions))
     for (name, ntype, region, gender, count), w in zip(kept, row_w):
         region_tot[region_idx[region]] += w
@@ -118,13 +125,20 @@ def build_examples(rows, k: int, min_char_rows: int = 5, val_frac: float = 0.02,
             gender_prior[gender_idx[gender]] += rw * damp[region_idx[region]]
     region_weights = (region_tot ** 0.5).tolist()
 
+    rich_sets: dict[str, set] = {}
+    for name, ntype, region, gender, count in kept:
+        rich_sets.setdefault(region, set()).add(name)
+    region_richness = [len(rich_sets.get(r, ())) for r in regions]
+
     stats = {"rows_kept": len(kept), "rows_deferred_script": deferred,
              "rows_dropped_rare_glyphs": len(rows) - deferred - len(kept),
              "rows_train": len(train_rows), "rows_val": len(val_rows),
              "examples_train": len(train_arrays[4]),
              "examples_val": len(val_arrays[4]),
-             "vocab_chars": len(chars), "regions": len(regions)}
-    return train_arrays, val_arrays, chars, regions, region_weights, gender_prior, stats
+             "vocab_chars": len(chars), "regions": len(regions),
+             "gem_ceiling": round(gem_ceiling, 1), "gem_clipped_rows": gem_clipped}
+    return (train_arrays, val_arrays, chars, regions, region_weights,
+            region_richness, gender_prior, stats)
 
 
 def train(steps: int = 24000, batch: int = 384, seed: int = 7,
@@ -138,15 +152,16 @@ def train(steps: int = 24000, batch: int = 384, seed: int = 7,
     weight_path = Path(weight_path or WEIGHT_PATH)
     curve_path = Path(curve_path or CURVE_PATH)
     rows = load_corpus()
-    (train_arr, val_arr, chars, regions, region_weights, gender_prior, stats) = \
-        build_examples(rows, k=k)
+    (train_arr, val_arr, chars, regions, region_weights, region_richness,
+     gender_prior, stats) = build_examples(rows, k=k)
     X, reg, typ, gen, y, w = train_arr
     vX, vreg, vtyp, vgen, vy, _ = val_arr
     progress(f"[rig] corpus: {stats}")
 
     rng = np.random.default_rng(seed)
     model = WuddlyModel(chars, regions, region_weights, gender_prior, rng=rng,
-                        k=k, dim_char=dim_char, hidden=hidden)
+                        k=k, dim_char=dim_char, hidden=hidden,
+                        region_richness=region_richness)
     progress(f"[rig] model: vocab={model.vocab} regions={len(regions)} "
              f"K={k} char={dim_char} hidden={hidden} params={model.n_params():,}")
 

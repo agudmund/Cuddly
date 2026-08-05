@@ -48,6 +48,9 @@ def main(argv=None) -> int:
     p_bias.add_argument("--seed", type=int, default=7)
     p_bias.add_argument("--type", default="given", choices=("given", "surname"))
     p_bias.add_argument("--weight", default=None)
+    p_bias.add_argument("--world", default="archive",
+                        choices=("archive", "population", "equal"),
+                        help="which world-mix preset to audit")
 
     p_sample = sub.add_parser("sample", help="pour souls from the weight")
     p_sample.add_argument("--region", default=None, help="ISO2 code, e.g. GB; omit for the world")
@@ -57,6 +60,9 @@ def main(argv=None) -> int:
     p_sample.add_argument("--seed", type=int, default=7)
     p_sample.add_argument("--temperature", type=float, default=0.9)
     p_sample.add_argument("--weight", default=None, help="path to a .safetensors weight")
+    p_sample.add_argument("--world", default="archive",
+                          choices=("archive", "population", "equal"),
+                          help="cross-region mix when no --region is pinned")
 
     args = parser.parse_args(argv)
 
@@ -92,7 +98,7 @@ def main(argv=None) -> int:
         from wuddlies.train import WEIGHT_PATH
         model = load_model(args.weight or WEIGHT_PATH)
         run_bias_audit(model, pours=args.pours, per=args.per, seed=args.seed,
-                       name_type=args.type)
+                       name_type=args.type, world=args.world)
         return 0
 
     if args.cmd == "sample":
@@ -100,14 +106,15 @@ def main(argv=None) -> int:
         from wuddlies.train import WEIGHT_PATH
         model = load_model(args.weight or WEIGHT_PATH)
         rng = np.random.default_rng(args.seed)
-        where = args.region or "the world"
+        where = args.region or f"the world ({args.world})"
         print(f"[desk] {args.count} {args.type} names from {where}, "
               f"seed {args.seed}, temperature {args.temperature}")
         for _ in range(args.count):
             print("   " + model.sample_name(rng, region=args.region,
                                             name_type=args.type,
                                             gender=args.gender,
-                                            temperature=args.temperature))
+                                            temperature=args.temperature,
+                                            world=args.world))
         return 0
 
     return 1

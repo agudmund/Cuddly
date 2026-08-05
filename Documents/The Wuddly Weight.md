@@ -52,13 +52,16 @@
 
 **The three-audit trend, recorded as it happened (all at 30,000 souls, seed 7):** the founding corpus poured India at a 0.09 pour-to-population ratio; the storm-partial second corpus (Western backbones landed, equalizer delayed) pushed the US from fair 0.73 to over-poured 2.52, catching the predicted e-government bias live; the third corpus (466 thousand rows, 131 regions, equalizer aboard for all 18 targets) healed Japan outright to fair band (0.59) on romanized material and multiplied the variety of every missing-half region, while pour shares moved little because notable-person counts and census counts are different units. Conclusion, per the sequencing rule: the data has now earned the population-weighting mode; pour-share repair is a weights question from here, not a data question, except where a native-script floor is the designed answer (China foremost).
 
+**The fourth floor closed the arc the same day.** With the gem guard capping census mega-names at the weight distribution's own top permille (2,331 rows clipped; the training knee stretched from 8,500 to 18,500 steps as the rare tail kept its gradient voice) and the world-mix presets shipped (`archive`, `population`, `equal`, each measured against its own declared target), the population preset put **every one of the twelve largest populations in the fair band**: India 0.79, China 0.78, the US corrected from 2.83 to 1.20, Indonesia 1.24, Pakistan 1.28, Ethiopia 1.17, Japan 1.31: at KL 0.0025 against target and 98.5 percent region coverage, with pour uniqueness rising. The founding fairness goal, representative of all humans with no bias but population, became a measured property of a command-line flag. China's remaining gap is pour *quality* rather than quantity, and its designed answer stays the native-script floor.
+
 ## Use
 
 **From the desk (run from the repo root):**
 
     python -m wuddlies sample --region IT --count 10 --seed 11
     python -m wuddlies sample --type surname --region US --count 10
-    python -m wuddlies bias
+    python -m wuddlies sample --world population --count 20
+    python -m wuddlies bias --world population
 
 **From code:** `from wuddlies import load_model`, then `model.sample_name(rng, region="FR", name_type="given")` with a `numpy.random.default_rng(seed)`. The `condition` parameter is the reserved socket and currently refuses non-None values honestly.
 
