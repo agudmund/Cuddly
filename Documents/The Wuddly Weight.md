@@ -192,6 +192,14 @@ parseable by existing C, C++, C#, and Rust readers, and the future
 ggml-C port (the true run-anywhere rail, already Vulkan-blessed on this
 machine) will read this same envelope.
 
+**And the envelope has a single-file reference runner** (`wuddly_run.py`,
+repo root, standalone by design): `pip install numpy gguf`, then one
+Python file pours givens, surnames, dreamt fulls, world presets, cultures,
+and parent-conditioned dreams from the .gguf alone: no package, no repo.
+Proven by pouring the identical golden six children of Thingaling from a
+bare folder. It is simultaneously the friend-shareable kit and the
+reference implementation every future port is judged against.
+
 ## The path to publication
 
 **The weight publishes to Hugging Face only when it has earned it.** The family pulls freely from that commons and intends to give back, and precisely because of that, nothing ships incomplete. The gates, explicit so future readers know when the day has come:
