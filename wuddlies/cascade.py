@@ -81,8 +81,10 @@ def base_program_for(region: str) -> dict:
 
 # ── the interpreter ───────────────────────────────────────────────────────
 
-def pour_token(model: WuddlyModel, rng, region: str, program: dict) -> str:
-    return model.sample_name(rng, region=region, name_type=program["token_source"])
+def pour_token(model: WuddlyModel, rng, region: str, program: dict,
+               temperature: float = 0.9) -> str:
+    return model.sample_name(rng, region=region, name_type=program["token_source"],
+                             temperature=temperature)
 
 
 def assemble(program: dict, token: str, given: str, gender: str) -> str:
@@ -214,47 +216,125 @@ def crossover(prog_a: dict, prog_b: dict, root_a: str, root_b: str,
     return prog, log
 
 
-# ── generational time ─────────────────────────────────────────────────────
+# ── the promotion watcher: accidents become traditions ────────────────────
 
-def pour_soul(model: WuddlyModel, seed_seq: np.random.SeedSequence,
-              region: str, programs: list[dict], gen: int,
-              parent_token: str, generations: int, children_max: int) -> dict:
-    """One soul and, recursively, their descendants. The token handed to a
-    child is the house name (inherited) or THIS soul's given (patronymic)."""
-    own_seq, kids_seq = seed_seq.spawn(2)
-    rng = np.random.default_rng(own_seq)
-    program = programs[min(gen, len(programs) - 1)]
-    gp = np.asarray(model.gender_prior, dtype=np.float64)
-    gender = GENDERS[int(rng.choice(len(GENDERS), p=gp / gp.sum()))]
-    given = model.sample_name(rng, region=region, name_type="given",
-                              gender=gender)
-    soul = {"given": given, "gender": gender, "gen": gen,
-            "name": assemble(program, parent_token, given, gender),
-            "children": []}
-    if gen < generations:
-        n_kids = int(rng.integers(1, children_max + 1))
-        next_program = programs[min(gen + 1, len(programs) - 1)]
-        child_token = (parent_token if next_program["token_inherits"]
-                       else given)
-        soul["children"] = [
-            pour_soul(model, ks, region, programs, gen + 1, child_token,
-                      generations, children_max)
-            for ks in kids_seq.spawn(n_kids)
-        ]
-    return soul
+INITIAL_RUN_SHARE = 0.5     # half a generation sharing a first letter
+INITIAL_RUN_MIN = 4         # ...among at least this many souls
 
 
-def pour_lineage(model: WuddlyModel, seed_seq: np.random.SeedSequence,
-                 region: str, programs: list[dict], generations: int,
-                 children_max: int) -> dict:
-    founding_rng, souls_seq = [np.random.default_rng(s) if i == 0 else s
-                               for i, s in enumerate(seed_seq.spawn(2))]
-    token = pour_token(model, founding_rng, region, programs[0])
-    n_first = int(founding_rng.integers(1, children_max + 1))
-    firstborn = [pour_soul(model, ss, region, programs, 1, token,
-                           generations, children_max)
-                 for ss in souls_seq.spawn(n_first)]
-    return {"token": token, "region": region, "souls": firstborn}
+def watch_for_promotions(gen: int, level: list, program: dict,
+                         families: list) -> tuple[dict, list[str]]:
+    """Inspect a completed generation's ACTUAL names for regularities worth
+    crystallizing. Deterministic observation, never a dice roll: the Smith
+    route in miniature. Returns the (possibly promoted) program for the
+    NEXT generation, plus log lines; family echo laws land on the family."""
+    log = []
+    prog = program
+
+    # The initial-letter run: an accident of the elders becomes law.
+    if not program.get("initial") and len(level) >= INITIAL_RUN_MIN:
+        firsts = {}
+        for soul, _fam in level:
+            c = soul["given"][:1].upper()
+            firsts[c] = firsts.get(c, 0) + 1
+        letter, count = max(firsts.items(), key=lambda kv: kv[1])
+        if count / len(level) >= INITIAL_RUN_SHARE:
+            prog = dict(program)
+            prog["initial"] = letter
+            prog["id"] = prog["id"] + f"+initial({letter})"
+            log.append(f"generation {gen} promotion: {count} of {len(level)} "
+                       f"souls happened to share the letter {letter}; the "
+                       f"accident is now tradition, and the young must carry it")
+
+    # The echo: a child bearing their parent's own name founds a custom.
+    for soul, fam in level:
+        parent_given = soul.get("parent_given")
+        if (parent_given and soul["given"] == parent_given
+                and "echo" not in fam["laws"]):
+            fam["laws"]["echo"] = soul["given"]
+            log.append(f"generation {gen} promotion: in the {fam['token']} "
+                       f"family a child received their parent's own name; "
+                       f"the name {soul['given']} now carries")
+    return prog, log
+
+
+# ── generational time, breadth-first so the watcher can see ───────────────
+
+def _pour_given(model, rng, region, gender, program, echo: str | None,
+                temperature: float = 0.9) -> str:
+    if echo:
+        return echo
+    initial = program.get("initial")
+    for _ in range(12):
+        given = model.sample_name(rng, region=region, name_type="given",
+                                  gender=gender, temperature=temperature)
+        if not initial or given[:1].upper() == initial:
+            return given
+    return given
+
+
+def pour_history(model: WuddlyModel, families_seq: np.random.SeedSequence,
+                 fam_roots: list[str], programs: list[dict],
+                 generations: int, children_max: int,
+                 drift_log: list, promotions_on: bool,
+                 temperature: float = 0.9) -> list[dict]:
+    """Pour a settlement's whole history one generation at a time, letting
+    the watcher inspect each completed generation before the next is born."""
+    n_fam = len(fam_roots)
+    fam_seqs = families_seq.spawn(n_fam)
+    fams = []
+    level = []   # (soul, family) pairs of the generation being poured
+    for froot, fseq in zip(fam_roots, fam_seqs):
+        founding, kids = fseq.spawn(2)
+        f_rng = np.random.default_rng(founding)
+        token = pour_token(model, f_rng, froot, programs[0], temperature)
+        fam = {"token": token, "region": froot, "souls": [], "laws": {},
+               "_kid_seq": kids}
+        fams.append(fam)
+
+    frontier = [(None, fam, fam["_kid_seq"]) for fam in fams]
+    for gen in range(1, generations + 1):
+        program = programs[min(gen, len(programs) - 1)]
+        level = []
+        next_frontier = []
+        for parent, fam, kid_seq in frontier:
+            own_rng = np.random.default_rng(kid_seq.spawn(1)[0])
+            n_kids = int(own_rng.integers(1, children_max + 1))
+            for ks in kid_seq.spawn(n_kids):
+                s_rng = np.random.default_rng(ks)
+                gp = np.asarray(model.gender_prior, dtype=np.float64)
+                gender = GENDERS[int(s_rng.choice(len(GENDERS), p=gp / gp.sum()))]
+                echo = fam["laws"].get("echo")
+                given = _pour_given(model, s_rng, fam["region"], gender,
+                                    program, echo, temperature)
+                token = (fam["token"] if program["token_inherits"]
+                         else (parent["given"] if parent else fam["token"]))
+                soul = {"given": given, "gender": gender, "gen": gen,
+                        "parent_given": parent["given"] if parent else None,
+                        "name": assemble(program, token, given, gender),
+                        "children": []}
+                (parent["children"] if parent else fam["souls"]).append(soul)
+                level.append((soul, fam))
+                next_frontier.append((soul, fam, ks.spawn(1)[0]))
+        if promotions_on and gen < generations:
+            promoted, plog = watch_for_promotions(gen, level,
+                                                  programs[min(gen + 1,
+                                                               len(programs) - 1)],
+                                                  fams)
+            # A promoted law flows down ALL the remaining years, not just the
+            # next one, or the watcher re-crystallizes its own tradition.
+            if promoted.get("initial"):
+                for j in range(gen + 1, len(programs)):
+                    if not programs[j].get("initial"):
+                        pj = dict(programs[j])
+                        pj["initial"] = promoted["initial"]
+                        pj["id"] += f"+initial({promoted['initial']})"
+                        programs[j] = pj
+            drift_log.extend(plog)
+        frontier = next_frontier
+    for fam in fams:
+        fam.pop("_kid_seq", None)
+    return fams
 
 
 def pour_world(model: WuddlyModel, world_seed: int, settlements: int = 3,
@@ -263,7 +343,9 @@ def pour_world(model: WuddlyModel, world_seed: int, settlements: int = 3,
                generations: int = 1, children_max: int | None = None,
                gen_drift_rate: float = GEN_DRIFT_RATE,
                confluences: int = 0,
-               roots: tuple[str, str] | None = None) -> dict:
+               roots: tuple[str, str] | None = None,
+               promotions_on: bool = True,
+               temperature: float = 0.9) -> dict:
     """One number in, one coherent history out, drift log included.
     `souls` caps children-per-parent when children_max is not given. The
     last `confluences` settlements are founded by TWO herds meeting: their
@@ -314,8 +396,9 @@ def pour_world(model: WuddlyModel, world_seed: int, settlements: int = 3,
         fam_roots = ([root_a if d_rng.random() < 0.5 else root_b
                       for _ in range(families)] if is_confluence
                      else [mint_soil] * families)
-        fams = [pour_lineage(model, fs, fr, programs, generations, children_max)
-                for fs, fr in zip(families_seq.spawn(families), fam_roots)]
+        fams = pour_history(model, families_seq, fam_roots, programs,
+                            generations, children_max, drift_log,
+                            promotions_on, temperature)
         out["settlements"].append({"region": mint_soil, "roots": s_roots,
                                    "eponym": eponym, "programs": programs,
                                    "drift": drift_log, "families": fams})
@@ -347,6 +430,8 @@ def print_world(census: dict, printer=print) -> None:
             label = ("line of" if not s["programs"][0]["token_inherits"]
                      else "house of")
             tag = f" ({fam['region']})" if s.get("roots") else ""
-            printer(f"    {label} {fam['token']}{tag}:")
+            law = fam.get("laws", {}).get("echo")
+            law_tag = f"  [the name {law} carries]" if law else ""
+            printer(f"    {label} {fam['token']}{tag}:{law_tag}")
             for i, soul in enumerate(fam["souls"]):
                 _print_soul(soul, "    ", i == len(fam["souls"]) - 1, printer)

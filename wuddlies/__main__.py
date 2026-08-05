@@ -67,6 +67,8 @@ VERBS
                                          founded by TWO roots, programs
                                          recombined, families per-root
                  --roots A,B             pin every confluence's pair
+                 --promotions on|off     the watcher: accidents become law
+                                         (initial-letter runs, the echo)
   bias         run the 30,000-soul microscope over a pour
                  --pours N (1000)  --per N (30)  --seed N (7)
                  --type T  --world W  --weight PATH
@@ -211,6 +213,10 @@ def main(argv=None) -> int:
                          help="found the last N settlements by two herds meeting")
     p_world.add_argument("--roots", default=None,
                          help="pin every confluence's pair, e.g. IN,CN")
+    p_world.add_argument("--promotions", default="on", choices=("on", "off"),
+                         help="the watcher that crystallizes accidents into law")
+    p_world.add_argument("--temperature", type=float, default=0.9,
+                         help="pour heat: calm cultures (0.65) promote more traditions")
     p_world.add_argument("--weight", default=None)
 
     p_bias = sub.add_parser("bias", help="run the bias microscope over a large pour")
@@ -304,7 +310,9 @@ def main(argv=None) -> int:
                             drift_rate=rate, generations=args.generations,
                             children_max=args.children,
                             gen_drift_rate=gen_rate,
-                            confluences=args.confluence, roots=roots)
+                            confluences=args.confluence, roots=roots,
+                            promotions_on=(args.promotions == "on"),
+                            temperature=args.temperature)
         print_world(census)
         return 0
 
