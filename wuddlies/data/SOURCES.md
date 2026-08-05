@@ -23,7 +23,7 @@ measures what survives into the pour.
 
 ## SSA givens 1880+
 
-- **Rows:** shelf empty this cook (skipped)
+- **Rows:** 111,472 rows
 - **License:** public domain (US gov)
 - **Source:** https://www.ssa.gov/oact/babynames/
 - **Known bias:** US-only by definition; names under 5 bearers suppressed at source
@@ -51,7 +51,7 @@ measures what survives into the pour.
 
 ## Wikidata notable humans
 
-- **Rows:** shelf empty this cook (skipped)
+- **Rows:** 59,063 rows
 - **License:** CC0
 - **Source:** https://query.wikidata.org/
 - **Known bias:** fame proxy, not census: skews historical, male, and toward wiki-covered cultures; counts are notable-person counts, a different unit from census counts (mixed under sqrt damping, stated here rather than hidden)

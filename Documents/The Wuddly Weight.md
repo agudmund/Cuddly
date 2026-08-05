@@ -30,9 +30,9 @@
 
 - **INSEE prénoms** (Licence Ouverte): every given name born in France 1900 onward, with counts.
 
-- **SSA givens since 1880** (public domain): the American century of first names; in transit at the time of writing.
+- **SSA givens since 1880** (public domain): the American century of first names, aboard via public-domain mirror transport (141 year files, 111 thousand aggregated name rows).
 
-- **Wikidata notable humans** (CC0): per-country aggregate queries over given and family names of notable people, the cross-script equalizer for populations under-served by machine-readable statistics; in transit at the time of writing, honest about being a fame proxy rather than a census.
+- **Wikidata notable humans** (CC0): per-country aggregate queries over given and family names of notable people, the cross-script equalizer for populations under-served by machine-readable statistics; aboard for 18 countries (59 thousand rows) through the QLever engine with the official service as fallback, honest about being a fame proxy rather than a census.
 
 - **IBGE Nomes no Brasil** (Brazilian government open data): 130 thousand first names covering 200 million people from the 2010 census; queued.
 
@@ -48,7 +48,9 @@
 
 **From the standing yardstick (30,000 souls, seed 7), at the time of writing:** uniqueness between 51 and 64 percent depending on the weight generation; mean name length 5.6 to 5.8 with a 95th percentile of 9; the most common pours are the world's actual most common names in plausible proportion (Mohamed at roughly 0.7 percent of the world pour). Training knees are measured, not assumed: the patience gate found redundancy beginning at 14,000 steps on the founding corpus at laboratory dimensions, and validation loss is tracked against a held-out two percent of rows split by row so nothing leaks.
 
-**Known rough seams, honestly:** Arabic-script output trails the romanized rows in quality; gender labels skew (M 44, F 30, U 26 at last audit) as a corpus labeling artifact with a repair path through the gender-inference table; counts from censuses and counts of notable people are different units mixed under damping, stated in the ledger pending finer calibration.
+**Known rough seams, honestly:** Arabic-script output trails the romanized rows in quality; gender labels skew (M 45, F 33, U 22 at the third audit, improving as Wikidata's labels arrive) as a corpus labeling artifact with a repair path through the gender-inference table; counts from censuses and counts of notable people are different units mixed under damping, stated in the ledger pending finer calibration.
+
+**The three-audit trend, recorded as it happened (all at 30,000 souls, seed 7):** the founding corpus poured India at a 0.09 pour-to-population ratio; the storm-partial second corpus (Western backbones landed, equalizer delayed) pushed the US from fair 0.73 to over-poured 2.52, catching the predicted e-government bias live; the third corpus (466 thousand rows, 131 regions, equalizer aboard for all 18 targets) healed Japan outright to fair band (0.59) on romanized material and multiplied the variety of every missing-half region, while pour shares moved little because notable-person counts and census counts are different units. Conclusion, per the sequencing rule: the data has now earned the population-weighting mode; pour-share repair is a weights question from here, not a data question, except where a native-script floor is the designed answer (China foremost).
 
 ## Use
 
