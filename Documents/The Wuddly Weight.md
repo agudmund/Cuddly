@@ -68,6 +68,17 @@
     python -m wuddlies sample --type fullname --world population --count 20
     python -m wuddlies bias --world population
 
+**The seed cascade (`wuddly world`) pours whole coherent worlds from one
+number:** settlements found themselves on drawn regions, families share
+names because they share seeds (SeedSequence spawning, identical forever),
+and full names assemble through the NAMING_PROGRAMS registry: the open
+dispatcher that is the convention-genesis floor's doorstep. Its first two
+hand-written anchor programs: default surname inheritance, and Iceland's
+patronymic rule executable (a parent poured at the family's founding, each
+child minted parent + sson or sdóttir by their own gender): the program
+succeeding where Iceland's fifteen corpus rows structurally never could,
+which is the whole argument for conventions-as-programs in one census.
+
 The `fullname` type pours whole souls: region drawn once, given and surname
 born there together, joined in the region's living name order (family-first
 across the CJK sphere, Vietnam, and Hungary; given-first elsewhere). The
