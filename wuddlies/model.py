@@ -459,4 +459,15 @@ def load_model(path: str | Path) -> WuddlyModel:
         start, end = info["data_offsets"]
         arr = np.frombuffer(data[start:end], dtype=np.float32).reshape(info["shape"])
         model.p[name] = arr.copy()
+    # A pre-sixth-era weight lacks the culture and parent input slices: pad
+    # W1 with ZERO rows for them, so the old brain behaves exactly as it
+    # did (zero rows contribute nothing) while wearing sockets that only
+    # come alive once a schooling trains them.
+    d_in = (model.k * model.dim_char + model.dim_region + model.dim_type
+            + model.dim_gender + model.dim_origin + CULT_PROJ + PAR_PROJ)
+    w1 = model.p["W1"]
+    if w1.shape[0] < d_in:
+        padded = np.zeros((d_in, w1.shape[1]), np.float32)
+        padded[:w1.shape[0]] = w1
+        model.p["W1"] = padded
     return model
