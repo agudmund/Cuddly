@@ -59,6 +59,10 @@ VERBS
                  --seed N (7)  --settlements N (3)  --families N (3)
                  --souls N (4)  --world W (population)  --region XX (pin)
                  --drift-rate F (0.12)   founding drift; 0 pours still worlds
+                 --generations N (1)     the years flow: lineages descend,
+                                         patronymics mint from each parent
+                 --children N (souls-1)  max children per parent
+                 --gen-drift F (0.06)    drift between generations; stamped
   bias         run the 30,000-soul microscope over a pour
                  --pours N (1000)  --per N (30)  --seed N (7)
                  --type T  --world W  --weight PATH
@@ -95,7 +99,8 @@ def _completions_script() -> str:
         "completions": "print or install this completer",
     }
     flags_world = ["--seed", "--settlements", "--families", "--souls",
-                   "--world", "--region", "--drift-rate", "--weight"]
+                   "--world", "--region", "--drift-rate", "--generations",
+                   "--children", "--gen-drift", "--weight"]
     flags = {
         "train": ["--steps", "--batch", "--seed", "--k", "--dim-char",
                    "--hidden", "--patience", "--weight-path", "--curve-path"],
@@ -191,6 +196,12 @@ def main(argv=None) -> int:
     p_world.add_argument("--region", default=None, help="pin every settlement to one region")
     p_world.add_argument("--drift-rate", type=float, default=None,
                          help="per-settlement founding drift chance (default 0.12; 0 = still)")
+    p_world.add_argument("--generations", type=int, default=1,
+                         help="how many generations flow beneath each founding (1)")
+    p_world.add_argument("--children", type=int, default=None,
+                         help="max children per parent (default: --souls minus one)")
+    p_world.add_argument("--gen-drift", type=float, default=None,
+                         help="per-generation drift chance (default 0.06; 0 = still years)")
     p_world.add_argument("--weight", default=None)
 
     p_bias = sub.add_parser("bias", help="run the bias microscope over a large pour")
@@ -261,15 +272,19 @@ def main(argv=None) -> int:
         return 0
 
     if args.cmd == "world":
-        from wuddlies.cascade import DRIFT_RATE, pour_world, print_world
+        from wuddlies.cascade import (DRIFT_RATE, GEN_DRIFT_RATE, pour_world,
+                                      print_world)
         from wuddlies.model import load_model
         from wuddlies.train import WEIGHT_PATH
         model = load_model(args.weight or WEIGHT_PATH)
         rate = DRIFT_RATE if args.drift_rate is None else args.drift_rate
+        gen_rate = GEN_DRIFT_RATE if args.gen_drift is None else args.gen_drift
         census = pour_world(model, args.seed, settlements=args.settlements,
                             families=args.families, souls=args.souls,
                             world=args.world, region=args.region,
-                            drift_rate=rate)
+                            drift_rate=rate, generations=args.generations,
+                            children_max=args.children,
+                            gen_drift_rate=gen_rate)
         print_world(census)
         return 0
 
