@@ -43,4 +43,4 @@ Current version: v0.0.3 — The Interlinking Era
 > Cushions harmed: 0  
 > But many were aggressively fluffed.
 
-Made with ❤️ by Yours Truly, Grok, and Gemini (February 2026–present)
+Made with ❤️ by Yours Truly, Grok, Gemini, and Claude (February 2026–present)
