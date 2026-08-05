@@ -68,6 +68,22 @@
     python -m wuddlies sample --type fullname --world population --count 20
     python -m wuddlies bias --world population
 
+**The operator language, v1, and the first emergence brick (founding
+drift).** A naming convention is now a small declarative program (token
+source, order, per-gender child suffixes, inheritance marker) executed by
+one interpreter: the two Earth anchors became sentences in it rather than
+functions, and new conventions are new dicts, never new branches. At each
+settlement's founding a small seeded chance mutates the inherited program
+(a particle weathers, the order flips, patronymics freeze into surnames or
+surnames go patronymic), every mutation written to the census's drift log
+so the question "what did those ones do" always has a true answer. On its
+first live pour the drift engine independently reproduced two episodes of
+real linguistic history: a settlement weathered sdóttir into sdótter (the
+actual Icelandic-to-Swedish cognate shift), and another froze its
+patronymics into standing surnames (the very process that made
+Scandinavia's -sen and -son names): emergence behaving like the world,
+unprompted. Dialable via `--drift-rate`, zero pours still worlds.
+
 **The seed cascade (`wuddly world`) pours whole coherent worlds from one
 number:** settlements found themselves on drawn regions, families share
 names because they share seeds (SeedSequence spawning, identical forever),
