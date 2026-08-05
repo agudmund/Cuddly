@@ -1,0 +1,73 @@
+# The Wuddly Weight
+
+**This is the model card for `wuddly.safetensors`, the librarian: a tiny own-trained character-level name model, documented from the living context of its birth (2026-08-05) rather than reconstructed later.** It lives here in the repo while the weight proves itself in field usage; if and when it earns publication to Hugging Face, this document matures into its public card. The standing gate, in the founder's words: nothing gets published that is incomplete or not field tested.
+
+## What it is
+
+**A conditioned character-level model that generates human given names and surnames, small enough to embed in anything.** Pure numpy at train and inference time, no framework anywhere. The current canonical weight is about 1.4 MB (roughly 400 thousand parameters at laboratory dimensions); its first-day sibling was 581 KB at 143 thousand parameters. For scale, the family's reference for "a small model" is a 25 MB TTS voice; the librarian is an order of magnitude under that with room to grow.
+
+**It exists to replace a relic.** Its ancestors are `names.py` and `NameGen.cs`, a frozen bank of one hundred names and a print loop that quote-wrapped them for pasting into C#. The weight replaces the finite list with an infinite, seeded, deterministic source: the same seed always pours the same souls, so a name can be a pure function of an NPC's identity with nothing stored anywhere.
+
+**It is a component toward a larger private scheme.** The weight serves as the naming channel of a world-generation system whose core algorithm deliberately lives off-disk and off-network. The interface honors that boundary by design: the sampler accepts an opaque seed and (in a future head) a vector of meaning-free condition floats. The weight never learns what the numbers mean; meaning is assigned at wiring time, elsewhere.
+
+## Architecture
+
+**A fixed-window MLP over characters, conditioned on region, name type, and gender.** The last K characters (K carried per-model in metadata; 4 for the first weights, 6 for the laboratory line) meet embeddings for region (ISO2), type (given or surname), and gender (M, F, U) in a concatenated input, pass through two tanh hidden layers, and produce a softmax over the character vocabulary. Training is hand-rolled Adam over cross-entropy, minutes on an ordinary CPU.
+
+**The file is fully self-contained.** The safetensors container is written and read by a minimal implementation of the format: an 8-byte little-endian header length, a JSON header mapping tensor names to dtype, shape, and data offsets, then raw float32 bytes. The character vocabulary, region list, sampler priors, and per-model dimensions travel inside the file's own metadata as JSON strings, so loading requires nothing but numpy and the format itself. The forward pass is simple enough to hand-port to C# or any other host as a dependency-free loop, which is a design goal, not an accident.
+
+**Determinism is doctrine.** Sampling takes a seeded generator; identical seed and arguments reproduce identical names forever, across machines. The intended use is hierarchical: a world seed derives region seeds, which derive settlement seeds, which derive family seeds, so coherence emerges structurally while every draw stays reproducible.
+
+## Training data and its ethics
+
+**Every source is aggregate or notable-public-record; no individual-level civilian data, ever.** The standing bars, set jointly and enforced at the license door: no electoral rolls, no voter files, no civil-registry or social-registry records, no breach-derived or scrape-derived personal datasets regardless of technical availability, and no bulk extraction against a platform's terms. Several famous large name datasets fail these bars and are refused by name in the provenance ledger. The good sources enforce gentleness themselves: the census-grade files suppress rare names at the source (SSA below five bearers, INSEE below three), which means the most identifying rows never existed in the material.
+
+**The sources, as of this writing** (the authoritative list with per-source bias notes is `wuddlies/data/SOURCES.md`):
+
+- **onomaverse/names** (CC-BY-4.0): per-country given and surname frequencies, 106 countries, the founding corpus.
+
+- **US Census surnames** (public domain): every surname with 100 or more bearers in the 2010 census.
+
+- **INSEE prénoms** (Licence Ouverte): every given name born in France 1900 onward, with counts.
+
+- **SSA givens since 1880** (public domain): the American century of first names; in transit at the time of writing.
+
+- **Wikidata notable humans** (CC0): per-country aggregate queries over given and family names of notable people, the cross-script equalizer for populations under-served by machine-readable statistics; in transit at the time of writing, honest about being a fame proxy rather than a census.
+
+- **IBGE Nomes no Brasil** (Brazilian government open data): 130 thousand first names covering 200 million people from the 2010 census; queued.
+
+**The known biases are measured, not guessed.** The repo carries a bias microscope (`python -m wuddlies bias`) that pours thirty thousand souls under a fixed seed and reports region draw shares against corpus footprint and approximate real population, script shares, gender shares, and duplication. At the time of writing it reports the founding corpus's collection footprint plainly: the Arab world and Mediterranean over-served, and roughly half of humanity (India, China, Indonesia, Pakistan, Ethiopia, Japan) drastically under-poured, with India at a pour-to-population ratio of 0.08. It also caught, live, the predicted e-government bias: when Western statistical backbones landed while the equalizer was storm-delayed, the US flipped from fair (0.73) to over-poured (2.52). Repair is data-first: the equalizer sails for the missing half before any population weighting is trusted. Nobody left out includes nobody left out of the accounting.
+
+**One deliberate deferral, stated with its reason.** CJK naming (Chinese, Japanese kanji, Korean hangul) is semantic character choice rather than phonotactic sequence, and deserves machinery that respects that; those scripts are harvested but deferred from the current weight's training rather than given a bad seat. Romanized forms participate today; the native-script floor is its own future project.
+
+## The frequency doctrine
+
+**Teach the weight the truth; put the dial on the desk.** The model trains on damped real frequencies (count to the power 0.5, with per-region damping so small countries keep a voice, and a gem guard ceiling so census mega-names cannot drown the rare tail's gradient). It therefore knows that Mohamed and Maria are common, which is what makes a poured census read human (Zipf realism: a village has three of someone and one of someone else). Diversity is then a sampling-time dial, not a training-time amputation: temperature flattens the learned distribution reversibly, surfacing the rare tail on request without ever unlearning the truth. Capping at training time would have destroyed the realism mode permanently; damping trains humility instead of ignorance.
+
+## Measured behavior
+
+**From the standing yardstick (30,000 souls, seed 7), at the time of writing:** uniqueness between 51 and 64 percent depending on the weight generation; mean name length 5.6 to 5.8 with a 95th percentile of 9; the most common pours are the world's actual most common names in plausible proportion (Mohamed at roughly 0.7 percent of the world pour). Training knees are measured, not assumed: the patience gate found redundancy beginning at 14,000 steps on the founding corpus at laboratory dimensions, and validation loss is tracked against a held-out two percent of rows split by row so nothing leaks.
+
+**Known rough seams, honestly:** Arabic-script output trails the romanized rows in quality; gender labels skew (M 44, F 30, U 26 at last audit) as a corpus labeling artifact with a repair path through the gender-inference table; counts from censuses and counts of notable people are different units mixed under damping, stated in the ledger pending finer calibration.
+
+## Use
+
+**From the desk (run from the repo root):**
+
+    python -m wuddlies sample --region IT --count 10 --seed 11
+    python -m wuddlies sample --type surname --region US --count 10
+    python -m wuddlies bias
+
+**From code:** `from wuddlies import load_model`, then `model.sample_name(rng, region="FR", name_type="given")` with a `numpy.random.default_rng(seed)`. The `condition` parameter is the reserved socket and currently refuses non-None values honestly.
+
+## The path to publication
+
+**The weight publishes to Hugging Face only when it has earned it.** The family pulls freely from that commons and intends to give back, and precisely because of that, nothing ships incomplete. The gates, explicit so future readers know when the day has come:
+
+- **Field-proven:** used in real projects over real time, with the seams that only usage finds already found.
+
+- **The missing half repaired:** the biggest-of-humanity table showing no major population under a fair-band ratio for reasons of our corpus (deliberate deferrals like the CJK floor documented instead).
+
+- **Documentation complete:** this card matured, the ledger current, the attribution honored (CC-BY sources credited in the published card), and a weight license chosen deliberately on that day rather than defaulted.
+
+Until then, this document is the weight's honest mirror: what it is, what it ate, what it still owes, and why it was built with this much care. It carries the names of real humanity, gathered the way we would want our own names gathered, For Enjoying.

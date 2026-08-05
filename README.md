@@ -30,6 +30,11 @@ Corpus provenance, with gratitude: [onomaverse/names](https://huggingface.co/dat
 (MIT). Raw downloads are gitignored and re-harvestable; the cooked corpus
 and the weight travel with the repo.
 
+The weight's own book is [Documents/The Wuddly Weight.md](Documents/The%20Wuddly%20Weight.md):
+architecture, provenance bars, measured biases, the frequency doctrine, and
+the explicit gates it must pass before it ever publishes to Hugging Face.
+The per-source ledger lives at `wuddlies/data/SOURCES.md`.
+
 ## Core vibe
 Slow, joyful building. No rush. Strip down, rebuild, affirm the cozy core.
 
