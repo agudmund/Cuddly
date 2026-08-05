@@ -68,6 +68,25 @@
     python -m wuddlies sample --type fullname --world population --count 20
     python -m wuddlies bias --world population
 
+**The promotion watcher: accidents become traditions, and the emergence
+trio is complete.** Between generations a deterministic watcher inspects
+each settlement's actually-poured names for regularities worth
+crystallizing: never a dice roll, always an observation. Two watchers ship
+first: the initial-letter run (when half a generation happens to share a
+first letter, the letter becomes law and the constrained sampler holds the
+young to it: proven live by an Egyptian village whose accidental seven-
+of-twelve Alif became a 20-of-21 tradition) and the echo (when a child
+receives their parent's own name, the family may promote it: proven by
+the House of Almar, where one chance Mohammad-begat-Mohammad now cascades
+through every descendant, daughters included: the gendered-echo variant is
+punch-listed). Promoted law flows down all remaining years. Worlds gained
+a `--temperature` dial with a truth inside it: calm cultures promote more
+traditions. The deepest watcher (token saturation with its
+embedding-neighborhood walk: the full Smith diversification) is banked
+for its own build. With this, all three genesis routes of the founding
+design run: drift, merge, promotion: the dish invents, blends, and
+canonizes, and every event carries a stamped receipt.
+
 **Merge crossover (`--confluence`, `--roots`): the herds meet.** The last N
 settlements of a world are founded by TWO herds whose programs recombine
 field-wise (token source from one, name order from the other, particles
