@@ -46,8 +46,16 @@ DIM_GENDER = 8
 DIM_ORIGIN = 12     # the name-level family axis (Arabic, Sanskrit, Germanic...)
 HIDDEN = 224
 
-TYPES = ("given", "surname")
+TYPES = ("given", "surname", "full")   # "full" arrived with the sixth era
 GENDERS = ("U", "M", "F")
+
+# The sixth era's two senses: the culture socket (eight meaning-free floats,
+# the dish's condition input finally alive) and parent-name pooling (the
+# parent's characters averaged into one vector, so patronymic assembly can
+# be DREAMT rather than coded).
+DIM_CULTURE = 8
+CULT_PROJ = 16
+PAR_PROJ = 16
 
 # ── the world-mix presets (the fourth floor) ──────────────────────────────
 # Fair versus realistic is a FLAG, never a training choice: the weight
@@ -125,7 +133,8 @@ class WuddlyModel:
         rng = rng or np.random.default_rng(0)
 
         v, r = self.vocab, len(self.regions)
-        d_in = k * dim_char + dim_region + dim_type + dim_gender + dim_origin
+        d_in = (k * dim_char + dim_region + dim_type + dim_gender + dim_origin
+                + CULT_PROJ + PAR_PROJ)
 
         def init(*shape):
             return (rng.standard_normal(shape) * 0.08).astype(np.float32)
@@ -136,6 +145,8 @@ class WuddlyModel:
             "Et": init(len(TYPES), dim_type),
             "Eg": init(len(GENDERS), dim_gender),
             "Eo": init(len(self.origins), dim_origin),
+            "Wc": init(DIM_CULTURE, CULT_PROJ),
+            "Wp": init(dim_char, PAR_PROJ),
             "W1": init(d_in, hidden), "b1": np.zeros(hidden, np.float32),
             "W2": init(hidden, hidden), "b2": np.zeros(hidden, np.float32),
             "W3": init(hidden, v), "b3": np.zeros(v, np.float32),
@@ -148,27 +159,47 @@ class WuddlyModel:
 
     # ── forward ───────────────────────────────────────────────────────────
 
-    def _input_vec(self, ctx, reg, typ, gen, ori):
+    def _parent_pool(self, pidx, plen):
+        """Mean of the parent name's char embeddings; zeros when no parent."""
+        emb = self.p["Ec"][pidx]                       # (B, P, dc)
+        mask = (pidx > 0)[..., None]                   # pad index 0 masked out
+        summed = (emb * mask).sum(axis=1)
+        return summed / np.maximum(plen, 1)[:, None]
+
+    def _input_vec(self, ctx, reg, typ, gen, ori, cul=None, pidx=None,
+                   plen=None):
         b = ctx.shape[0]
+        if cul is None:
+            cul = np.zeros((b, DIM_CULTURE), np.float32)
+        if pidx is None:
+            pool = np.zeros((b, self.dim_char), np.float32)
+        else:
+            pool = self._parent_pool(pidx, plen)
         return np.concatenate([
             self.p["Ec"][ctx].reshape(b, self.k * self.dim_char),
             self.p["Er"][reg], self.p["Et"][typ], self.p["Eg"][gen],
             self.p["Eo"][ori],
+            cul @ self.p["Wc"], pool @ self.p["Wp"],
         ], axis=1)
 
-    def forward(self, ctx, reg, typ, gen, ori):
-        x = self._input_vec(ctx, reg, typ, gen, ori)
+    def forward(self, ctx, reg, typ, gen, ori, cul=None, pidx=None, plen=None):
+        x = self._input_vec(ctx, reg, typ, gen, ori, cul, pidx, plen)
         h1 = np.tanh(x @ self.p["W1"] + self.p["b1"])
         h2 = np.tanh(h1 @ self.p["W2"] + self.p["b2"])
         logits = h2 @ self.p["W3"] + self.p["b3"]
         return logits, (x, h1, h2)
 
-    def eval_loss(self, ctx, reg, typ, gen, ori, target, batch: int = 4096) -> float:
+    def eval_loss(self, ctx, reg, typ, gen, ori, target, batch: int = 4096,
+                  cul=None, pidx=None, plen=None) -> float:
         """Mean cross-entropy over a fixed example set, no learning."""
         total, n = 0.0, ctx.shape[0]
         for s in range(0, n, batch):
             e = min(s + batch, n)
-            logits, _ = self.forward(ctx[s:e], reg[s:e], typ[s:e], gen[s:e], ori[s:e])
+            logits, _ = self.forward(
+                ctx[s:e], reg[s:e], typ[s:e], gen[s:e], ori[s:e],
+                None if cul is None else cul[s:e],
+                None if pidx is None else pidx[s:e],
+                None if plen is None else plen[s:e])
             logits -= logits.max(axis=1, keepdims=True)
             ex = np.exp(logits)
             probs = ex / ex.sum(axis=1, keepdims=True)
@@ -177,10 +208,16 @@ class WuddlyModel:
 
     # ── training ──────────────────────────────────────────────────────────
 
-    def loss_and_step(self, ctx, reg, typ, gen, ori, target, lr: float) -> float:
+    def loss_and_step(self, ctx, reg, typ, gen, ori, target, lr: float,
+                      cul=None, pidx=None, plen=None) -> float:
         """One cross-entropy training step with hand-rolled Adam. Returns loss."""
         b = ctx.shape[0]
-        logits, (x, h1, h2) = self.forward(ctx, reg, typ, gen, ori)
+        if cul is None:
+            cul = np.zeros((b, DIM_CULTURE), np.float32)
+        pool = (self._parent_pool(pidx, plen) if pidx is not None
+                else np.zeros((b, self.dim_char), np.float32))
+        logits, (x, h1, h2) = self.forward(ctx, reg, typ, gen, ori, cul,
+                                           pidx, plen)
         logits -= logits.max(axis=1, keepdims=True)
         ex = np.exp(logits)
         probs = ex / ex.sum(axis=1, keepdims=True)
@@ -219,6 +256,16 @@ class WuddlyModel:
         off += self.dim_gender
         g["Eo"] = np.zeros_like(self.p["Eo"])
         np.add.at(g["Eo"], ori, dx[:, off:off + self.dim_origin])
+        off += self.dim_origin
+        dx_c = dx[:, off:off + CULT_PROJ]
+        g["Wc"] = cul.T.astype(np.float32) @ dx_c
+        off += CULT_PROJ
+        dx_p = dx[:, off:off + PAR_PROJ]
+        g["Wp"] = pool.T.astype(np.float32) @ dx_p
+        if pidx is not None:
+            dpool = (dx_p @ self.p["Wp"].T) / np.maximum(plen, 1)[:, None]
+            mask = (pidx > 0)[..., None]
+            np.add.at(g["Ec"], pidx, dpool[:, None, :] * mask)
 
         self._adam_t += 1
         b1c = 1.0 - 0.9 ** self._adam_t
@@ -258,16 +305,32 @@ class WuddlyModel:
                     name_type: str = "given", gender: str | None = None,
                     temperature: float = 0.9, max_len: int = 24,
                     condition=None, return_details: bool = False,
-                    world: str = "archive", origin: str | None = None):
+                    world: str = "archive", origin: str | None = None,
+                    culture=None, parent: str | None = None):
         """Draw one name. Deterministic for a given rng state and arguments.
         With return_details, returns (name, region, gender) so an audit can
         see which region and gender each draw actually used. The `world`
         preset decides the cross-region mix when no region is pinned; the
         `origin` axis (Arabic, Sanskrit, Germanic, ...) is opt-in and rides
-        alongside region rather than replacing it."""
-        if condition is not None:
-            raise ValueError("current weights carry no float-condition head yet; "
-                             "the socket is reserved for wiring in the dish")
+        alongside region rather than replacing it. Since the sixth era the
+        socket is ALIVE: `culture` (eight floats; `condition` accepted as
+        its older name) locates the pour in the learned culture space, and
+        `parent` conditions patronymic dreaming on an actual name."""
+        culture = condition if condition is not None else culture
+        if name_type == "full" and self.p["Et"].shape[0] < len(TYPES):
+            raise ValueError("this weight predates the sixth era and cannot "
+                             "pour full names neurally; re-school it")
+        cul = None
+        if culture is not None:
+            cul = np.asarray(culture, dtype=np.float32).reshape(1, DIM_CULTURE)
+        pidx = plen = None
+        if parent:
+            ids = [self.char_to_idx[c] for c in parent[:20]
+                   if c in self.char_to_idx]
+            if ids:
+                pidx = np.zeros((1, 20), np.int32)
+                pidx[0, :len(ids)] = ids
+                plen = np.asarray([len(ids)])
         if region is None:
             w = self.region_draw_weights(world)
             reg_i = int(rng.choice(len(self.regions), p=w))
@@ -289,7 +352,8 @@ class WuddlyModel:
         for _ in range(max_len):
             logits, _ = self.forward(np.asarray([ctx], np.int32),
                                      np.asarray([reg_i]), np.asarray([typ_i]),
-                                     np.asarray([gen_i]), np.asarray([ori_i]))
+                                     np.asarray([gen_i]), np.asarray([ori_i]),
+                                     cul, pidx, plen)
             z = logits[0].astype(np.float64) / max(temperature, 1e-4)
             z[BOS] = -np.inf
             if len(out) < 2:

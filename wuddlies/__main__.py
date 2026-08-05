@@ -186,6 +186,11 @@ def main(argv=None) -> int:
 
     sub.add_parser("harvest", help="run the expedition: pull every raw source aboard")
     sub.add_parser("cook", help="cook the raw harvest into corpus.tsv")
+    p_teach = sub.add_parser("teach", help="pour the sixth era's curriculum of invented cultures")
+    p_teach.add_argument("--cultures", type=int, default=2000)
+    p_teach.add_argument("--lessons-per", type=int, default=30)
+    p_teach.add_argument("--seed", type=int, default=6)
+    p_teach.add_argument("--weight", default=None)
     p_comp = sub.add_parser("completions", help="print the PowerShell tab-completion script")
     p_comp.add_argument("--install", action="store_true",
                         help="write it beside the fleet and wire the profile")
@@ -201,6 +206,9 @@ def main(argv=None) -> int:
                          help="stop after N evals without validation gain (0 = run to --steps)")
     p_train.add_argument("--weight-path", default=None, help="where to save the weight")
     p_train.add_argument("--curve-path", default=None, help="where to save the lab-notebook curve")
+    p_train.add_argument("--lessons", action="store_true",
+                         help="mix in the sixth era's culture curriculum (run teach first)")
+    p_train.add_argument("--lesson-mix", type=float, default=0.35)
 
     p_world = sub.add_parser("world", help="pour a whole coherent world from one seed")
     p_world.add_argument("--seed", type=int, default=7)
@@ -247,7 +255,7 @@ def main(argv=None) -> int:
     p_sample = sub.add_parser("sample", help="pour souls from the weight")
     p_sample.add_argument("--region", default=None, help="ISO2 code, e.g. GB; omit for the world")
     p_sample.add_argument("--type", default="given",
-                          choices=("given", "surname", "fullname"))
+                          choices=("given", "surname", "fullname", "full"))
     p_sample.add_argument("--gender", default=None, choices=(None, "M", "F"))
     p_sample.add_argument("--count", type=int, default=20)
     p_sample.add_argument("--seed", type=int, default=7)
@@ -258,6 +266,10 @@ def main(argv=None) -> int:
                           help="cross-region mix when no --region is pinned")
     p_sample.add_argument("--origin", default=None,
                           help="name-level family axis, e.g. Sanskrit, Arabic, Germanic")
+    p_sample.add_argument("--culture", default=None,
+                          help="eight floats locating the pour in culture space, e.g. \"1,-1,0,0,0,0,0,0\"")
+    p_sample.add_argument("--parent", default=None,
+                          help="condition the dream on this parent's name (sixth-era weights)")
 
     args = parser.parse_args(argv)
 
@@ -293,12 +305,22 @@ def main(argv=None) -> int:
               + ", ".join(f"{r} ({n:,})" for r, n in stats["top_regions"]))
         return 0
 
+    if args.cmd == "teach":
+        from wuddlies.model import load_model
+        from wuddlies.teacher import teach
+        from wuddlies.train import WEIGHT_PATH
+        model = load_model(args.weight or WEIGHT_PATH)
+        teach(model, cultures=args.cultures, lessons_per=args.lessons_per,
+              seed=args.seed)
+        return 0
+
     if args.cmd == "train":
         from wuddlies.train import train
         train(steps=args.steps, batch=args.batch, seed=args.seed,
               k=args.k, dim_char=args.dim_char, hidden=args.hidden,
               patience=args.patience, weight_path=args.weight_path,
-              curve_path=args.curve_path)
+              curve_path=args.curve_path, lessons=args.lessons,
+              lesson_mix=args.lesson_mix)
         return 0
 
     if args.cmd == "world":
@@ -348,6 +370,10 @@ def main(argv=None) -> int:
         from wuddlies.train import WEIGHT_PATH
         model = load_model(args.weight or WEIGHT_PATH)
         rng = np.random.default_rng(args.seed)
+        culture = None
+        if args.culture:
+            import re as _re
+            culture = [float(x) for x in _re.split(r"[,\s]+", args.culture) if x]
         where = args.region or f"the world ({args.world})"
         label = "full names" if args.type == "fullname" else f"{args.type} names"
         print(f"[desk] {args.count} {label} from {where}, "
@@ -365,7 +391,11 @@ def main(argv=None) -> int:
                                                 gender=args.gender,
                                                 temperature=args.temperature,
                                                 world=args.world,
-                                                origin=args.origin))
+                                                origin=args.origin,
+                                                culture=culture,
+                                                parent=args.parent,
+                                                max_len=32 if args.type == "full"
+                                                else 24))
         return 0
 
     return 1

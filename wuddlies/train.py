@@ -204,11 +204,49 @@ def build_examples(rows, k: int, min_char_rows: int = 5, val_frac: float = 0.02,
             region_richness, gender_prior, stats)
 
 
+def build_lesson_examples(lessons, char_idx, region_idx, k: int):
+    """The sixth era's curriculum: windows over TARGET full names, each
+    example carrying its culture floats and pooled-parent indices."""
+    from wuddlies.model import DIM_CULTURE
+    type_idx = {t: i for i, t in enumerate(TYPES)}
+    gender_idx = {g: i for i, g in enumerate(GENDERS)}
+    X, reg, typ, gen, ori, y = [], [], [], [], [], []
+    culs, pidxs, plens = [], [], []
+    skipped = 0
+    for vec, region, parent, gender, target in lessons:
+        if region not in region_idx or any(c not in char_idx for c in target):
+            skipped += 1
+            continue
+        ri = region_idx[region]
+        ti = type_idx["full"]
+        gi = gender_idx.get(gender, 0)
+        pid = np.zeros(20, np.int32)
+        ids = [char_idx[c] for c in parent[:20] if c in char_idx]
+        pid[:len(ids)] = ids
+        pl = len(ids)
+        ctx = [BOS] * k
+        for ch in target:
+            X.append(list(ctx)); reg.append(ri); typ.append(ti); gen.append(gi)
+            ori.append(0); y.append(char_idx[ch])
+            culs.append(vec); pidxs.append(pid); plens.append(pl)
+            ctx = ctx[1:] + [char_idx[ch]]
+        X.append(list(ctx)); reg.append(ri); typ.append(ti); gen.append(gi)
+        ori.append(0); y.append(EOS)
+        culs.append(vec); pidxs.append(pid); plens.append(pl)
+    arrays = (np.asarray(X, np.int32), np.asarray(reg, np.int16),
+              np.asarray(typ, np.int8), np.asarray(gen, np.int8),
+              np.asarray(ori, np.int16), np.asarray(y, np.int32),
+              np.asarray(culs, np.float32), np.asarray(pidxs, np.int32),
+              np.asarray(plens, np.int32))
+    return arrays, skipped
+
+
 def train(steps: int = 60000, batch: int = 384, seed: int = 7,
           k: int = 6, dim_char: int = 32, hidden: int = 384,
           patience: int = 12, eval_every: int = 500,
           weight_path: Path | str | None = None,
           curve_path: Path | str | None = None,
+          lessons: bool = False, lesson_mix: float = 0.35,
           progress=print) -> WuddlyModel:
     """Raise a librarian. With patience > 0 the run self-stops after that many
     evals without a new best validation loss, and reports its own knee."""
@@ -230,6 +268,24 @@ def train(steps: int = 60000, batch: int = 384, seed: int = 7,
              f"params={model.n_params():,}")
 
     p = w / w.sum()
+
+    lX = None
+    if lessons:
+        from wuddlies.teacher import load_lessons
+        char_idx = {c: CHAR_BASE + i for i, c in enumerate(chars)}
+        region_idx = {r: i for i, r in enumerate(regions)}
+        raw = load_lessons()
+        split = np.random.default_rng(1234).random(len(raw)) < 0.02
+        l_train = [r for r, m in zip(raw, split) if not m]
+        l_val = [r for r, m in zip(raw, split) if m]
+        (lX, lreg, ltyp, lgen, lori, ly, lcul, lpid, lpl), lskip = \
+            build_lesson_examples(l_train, char_idx, region_idx, k)
+        (vlX, vlreg, vltyp, vlgen, vlori, vly, vlcul, vlpid, vlpl), _ = \
+            build_lesson_examples(l_val, char_idx, region_idx, k)
+        progress(f"[rig] curriculum: {len(ly):,} lesson examples "
+                 f"(+{len(vly):,} held out; {lskip} lessons skipped); "
+                 f"mix {lesson_mix:.0%}")
+
     t0 = time.perf_counter()
     running = None
     best_val, best_step, best_params, stale = float("inf"), 0, None, 0
@@ -242,12 +298,27 @@ def train(steps: int = 60000, batch: int = 384, seed: int = 7,
         for i in range(chunk):
             frac = step / max(steps, 1)
             lr = 1.5e-3 if frac < 0.6 else (7.5e-4 if frac < 0.85 else 3.75e-4)
-            idx = order[i * batch:(i + 1) * batch]
-            loss = model.loss_and_step(X[idx], reg[idx], typ[idx], gen[idx],
-                                       ori[idx], y[idx], lr)
+            if lX is not None and rng.random() < lesson_mix:
+                li = rng.integers(0, len(ly), size=batch)
+                loss = model.loss_and_step(lX[li], lreg[li], ltyp[li],
+                                           lgen[li], lori[li], ly[li], lr,
+                                           cul=lcul[li], pidx=lpid[li],
+                                           plen=lpl[li])
+            else:
+                idx = order[i * batch:(i + 1) * batch]
+                loss = model.loss_and_step(X[idx], reg[idx], typ[idx],
+                                           gen[idx], ori[idx], y[idx], lr)
             running = loss if running is None else 0.99 * running + 0.01 * loss
             step += 1
-        val = model.eval_loss(vX, vreg, vtyp, vgen, vori, vy)
+        base_val = model.eval_loss(vX, vreg, vtyp, vgen, vori, vy)
+        if lX is not None:
+            lesson_val = model.eval_loss(vlX, vlreg, vltyp, vlgen, vlori, vly,
+                                         cul=vlcul, pidx=vlpid, plen=vlpl)
+            val = lesson_val
+            extra = f"  base {base_val:.4f}"
+        else:
+            val = base_val
+            extra = ""
         elapsed = time.perf_counter() - t0
         curve.append((step, f"{running:.4f}", f"{val:.4f}", f"{elapsed:.0f}"))
         if val < best_val - 1e-4:
@@ -258,7 +329,7 @@ def train(steps: int = 60000, batch: int = 384, seed: int = 7,
             stale += 1
             marker = f"  (stale {stale}{'/' + str(patience) if patience else ''})"
         progress(f"[rig] step {step:6d}/{steps}  train {running:.4f}  "
-                 f"val {val:.4f}  ({elapsed:.0f}s){marker}")
+                 f"val {val:.4f}{extra}  ({elapsed:.0f}s){marker}")
         if patience and stale >= patience:
             progress(f"[rig] KNEE: no validation gain for {patience} evals; "
                      f"best was step {best_step} (val {best_val:.4f}). "
