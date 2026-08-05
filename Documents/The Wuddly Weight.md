@@ -68,6 +68,24 @@
     python -m wuddlies sample --type fullname --world population --count 20
     python -m wuddlies bias --world population
 
+**Merge crossover (`--confluence`, `--roots`): the herds meet.** The last N
+settlements of a world are founded by TWO herds whose programs recombine
+field-wise (token source from one, name order from the other, particles
+blending when both carry them or arriving honestly with the herd that
+does), every choice logged; families keep their root regions, so a
+confluence pours mixed houses under one hybrid law. First pour: the
+Chaney-Hoo confluence (IN × CN) put Chinese houses under Indian given-first
+order beside Indian houses, with an intermarried given arriving two
+generations in: the real dynamics of real diasporas, from a coin-flip
+crossover. In the same build, drift-born patronymics stopped importing
+Iceland's particles and now MINT their own from local soil (six poured
+names' tails, logged: a Chinese settlement invented -ong and -mùe, and
+Zhangong Waisen reads like the Sinicized patronymic it structurally is):
+invention versus inheritance, distinguished exactly as the founding design
+asked. Mainstream metric confirmed the same evening: Indian houses flow
+three generations verbatim, Chinese houses lead family-first through whole
+dynasties; Iceland stays the peculiar-catcher, not the metric.
+
 **Generational time (`--generations`): the drift flows down the years.**
 Lineages descend from one seed: in surname worlds the house token flows
 verbatim, in patronymic worlds each child's name is minted from their own
