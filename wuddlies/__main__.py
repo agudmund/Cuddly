@@ -31,13 +31,13 @@ def main(argv=None) -> int:
     sub.add_parser("cook", help="cook the raw harvest into corpus.tsv")
 
     p_train = sub.add_parser("train", help="raise the librarian from the corpus")
-    p_train.add_argument("--steps", type=int, default=24000)
+    p_train.add_argument("--steps", type=int, default=60000)
     p_train.add_argument("--batch", type=int, default=384)
     p_train.add_argument("--seed", type=int, default=7)
-    p_train.add_argument("--k", type=int, default=4, help="context window in characters")
-    p_train.add_argument("--dim-char", type=int, default=24)
-    p_train.add_argument("--hidden", type=int, default=224)
-    p_train.add_argument("--patience", type=int, default=0,
+    p_train.add_argument("--k", type=int, default=6, help="context window in characters")
+    p_train.add_argument("--dim-char", type=int, default=32)
+    p_train.add_argument("--hidden", type=int, default=384)
+    p_train.add_argument("--patience", type=int, default=12,
                          help="stop after N evals without validation gain (0 = run to --steps)")
     p_train.add_argument("--weight-path", default=None, help="where to save the weight")
     p_train.add_argument("--curve-path", default=None, help="where to save the lab-notebook curve")
@@ -63,6 +63,8 @@ def main(argv=None) -> int:
     p_sample.add_argument("--world", default="archive",
                           choices=("archive", "population", "equal"),
                           help="cross-region mix when no --region is pinned")
+    p_sample.add_argument("--origin", default=None,
+                          help="name-level family axis, e.g. Sanskrit, Arabic, Germanic")
 
     args = parser.parse_args(argv)
 
@@ -80,6 +82,9 @@ def main(argv=None) -> int:
               f"{stats['unique_chars']} unique characters")
         for src, n in stats["per_source"].items():
             print(f"[kitchen]   {src}: {n:,} rows")
+        print(f"[kitchen] origin-tagged: {stats['origin_tagged']:,} rows across "
+              f"{stats['distinct_origins']} origins; gender repaired: "
+              f"{stats['gender_repaired']:,} rows")
         print(f"[kitchen] largest regions: "
               + ", ".join(f"{r} ({n:,})" for r, n in stats["top_regions"]))
         return 0
@@ -114,7 +119,8 @@ def main(argv=None) -> int:
                                             name_type=args.type,
                                             gender=args.gender,
                                             temperature=args.temperature,
-                                            world=args.world))
+                                            world=args.world,
+                                            origin=args.origin))
         return 0
 
     return 1

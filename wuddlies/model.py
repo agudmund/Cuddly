@@ -41,8 +41,9 @@ CHAR_BASE = 2
 K = 4               # default context window, in characters
 DIM_CHAR = 24
 DIM_REGION = 16
-DIM_TYPE = 8
+DIM_TYPE = 16       # widened at the fifth schooling against type lane-bleed
 DIM_GENDER = 8
+DIM_ORIGIN = 12     # the name-level family axis (Arabic, Sanskrit, Germanic...)
 HIDDEN = 224
 
 TYPES = ("given", "surname")
@@ -101,9 +102,12 @@ class WuddlyModel:
                  k: int = K, dim_char: int = DIM_CHAR,
                  dim_region: int = DIM_REGION, dim_type: int = DIM_TYPE,
                  dim_gender: int = DIM_GENDER, hidden: int = HIDDEN,
-                 region_richness: list[int] | None = None):
+                 region_richness: list[int] | None = None,
+                 origins: list[str] | None = None,
+                 dim_origin: int = DIM_ORIGIN):
         self.chars = list(chars)                      # index CHAR_BASE + i
         self.regions = list(regions)
+        self.origins = list(origins or [""])          # index 0 = untagged
         self.region_weights = list(region_weights or [1.0] * len(regions))
         self.gender_prior = list(gender_prior or [0.0, 0.5, 0.5])
         self.region_richness = list(region_richness or [0] * len(regions))
@@ -111,10 +115,11 @@ class WuddlyModel:
         self.vocab = CHAR_BASE + len(self.chars)
         self.k, self.dim_char, self.dim_region = k, dim_char, dim_region
         self.dim_type, self.dim_gender, self.hidden = dim_type, dim_gender, hidden
+        self.dim_origin = dim_origin
         rng = rng or np.random.default_rng(0)
 
         v, r = self.vocab, len(self.regions)
-        d_in = k * dim_char + dim_region + dim_type + dim_gender
+        d_in = k * dim_char + dim_region + dim_type + dim_gender + dim_origin
 
         def init(*shape):
             return (rng.standard_normal(shape) * 0.08).astype(np.float32)
@@ -124,6 +129,7 @@ class WuddlyModel:
             "Er": init(r, dim_region),
             "Et": init(len(TYPES), dim_type),
             "Eg": init(len(GENDERS), dim_gender),
+            "Eo": init(len(self.origins), dim_origin),
             "W1": init(d_in, hidden), "b1": np.zeros(hidden, np.float32),
             "W2": init(hidden, hidden), "b2": np.zeros(hidden, np.float32),
             "W3": init(hidden, v), "b3": np.zeros(v, np.float32),
@@ -136,26 +142,27 @@ class WuddlyModel:
 
     # ── forward ───────────────────────────────────────────────────────────
 
-    def _input_vec(self, ctx, reg, typ, gen):
+    def _input_vec(self, ctx, reg, typ, gen, ori):
         b = ctx.shape[0]
         return np.concatenate([
             self.p["Ec"][ctx].reshape(b, self.k * self.dim_char),
             self.p["Er"][reg], self.p["Et"][typ], self.p["Eg"][gen],
+            self.p["Eo"][ori],
         ], axis=1)
 
-    def forward(self, ctx, reg, typ, gen):
-        x = self._input_vec(ctx, reg, typ, gen)
+    def forward(self, ctx, reg, typ, gen, ori):
+        x = self._input_vec(ctx, reg, typ, gen, ori)
         h1 = np.tanh(x @ self.p["W1"] + self.p["b1"])
         h2 = np.tanh(h1 @ self.p["W2"] + self.p["b2"])
         logits = h2 @ self.p["W3"] + self.p["b3"]
         return logits, (x, h1, h2)
 
-    def eval_loss(self, ctx, reg, typ, gen, target, batch: int = 4096) -> float:
+    def eval_loss(self, ctx, reg, typ, gen, ori, target, batch: int = 4096) -> float:
         """Mean cross-entropy over a fixed example set, no learning."""
         total, n = 0.0, ctx.shape[0]
         for s in range(0, n, batch):
             e = min(s + batch, n)
-            logits, _ = self.forward(ctx[s:e], reg[s:e], typ[s:e], gen[s:e])
+            logits, _ = self.forward(ctx[s:e], reg[s:e], typ[s:e], gen[s:e], ori[s:e])
             logits -= logits.max(axis=1, keepdims=True)
             ex = np.exp(logits)
             probs = ex / ex.sum(axis=1, keepdims=True)
@@ -164,10 +171,10 @@ class WuddlyModel:
 
     # ── training ──────────────────────────────────────────────────────────
 
-    def loss_and_step(self, ctx, reg, typ, gen, target, lr: float) -> float:
+    def loss_and_step(self, ctx, reg, typ, gen, ori, target, lr: float) -> float:
         """One cross-entropy training step with hand-rolled Adam. Returns loss."""
         b = ctx.shape[0]
-        logits, (x, h1, h2) = self.forward(ctx, reg, typ, gen)
+        logits, (x, h1, h2) = self.forward(ctx, reg, typ, gen, ori)
         logits -= logits.max(axis=1, keepdims=True)
         ex = np.exp(logits)
         probs = ex / ex.sum(axis=1, keepdims=True)
@@ -203,6 +210,9 @@ class WuddlyModel:
         off += self.dim_type
         g["Eg"] = np.zeros_like(self.p["Eg"])
         np.add.at(g["Eg"], gen, dx[:, off:off + self.dim_gender])
+        off += self.dim_gender
+        g["Eo"] = np.zeros_like(self.p["Eo"])
+        np.add.at(g["Eo"], ori, dx[:, off:off + self.dim_origin])
 
         self._adam_t += 1
         b1c = 1.0 - 0.9 ** self._adam_t
@@ -242,11 +252,13 @@ class WuddlyModel:
                     name_type: str = "given", gender: str | None = None,
                     temperature: float = 0.9, max_len: int = 24,
                     condition=None, return_details: bool = False,
-                    world: str = "archive"):
+                    world: str = "archive", origin: str | None = None):
         """Draw one name. Deterministic for a given rng state and arguments.
         With return_details, returns (name, region, gender) so an audit can
         see which region and gender each draw actually used. The `world`
-        preset decides the cross-region mix when no region is pinned."""
+        preset decides the cross-region mix when no region is pinned; the
+        `origin` axis (Arabic, Sanskrit, Germanic, ...) is opt-in and rides
+        alongside region rather than replacing it."""
         if condition is not None:
             raise ValueError("current weights carry no float-condition head yet; "
                              "the socket is reserved for wiring in the dish")
@@ -264,13 +276,14 @@ class WuddlyModel:
                 gen_i = 0
         else:
             gen_i = GENDERS.index(gender)
+        ori_i = self.origins.index(origin) if origin else 0
 
         ctx = [BOS] * self.k
         out = []
         for _ in range(max_len):
             logits, _ = self.forward(np.asarray([ctx], np.int32),
                                      np.asarray([reg_i]), np.asarray([typ_i]),
-                                     np.asarray([gen_i]))
+                                     np.asarray([gen_i]), np.asarray([ori_i]))
             z = logits[0].astype(np.float64) / max(temperature, 1e-4)
             z[BOS] = -np.inf
             if len(out) < 2:
@@ -301,9 +314,11 @@ def save_model(model: WuddlyModel, path: str | Path, extra_meta: dict | None = N
         "region_weights": json.dumps(model.region_weights),
         "region_richness": json.dumps(model.region_richness),
         "gender_prior": json.dumps(model.gender_prior),
+        "origins": json.dumps(model.origins, ensure_ascii=False),
         "dims": json.dumps({"K": model.k, "char": model.dim_char,
                             "region": model.dim_region, "type": model.dim_type,
-                            "gender": model.dim_gender, "hidden": model.hidden}),
+                            "gender": model.dim_gender, "hidden": model.hidden,
+                            "origin": model.dim_origin}),
     }
     for k, v in (extra_meta or {}).items():
         meta[k] = str(v)
@@ -341,10 +356,12 @@ def load_model(path: str | Path) -> WuddlyModel:
         region_weights=json.loads(meta["region_weights"]),
         region_richness=json.loads(meta.get("region_richness", "[]")) or None,
         gender_prior=json.loads(meta["gender_prior"]),
+        origins=json.loads(meta.get("origins", '[""]')),
         k=int(dims.get("K", K)), dim_char=int(dims.get("char", DIM_CHAR)),
         dim_region=int(dims.get("region", DIM_REGION)),
         dim_type=int(dims.get("type", DIM_TYPE)),
         dim_gender=int(dims.get("gender", DIM_GENDER)),
+        dim_origin=int(dims.get("origin", DIM_ORIGIN)),
         hidden=int(dims.get("hidden", HIDDEN)),
     )
     for name, info in header.items():

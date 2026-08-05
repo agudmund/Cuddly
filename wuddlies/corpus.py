@@ -11,18 +11,25 @@ shouts in ALL CAPS (census habits), and the real counts carried whole.
 Filtering for what a given model can chew stays the MODEL's concern
 (train.py); the kitchen never seasons away the world's diversity.
 
-Since the second harvest the kitchen is a dispatcher of ADAPTERS, one per
-source shape (the family pattern arriving on schedule): each adapter reads
-its raw shelf and yields (name, type, region, gender, count) rows, plus a
-provenance note. A missing shelf is contextual absence: reported, skipped,
-never fatal. The kitchen writes two artifacts: corpus.tsv (the faithful
-rows) and SOURCES.md (the provenance ledger: license, coverage, and the
-bias each source is known to carry, stated rather than hidden).
+The kitchen is a dispatcher of ADAPTERS, one per source shape: each reads
+its raw shelf and yields (name, type, region, gender, count, origin) rows.
+A missing shelf is contextual absence: reported, skipped, never fatal.
 
-Cross-source scale note, recorded honestly: census counts and
-notable-person counts are not the same unit. Within a region they mix
-under the trainer's count**0.5 damping, which softens the mismatch; the
-ledger says so, and a finer per-source calibration is a later floor.
+Since the fifth schooling the kitchen carries two enrichments, both from
+the harvest's own shelves rather than from any gate or guess: the ORIGIN
+column (onomaverse's name-level linguistic origin tags: Arabic, Hebrew,
+Sanskrit, Germanic, and kin: 71 percent coverage on givens: the family
+axis's substrate, at name level exactly as the melting-pot correction
+demanded), and GENDER REPAIR (given rows labeled U are joined against the
+name-gender-inference table and resolved only at 0.8 confidence or above;
+the ambiguous stay honestly U). Repairs are counted and reported, never
+silent.
+
+Outputs: corpus.tsv (name TAB type TAB region TAB gender TAB count TAB
+origin) and SOURCES.md, the provenance ledger with each source's license
+and known bias stated rather than hidden. Cross-source scale note: census
+counts and notable-person counts are different units, mixed under the
+trainer's damping; a finer calibration remains a later floor.
 """
 
 from __future__ import annotations
@@ -36,6 +43,8 @@ DATA_DIR = Path(__file__).parent / "data"
 RAW_DIR = DATA_DIR / "raw"
 CORPUS_PATH = DATA_DIR / "corpus.tsv"
 SOURCES_PATH = DATA_DIR / "SOURCES.md"
+
+GENDER_CONFIDENCE = 0.8   # repair threshold; below it, U stays U honestly
 
 
 def _uncap(name: str) -> str:
@@ -62,7 +71,8 @@ def _read_onomaverse(name_type: str, filename: str):
             gender = (row.get("gender") or "").strip().upper()
             if gender not in ("M", "F"):
                 gender = "U"
-            yield (name, name_type, region, gender, count)
+            origin = (row.get("origin") or "").strip()
+            yield (name, name_type, region, gender, count, origin)
 
 
 def adapter_onomaverse_given():
@@ -88,7 +98,7 @@ def adapter_ssa_given():
                 name, sex, count = parts
                 agg[(name.strip(), sex.strip().upper())] += int(count)
     for (name, sex), count in agg.items():
-        yield (name, "given", "US", "M" if sex == "M" else "F", count)
+        yield (name, "given", "US", "M" if sex == "M" else "F", count, "")
 
 
 def _read_census_csv(path: Path):
@@ -110,14 +120,14 @@ def adapter_census2010_surname():
     d = RAW_DIR / "census2010"
     for path in sorted(d.glob("*.csv")) if d.exists() else []:
         for name, count in _read_census_csv(path):
-            yield (name, "surname", "US", "U", count)
+            yield (name, "surname", "US", "U", count, "")
 
 
 def adapter_census2020_surname():
     d = RAW_DIR / "census2020"
     for path in sorted(d.glob("*.csv")) if d.exists() else []:
         for name, count in _read_census_csv(path):
-            yield (name, "surname", "US", "U", count)
+            yield (name, "surname", "US", "U", count, "")
 
 
 def adapter_insee_given():
@@ -140,7 +150,7 @@ def adapter_insee_given():
                 continue
             agg[(_uncap(name), "M" if sex == "1" else "F")] += count
     for (name, gender), count in agg.items():
-        yield (name, "given", "FR", gender, count)
+        yield (name, "given", "FR", gender, count, "")
 
 
 def adapter_wikidata():
@@ -153,7 +163,7 @@ def adapter_wikidata():
                 if len(parts) != 3:
                     continue
                 name, gender, count = parts
-                yield (name, "given", region, gender, int(count))
+                yield (name, "given", region, gender, int(count), "")
     for path in sorted(d.glob("*_family.tsv")) if d.exists() else []:
         region = path.name[:2]
         with open(path, "r", encoding="utf-8") as f:
@@ -162,7 +172,7 @@ def adapter_wikidata():
                 if len(parts) != 3:
                     continue
                 name, _gender, count = parts
-                yield (name, "surname", region, "U", int(count))
+                yield (name, "surname", region, "U", int(count), "")
 
 
 # (key, adapter, license, url, bias note)
@@ -193,6 +203,29 @@ ADAPTERS = (
 )
 
 
+def _load_gender_inference() -> dict[str, str]:
+    """name -> M/F where the inference table is confident; absent otherwise."""
+    path = RAW_DIR / "onomaverse" / "name-gender-inference.csv"
+    if not path.exists():
+        return {}
+    out: dict[str, str] = {}
+    with open(path, "r", encoding="utf-8", newline="") as f:
+        for row in csv.DictReader(f):
+            name = (row.get("name") or "").strip()
+            if not name:
+                continue
+            try:
+                pm = float(row.get("p_male") or 0)
+                pf = float(row.get("p_female") or 0)
+            except ValueError:
+                continue
+            if pm >= GENDER_CONFIDENCE:
+                out[name] = "M"
+            elif pf >= GENDER_CONFIDENCE:
+                out[name] = "F"
+    return out
+
+
 def cook() -> dict:
     """Cook every reachable shelf into corpus.tsv + SOURCES.md. Returns stats."""
     rows: list = []
@@ -204,16 +237,30 @@ def cook() -> dict:
             got += 1
         per_source[key] = got
 
+    # Gender repair: U-labeled given rows meet the inference table; only
+    # confident verdicts land, the rest stay honestly U.
+    inference = _load_gender_inference()
+    repaired = 0
+    if inference:
+        for i, (name, ntype, region, gender, count, origin) in enumerate(rows):
+            if ntype == "given" and gender == "U":
+                fix = inference.get(name)
+                if fix:
+                    rows[i] = (name, ntype, region, fix, count, origin)
+                    repaired += 1
+
     regions = Counter(r[2] for r in rows)
     chars = Counter()
     for r in rows:
         chars.update(r[0])
     givens = sum(1 for r in rows if r[1] == "given")
+    origin_tagged = sum(1 for r in rows if r[5])
+    origins = Counter(r[5] for r in rows if r[5])
 
     CORPUS_PATH.parent.mkdir(parents=True, exist_ok=True)
     with open(CORPUS_PATH, "w", encoding="utf-8", newline="\n") as f:
-        for name, ntype, region, gender, count in rows:
-            f.write(f"{name}\t{ntype}\t{region}\t{gender}\t{count}\n")
+        for name, ntype, region, gender, count, origin in rows:
+            f.write(f"{name}\t{ntype}\t{region}\t{gender}\t{count}\t{origin}\n")
 
     today = _dt.date.today().isoformat()
     lines = [
@@ -225,6 +272,12 @@ def cook() -> dict:
         "technical availability. Every source's known bias is stated here",
         "rather than hidden; the bias microscope (`python -m wuddlies bias`)",
         "measures what survives into the pour.",
+        "",
+        f"Enrichments this cook: {origin_tagged:,} rows carry a name-level",
+        f"origin tag (onomaverse's own column, the family axis substrate);",
+        f"{repaired:,} U-gendered given rows were repaired via the",
+        f"name-gender-inference table at >= {GENDER_CONFIDENCE} confidence",
+        "(the ambiguous stay U on purpose).",
         "",
     ]
     for key, adapter, license_, url, bias in ADAPTERS:
@@ -238,19 +291,22 @@ def cook() -> dict:
     return {
         "rows": len(rows), "givens": givens, "surnames": len(rows) - givens,
         "regions": len(regions), "unique_chars": len(chars),
+        "origin_tagged": origin_tagged, "distinct_origins": len(origins),
+        "gender_repaired": repaired,
         "per_source": per_source,
         "top_regions": regions.most_common(8),
+        "top_origins": origins.most_common(8),
     }
 
 
-def load_corpus() -> list[tuple[str, str, str, str, int]]:
-    """Read corpus.tsv back as (name, type, region, gender, weight) tuples."""
+def load_corpus() -> list[tuple[str, str, str, str, int, str]]:
+    """Read corpus.tsv back as (name, type, region, gender, weight, origin)."""
     out = []
     with open(CORPUS_PATH, "r", encoding="utf-8") as f:
         for line in f:
             parts = line.rstrip("\n").split("\t")
-            if len(parts) != 5:
+            if len(parts) != 6:
                 continue
-            name, ntype, region, gender, weight = parts
-            out.append((name, ntype, region, gender, int(weight)))
+            name, ntype, region, gender, weight, origin = parts
+            out.append((name, ntype, region, gender, int(weight), origin))
     return out

@@ -7,6 +7,12 @@ technical availability. Every source's known bias is stated here
 rather than hidden; the bias microscope (`python -m wuddlies bias`)
 measures what survives into the pour.
 
+Enrichments this cook: 62,868 rows carry a name-level
+origin tag (onomaverse's own column, the family axis substrate);
+11,662 U-gendered given rows were repaired via the
+name-gender-inference table at >= 0.8 confidence
+(the ambiguous stay U on purpose).
+
 ## onomaverse given
 
 - **Rows:** 53,868 rows

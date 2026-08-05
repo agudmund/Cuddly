@@ -58,7 +58,7 @@ def corpus_region_shares():
     from wuddlies.corpus import load_corpus
     rows = Counter()
     counts = Counter()
-    for name, ntype, region, gender, count in load_corpus():
+    for name, ntype, region, gender, count, origin in load_corpus():
         rows[region] += 1
         counts[region] += count
     trow = sum(rows.values())
@@ -106,6 +106,20 @@ def run_bias_audit(model, pours: int = 1000, per: int = 30, seed: int = 7,
              + ", ".join(f"{g}: {100 * c / n:.1f}%" for g, c in gender_draws.most_common()))
     progress("[microscope] output scripts: "
              + ", ".join(f"{s}: {100 * c / n:.2f}%" for s, c in scripts.most_common()))
+
+    if name_type == "surname":
+        # Lane fidelity: how many poured surnames exist in the corpus ONLY as
+        # given names (type conditioning bleeding across lanes).
+        from wuddlies.corpus import load_corpus
+        seen_as: dict[str, set] = {}
+        for nm, ntype, *_ in load_corpus():
+            seen_as.setdefault(nm, set()).add(ntype)
+        bleed = sum(c for nm, c in names.items()
+                    if seen_as.get(nm) == {"given"})
+        known = sum(c for nm, c in names.items() if nm in seen_as)
+        progress(f"[microscope] lane fidelity: {100 * bleed / n:.2f}% of pours are "
+                 f"corpus given-ONLY names in the surname lane "
+                 f"({100 * known / n:.1f}% of pours are corpus-known at all)")
 
     # ── the distributional metrics (the Grok pass) ────────────────────────
     target = model.region_draw_weights(world)
