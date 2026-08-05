@@ -1,7 +1,10 @@
 # -Cuddly - requirements.in pip dependency set
-# -The last of the cuddly package list held its two dependencies close and would not let go, For Enjoying
+# -The last of the cuddly package list held its handful of dependencies close and would not let go, For Enjoying
 # -Built using a single shared braincell by Yours Truly and various Intelligences
 # No version pins; Python is the floor, pip resolves the rest.
 
 PySide6                 # Qt bindings
 numpy                   # array math
+gguf                    # the Wuddlies interchange envelope (reader + writer);
+                        # editable from the llama.cpp clone on this machine,
+                        # pip-installable anywhere else

@@ -43,8 +43,14 @@ than merely last ones.
 
 from __future__ import annotations
 
+import functools
 import time
 from pathlib import Path
+
+# A long schooling narrates live or not at all: block-buffered stdout hid an
+# entire distillation behind an empty log (field 2026-08-05, the same lesson
+# the expedition rig learned an hour earlier). Every print here flushes.
+print = functools.partial(print, flush=True)
 
 import numpy as np
 
