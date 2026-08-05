@@ -78,6 +78,49 @@ def export_gguf(weight_path: str | Path, out_path: str | Path | None = None,
     return out_path
 
 
+def _field(reader, key):
+    """One metadata field's value, tolerant across gguf-py vintages."""
+    f = reader.fields.get(key)
+    if f is None:
+        return None
+    if hasattr(f, "contents"):
+        return f.contents()
+    # Older vintages: decode parts by type manually (arrays of str/num).
+    vals = [f.parts[i] for i in f.data]
+    out = []
+    for v in vals:
+        out.append(bytes(v).decode("utf-8") if v.dtype == np.uint8
+                   else v.item() if v.size == 1 else v.tolist())
+    return out if len(out) != 1 else out[0]
+
+
+def load_gguf(gguf_path: str | Path) -> WuddlyModel:
+    """Reconstruct the living librarian from the envelope ALONE: the exact
+    operation every port performs, exercised here in the home language."""
+    import gguf
+
+    reader = gguf.GGUFReader(str(gguf_path))
+    model = WuddlyModel(
+        chars=list(_field(reader, "wuddly.chars")),
+        regions=list(_field(reader, "wuddly.regions")),
+        region_weights=[float(x) for x in _field(reader, "wuddly.region_weights")],
+        region_richness=[int(x) for x in _field(reader, "wuddly.region_richness")],
+        gender_prior=[float(x) for x in _field(reader, "wuddly.gender_prior")],
+        origins=list(_field(reader, "wuddly.origins")),
+        k=int(_field(reader, "wuddly.context_chars")),
+        dim_char=int(_field(reader, "wuddly.dim.char")),
+        dim_region=int(_field(reader, "wuddly.dim.region")),
+        dim_type=int(_field(reader, "wuddly.dim.type")),
+        dim_gender=int(_field(reader, "wuddly.dim.gender")),
+        dim_origin=int(_field(reader, "wuddly.dim.origin")),
+        hidden=int(_field(reader, "wuddly.hidden")),
+    )
+    for t in reader.tensors:
+        model.p[t.name] = np.asarray(t.data, dtype=np.float32).reshape(
+            model.p[t.name].shape).copy()
+    return model
+
+
 def verify_gguf(gguf_path: str | Path, weight_path: str | Path,
                 progress=print) -> bool:
     """Round-trip proof: read the envelope back and compare every tensor
