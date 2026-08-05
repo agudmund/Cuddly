@@ -29,6 +29,7 @@ Arabic and Hebrew natively.
 
 from __future__ import annotations
 
+import functools
 import io
 import json
 import time
@@ -36,6 +37,11 @@ import urllib.parse
 import urllib.request
 import zipfile
 from pathlib import Path
+
+# A voyage narrates live or not at all: block-buffered stdout hid an entire
+# failing Wave 2 behind an empty log (field 2026-08-05, the run_echoed lesson
+# arriving here). Every print in this rig flushes.
+print = functools.partial(print, flush=True)
 
 RAW_DIR = Path(__file__).parent / "data" / "raw"
 UA = "WuddliesHarvest/0.1 (the Cuddly family's naming channel; local research use)"
@@ -45,10 +51,34 @@ UA = "WuddliesHarvest/0.1 (the Cuddly family's naming channel; local research us
 BROWSER_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
               "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
 # Wikidata's query service declared an outage-era emergency rule (797a132):
-# one request per minute. The expedition bows to the declared pace exactly.
+# one request per minute. The expedition bows to the declared pace exactly
+# whenever it speaks to WDQS. QLever (University of Freiburg's public SPARQL
+# engine over the same Wikidata data, CC0 all the way down) is the PRIMARY
+# endpoint for these heavy aggregations: it is built for them, and the
+# queries are written in portable SPARQL (no Blazegraph label service) so
+# both endpoints understand the same text. Field lesson 2026-08-05: the
+# label-service GROUP BY queries died server-side under outage recovery
+# while trivial probes passed; cheap portable shapes are the cure.
 WDQS_BOW_SECONDS = 65
+QLEVER_BOW_SECONDS = 3
+SPARQL_ENDPOINTS = (
+    ("qlever", "https://qlever.cs.uni-freiburg.de/api/wikidata", QLEVER_BOW_SECONDS),
+    ("wdqs", "https://query.wikidata.org/sparql", WDQS_BOW_SECONDS),
+)
 
-SSA_URL = "https://www.ssa.gov/oact/babynames/names.zip"
+_PREFIXES = """PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+"""
+
+# ssa.gov refuses non-browser agents AND a plain browser string (403 both ways,
+# field 2026-08-05): their gate inspects more than the UA. The data itself is
+# public-domain US government work, so a public mirror is legitimate transport;
+# the GitHub zipball below carries the same yob files.
+SSA_URLS = (
+    "https://www.ssa.gov/oact/babynames/names.zip",
+    "https://github.com/hackerb9/ssa-baby-names/archive/refs/heads/main.zip",
+)
 CENSUS_2010_URL = "https://www2.census.gov/topics/genealogy/2010surnames/names.zip"
 CENSUS_2020_URL = "https://www2.census.gov/topics/genealogy/2020surnames/names.zip"
 INSEE_URLS = (
@@ -56,8 +86,6 @@ INSEE_URLS = (
     "https://www.insee.fr/fr/statistiques/fichier/7635552/nat2022_csv.zip",
     "https://www.insee.fr/fr/statistiques/fichier/2540004/nat2021_csv.zip",
 )
-
-SPARQL_ENDPOINT = "https://query.wikidata.org/sparql"
 
 # (ISO2, Wikidata country Q-id, label-language chain)
 WIKIDATA_TARGETS = (
@@ -94,13 +122,25 @@ def _unzip(src: Path, into: Path) -> None:
 
 def harvest_ssa() -> bool:
     d = RAW_DIR / "ssa"
-    z = d / "names.zip"
-    if not _fetch(SSA_URL, z, ua=BROWSER_UA):
+    if any(d.glob("yob*.txt")):
+        print("[expedition] already aboard: SSA year files")
+        return True
+    z = None
+    for url in SSA_URLS:
+        cand = d / Path(urllib.parse.urlparse(url).path).name
+        if _fetch(url, cand, ua=BROWSER_UA):
+            z = cand
+            break
+    if z is None:
         return False
+    _unzip(z, d)
+    # A mirror zipball nests its payload; surface any yob files to the shelf.
     if not any(d.glob("yob*.txt")):
-        _unzip(z, d)
-        print(f"[expedition] SSA unpacked: {len(list(d.glob('yob*.txt')))} year files")
-    return True
+        for f in d.rglob("yob*.txt"):
+            (d / f.name).write_bytes(f.read_bytes())
+    got = len(list(d.glob("yob*.txt")))
+    print(f"[expedition] SSA unpacked: {got} year files")
+    return got > 0
 
 
 def harvest_census() -> bool:
@@ -137,25 +177,32 @@ def harvest_insee() -> bool:
 
 
 def _sparql(query: str, timeout: int = 90):
-    params = urllib.parse.urlencode({"query": query, "format": "json"})
-    req = urllib.request.Request(f"{SPARQL_ENDPOINT}?{params}",
-                                 headers={"User-Agent": UA,
-                                          "Accept": "application/sparql-results+json"})
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as r:
-            return json.loads(r.read().decode("utf-8"))["results"]["bindings"]
-    except urllib.error.HTTPError as e:
-        if e.code != 429:
-            raise
-        # Honour the declared pace: wait what they ask (or our bow), retry once.
+    """Run one portable SPARQL query: QLever first, WDQS fallback.
+    Returns (bindings, bow_seconds_for_the_endpoint_that_answered)."""
+    last = None
+    for name, endpoint, bow in SPARQL_ENDPOINTS:
+        params = urllib.parse.urlencode({"query": query, "format": "json"})
+        req = urllib.request.Request(f"{endpoint}?{params}",
+                                     headers={"User-Agent": UA,
+                                              "Accept": "application/sparql-results+json"})
         try:
-            wait = int(e.headers.get("Retry-After", WDQS_BOW_SECONDS))
-        except (TypeError, ValueError):
-            wait = WDQS_BOW_SECONDS
-        print(f"[expedition] rate-limited; bowing {max(wait, WDQS_BOW_SECONDS)}s before one retry")
-        time.sleep(max(wait, WDQS_BOW_SECONDS))
-        with urllib.request.urlopen(req, timeout=timeout) as r:
-            return json.loads(r.read().decode("utf-8"))["results"]["bindings"]
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return json.loads(r.read().decode("utf-8"))["results"]["bindings"], bow
+        except Exception as e:
+            print(f"[expedition]   {name} declined: {e}")
+            last = e
+            if name == "qlever":
+                continue
+            if isinstance(e, urllib.error.HTTPError) and e.code == 429:
+                try:
+                    wait = int(e.headers.get("Retry-After", WDQS_BOW_SECONDS))
+                except (TypeError, ValueError):
+                    wait = WDQS_BOW_SECONDS
+                print(f"[expedition]   bowing {max(wait, WDQS_BOW_SECONDS)}s for one retry")
+                time.sleep(max(wait, WDQS_BOW_SECONDS))
+                with urllib.request.urlopen(req, timeout=timeout) as r:
+                    return json.loads(r.read().decode("utf-8"))["results"]["bindings"], bow
+    raise last
 
 
 def _clean_label(label: str) -> str | None:
@@ -172,69 +219,67 @@ def _clean_label(label: str) -> str | None:
 def _wikidata_country(iso2: str, qid: str, langs: str) -> tuple[int, int]:
     d = RAW_DIR / "wikidata"
     d.mkdir(parents=True, exist_ok=True)
+    primary = langs.split(",")[0]
     got_g, got_f = 0, 0
 
-    given_q = f"""SELECT ?nameLabel ?genderLabel (COUNT(?h) AS ?c) WHERE {{
-      ?h wdt:P31 wd:Q5; wdt:P27 wd:{qid}; wdt:P735 ?name .
+    # Portable SPARQL: group by the name ENTITY, sample its labels (primary
+    # language, then English), count bearers. No Blazegraph label service, so
+    # both QLever and WDQS run the same text, and the grouping stays cheap.
+    given_q = _PREFIXES + f"""SELECT ?name (SAMPLE(?lp) AS ?labelP) (SAMPLE(?le) AS ?labelE) ?gender (COUNT(?h) AS ?c) WHERE {{
+      ?h wdt:P31 wd:Q5 ; wdt:P27 wd:{qid} ; wdt:P735 ?name .
       OPTIONAL {{ ?h wdt:P21 ?gender }}
-      SERVICE wikibase:label {{ bd:serviceParam wikibase:language "{langs}".
-        ?name rdfs:label ?nameLabel. ?gender rdfs:label ?genderLabel. }}
-    }} GROUP BY ?nameLabel ?genderLabel"""
-    family_q = f"""SELECT ?nameLabel (COUNT(?h) AS ?c) WHERE {{
-      ?h wdt:P31 wd:Q5; wdt:P27 wd:{qid}; wdt:P734 ?name .
-      SERVICE wikibase:label {{ bd:serviceParam wikibase:language "{langs}".
-        ?name rdfs:label ?nameLabel. }}
-    }} GROUP BY ?nameLabel"""
+      OPTIONAL {{ ?name rdfs:label ?lp . FILTER(LANG(?lp) = "{primary}") }}
+      OPTIONAL {{ ?name rdfs:label ?le . FILTER(LANG(?le) = "en") }}
+    }} GROUP BY ?name ?gender"""
+    family_q = _PREFIXES + f"""SELECT ?name (SAMPLE(?lp) AS ?labelP) (SAMPLE(?le) AS ?labelE) (COUNT(?h) AS ?c) WHERE {{
+      ?h wdt:P31 wd:Q5 ; wdt:P27 wd:{qid} ; wdt:P734 ?name .
+      OPTIONAL {{ ?name rdfs:label ?lp . FILTER(LANG(?lp) = "{primary}") }}
+      OPTIONAL {{ ?name rdfs:label ?le . FILTER(LANG(?le) = "en") }}
+    }} GROUP BY ?name"""
 
-    gpath, fpath = d / f"{iso2}_given.tsv", d / f"{iso2}_family.tsv"
-    if not gpath.exists():
+    def _label(b) -> str:
+        return (b.get("labelP", {}).get("value")
+                or b.get("labelE", {}).get("value") or "")
+
+    def _gender(b) -> str:
+        iri = b.get("gender", {}).get("value", "")
+        if iri.endswith("Q6581097"):
+            return "M"
+        if iri.endswith("Q6581072"):
+            return "F"
+        return "U"
+
+    for kind, query, path in (("given", given_q, d / f"{iso2}_given.tsv"),
+                              ("family", family_q, d / f"{iso2}_family.tsv")):
+        if path.exists():
+            n = sum(1 for _ in open(path, encoding="utf-8"))
+            print(f"[expedition] already aboard: {path.name} ({n:,})")
+            got_g, got_f = (n, got_f) if kind == "given" else (got_g, n)
+            continue
         try:
-            rows = _sparql(given_q)
+            rows, bow = _sparql(query)
         except Exception as e:
-            print(f"[expedition] {iso2} given: retrying without gender ({e})")
+            print(f"[expedition] {iso2} {kind}: sailed past ({e})")
+            continue
+        # Distinct name ENTITIES can share a label; sum them client-side.
+        agg: dict[tuple[str, str], int] = {}
+        for b in rows:
+            name = _clean_label(_label(b))
+            if not name:
+                continue
+            g = _gender(b) if kind == "given" else "U"
             try:
-                rows = _sparql(given_q.replace("?genderLabel ", "")
-                               .replace("OPTIONAL { ?h wdt:P21 ?gender }\n      ", "")
-                               .replace("?gender rdfs:label ?genderLabel. ", "")
-                               .replace(" ?genderLabel", ""))
-            except Exception as e2:
-                print(f"[expedition] {iso2} given: sailed past ({e2})")
-                rows = None
-        if rows is not None:
-            with open(gpath, "w", encoding="utf-8", newline="\n") as f:
-                for b in rows:
-                    name = _clean_label(b.get("nameLabel", {}).get("value", ""))
-                    if not name:
-                        continue
-                    gender = b.get("genderLabel", {}).get("value", "")
-                    g = "M" if gender == "male" else ("F" if gender == "female" else "U")
-                    f.write(f"{name}\t{g}\t{b['c']['value']}\n")
-                    got_g += 1
-            print(f"[expedition] {iso2} given names aboard: {got_g:,}")
-        time.sleep(WDQS_BOW_SECONDS)
-    else:
-        got_g = sum(1 for _ in open(gpath, encoding="utf-8"))
-        print(f"[expedition] already aboard: {gpath.name} ({got_g:,})")
-
-    if not fpath.exists():
-        try:
-            rows = _sparql(family_q)
-        except Exception as e:
-            print(f"[expedition] {iso2} family: sailed past ({e})")
-            rows = None
-        if rows is not None:
-            with open(fpath, "w", encoding="utf-8", newline="\n") as f:
-                for b in rows:
-                    name = _clean_label(b.get("nameLabel", {}).get("value", ""))
-                    if not name:
-                        continue
-                    f.write(f"{name}\tU\t{b['c']['value']}\n")
-                    got_f += 1
-            print(f"[expedition] {iso2} family names aboard: {got_f:,}")
-        time.sleep(WDQS_BOW_SECONDS)
-    else:
-        got_f = sum(1 for _ in open(fpath, encoding="utf-8"))
-        print(f"[expedition] already aboard: {fpath.name} ({got_f:,})")
+                c = int(float(b["c"]["value"]))
+            except (KeyError, ValueError):
+                continue
+            agg[(name, g)] = agg.get((name, g), 0) + c
+        with open(path, "w", encoding="utf-8", newline="\n") as f:
+            for (name, g), c in agg.items():
+                f.write(f"{name}\t{g}\t{c}\n")
+        n = len(agg)
+        got_g, got_f = (n, got_f) if kind == "given" else (got_g, n)
+        print(f"[expedition] {iso2} {kind} names aboard: {n:,}")
+        time.sleep(bow)
     return got_g, got_f
 
 
