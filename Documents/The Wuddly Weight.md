@@ -65,7 +65,14 @@
     python -m wuddlies sample --region IT --count 10 --seed 11
     python -m wuddlies sample --type surname --region US --count 10
     python -m wuddlies sample --world population --count 20
+    python -m wuddlies sample --type fullname --world population --count 20
     python -m wuddlies bias --world population
+
+The `fullname` type pours whole souls: region drawn once, given and surname
+born there together, joined in the region's living name order (family-first
+across the CJK sphere, Vietnam, and Hungary; given-first elsewhere). The
+convention-genesis floor will one day make that ordering emergent; today it
+is a small honest table.
 
 **From code:** `from wuddlies import load_model`, then `model.sample_name(rng, region="FR", name_type="given")` with a `numpy.random.default_rng(seed)`. The `condition` parameter is the reserved socket and currently refuses non-None values honestly.
 

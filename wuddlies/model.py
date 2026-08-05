@@ -61,6 +61,12 @@ GENDERS = ("U", "M", "F")
 #               stand-in for Grok's equal-language-family target, which
 #               arrives with the family-axis floor)
 WORLD_MODES = ("archive", "population", "equal")
+
+# Regions whose real-world convention writes the family name first. A small
+# honest set (the convention-genesis floor will one day make this emergent);
+# everywhere else pours given-first.
+FAMILY_FIRST_REGIONS = frozenset({"CN", "JP", "KR", "TW", "HK", "VN", "HU",
+                                  "MN", "KH"})
 RICHNESS_FLOOR = 50      # unique names a region needs for a full voice
 POP_CLAMP = 0.12         # no region may exceed this share in population mode
 POP_ABSENT = 0.002       # nominal share for regions missing from the table
@@ -300,6 +306,27 @@ class WuddlyModel:
         if return_details:
             return name, self.regions[reg_i], GENDERS[gen_i]
         return name
+
+    def sample_fullname(self, rng: np.random.Generator, region: str | None = None,
+                        gender: str | None = None, temperature: float = 0.9,
+                        world: str = "archive", origin: str | None = None,
+                        return_details: bool = False):
+        """Pour one whole soul: region drawn once, given and surname both born
+        there, joined in the region's real name order (family-first where that
+        is the living convention). Deterministic like everything else."""
+        if region is None:
+            w = self.region_draw_weights(world)
+            region = self.regions[int(rng.choice(len(self.regions), p=w))]
+        given, _, g = self.sample_name(rng, region=region, name_type="given",
+                                       gender=gender, temperature=temperature,
+                                       origin=origin, return_details=True)
+        surname = self.sample_name(rng, region=region, name_type="surname",
+                                   temperature=temperature, origin=origin)
+        full = (f"{surname} {given}" if region in FAMILY_FIRST_REGIONS
+                else f"{given} {surname}")
+        if return_details:
+            return full, region, g
+        return full
 
 
 # ── minimal safetensors ───────────────────────────────────────────────────

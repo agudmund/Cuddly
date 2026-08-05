@@ -44,7 +44,10 @@ VERBS
                  --weight-path PATH  --curve-path PATH
   sample       pour souls from the weight
                  --region XX        ISO2, e.g. IT, IN, BR (omit for the world)
-                 --type T           given | surname            (given)
+                 --type T           given | surname | fullname (given)
+                                    fullname = one soul: region drawn once,
+                                    real name order (family-first in CN/JP/KR/
+                                    VN/HU and kin)
                  --gender G         M | F                      (weight priors)
                  --world W          archive | population | equal   (archive)
                  --origin O         name family, e.g. Sanskrit, Arabic
@@ -107,7 +110,7 @@ Register-ArgumentCompleter -Native -CommandName wuddly -ScriptBlock {{
     $verbs = @{{{verb_lines}}}
     $flags = @{{{flag_lines}}}
     $enums = @{{'--world'=@('archive','population','equal');
-               '--type'=@('given','surname'); '--gender'=@('M','F')}}
+               '--type'=@('given','surname','fullname'); '--gender'=@('M','F')}}
     $regions = @({ps_list(regions)})
     $origins = @({ps_list(MARQUEE_ORIGINS)})
     $tokens = $commandAst.ToString() -split '\\s+' | Where-Object {{ $_ }}
@@ -180,7 +183,8 @@ def main(argv=None) -> int:
 
     p_sample = sub.add_parser("sample", help="pour souls from the weight")
     p_sample.add_argument("--region", default=None, help="ISO2 code, e.g. GB; omit for the world")
-    p_sample.add_argument("--type", default="given", choices=("given", "surname"))
+    p_sample.add_argument("--type", default="given",
+                          choices=("given", "surname", "fullname"))
     p_sample.add_argument("--gender", default=None, choices=(None, "M", "F"))
     p_sample.add_argument("--count", type=int, default=20)
     p_sample.add_argument("--seed", type=int, default=7)
@@ -249,15 +253,23 @@ def main(argv=None) -> int:
         model = load_model(args.weight or WEIGHT_PATH)
         rng = np.random.default_rng(args.seed)
         where = args.region or f"the world ({args.world})"
-        print(f"[desk] {args.count} {args.type} names from {where}, "
+        label = "full names" if args.type == "fullname" else f"{args.type} names"
+        print(f"[desk] {args.count} {label} from {where}, "
               f"seed {args.seed}, temperature {args.temperature}")
         for _ in range(args.count):
-            print("   " + model.sample_name(rng, region=args.region,
-                                            name_type=args.type,
-                                            gender=args.gender,
-                                            temperature=args.temperature,
-                                            world=args.world,
-                                            origin=args.origin))
+            if args.type == "fullname":
+                print("   " + model.sample_fullname(rng, region=args.region,
+                                                    gender=args.gender,
+                                                    temperature=args.temperature,
+                                                    world=args.world,
+                                                    origin=args.origin))
+            else:
+                print("   " + model.sample_name(rng, region=args.region,
+                                                name_type=args.type,
+                                                gender=args.gender,
+                                                temperature=args.temperature,
+                                                world=args.world,
+                                                origin=args.origin))
         return 0
 
     return 1
