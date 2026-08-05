@@ -177,8 +177,10 @@ class WuddlyModel:
     def sample_name(self, rng: np.random.Generator, region: str | None = None,
                     name_type: str = "given", gender: str | None = None,
                     temperature: float = 0.9, max_len: int = 24,
-                    condition=None) -> str:
-        """Draw one name. Deterministic for a given rng state and arguments."""
+                    condition=None, return_details: bool = False):
+        """Draw one name. Deterministic for a given rng state and arguments.
+        With return_details, returns (name, region, gender) so an audit can
+        see which region and gender each draw actually used."""
         if condition is not None:
             raise ValueError("current weights carry no float-condition head yet; "
                              "the socket is reserved for wiring in the dish")
@@ -215,7 +217,10 @@ class WuddlyModel:
                 break
             out.append(self.chars[nxt - CHAR_BASE])
             ctx = ctx[1:] + [nxt]
-        return "".join(out)
+        name = "".join(out)
+        if return_details:
+            return name, self.regions[reg_i], GENDERS[gen_i]
+        return name
 
 
 # ── minimal safetensors ───────────────────────────────────────────────────

@@ -41,6 +41,13 @@ def main(argv=None) -> int:
     p_train.add_argument("--weight-path", default=None, help="where to save the weight")
     p_train.add_argument("--curve-path", default=None, help="where to save the lab-notebook curve")
 
+    p_bias = sub.add_parser("bias", help="run the bias microscope over a large pour")
+    p_bias.add_argument("--pours", type=int, default=1000)
+    p_bias.add_argument("--per", type=int, default=30)
+    p_bias.add_argument("--seed", type=int, default=7)
+    p_bias.add_argument("--type", default="given", choices=("given", "surname"))
+    p_bias.add_argument("--weight", default=None)
+
     p_sample = sub.add_parser("sample", help="pour souls from the weight")
     p_sample.add_argument("--region", default=None, help="ISO2 code, e.g. GB; omit for the world")
     p_sample.add_argument("--type", default="given", choices=("given", "surname"))
@@ -69,6 +76,15 @@ def main(argv=None) -> int:
               k=args.k, dim_char=args.dim_char, hidden=args.hidden,
               patience=args.patience, weight_path=args.weight_path,
               curve_path=args.curve_path)
+        return 0
+
+    if args.cmd == "bias":
+        from wuddlies.audit import run_bias_audit
+        from wuddlies.model import load_model
+        from wuddlies.train import WEIGHT_PATH
+        model = load_model(args.weight or WEIGHT_PATH)
+        run_bias_audit(model, pours=args.pours, per=args.per, seed=args.seed,
+                       name_type=args.type)
         return 0
 
     if args.cmd == "sample":
