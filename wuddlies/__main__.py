@@ -107,7 +107,7 @@ def _completions_script() -> str:
     flags_world = ["--seed", "--settlements", "--families", "--souls",
                    "--world", "--region", "--drift-rate", "--generations",
                    "--children", "--gen-drift", "--confluence", "--roots",
-                   "--weight"]
+                   "--promotions", "--temperature", "--weight"]
     flags = {
         "train": ["--steps", "--batch", "--seed", "--k", "--dim-char",
                    "--hidden", "--patience", "--weight-path", "--curve-path"],
