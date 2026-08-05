@@ -80,6 +80,9 @@ VERBS
   bias         run the 30,000-soul microscope over a pour
                  --pours N (1000)  --per N (30)  --seed N (7)
                  --type T  --world W  --weight PATH
+  gguf         pack a weight into the GGUF interchange envelope
+                 --weight PATH (canonical)  --out PATH
+                 (container, not chat-model: arch=wuddly; verified byte-true)
   completions  print the PowerShell tab-completion script
                  --install          write it beside the fleet and wire the profile
 
@@ -110,6 +113,7 @@ def _completions_script() -> str:
         "sample": "pour souls from the weight",
         "world": "pour a whole coherent world from one seed",
         "bias": "run the 30k-soul microscope",
+        "gguf": "pack a weight into the GGUF envelope",
         "completions": "print or install this completer",
     }
     flags_world = ["--seed", "--settlements", "--families", "--souls",
@@ -124,6 +128,7 @@ def _completions_script() -> str:
                     "--temperature", "--weight", "--world", "--origin"],
         "bias": ["--pours", "--per", "--seed", "--type", "--weight", "--world"],
         "world": flags_world,
+        "gguf": ["--weight", "--out"],
         "completions": ["--install"],
     }
     def ps_list(items):
@@ -191,6 +196,9 @@ def main(argv=None) -> int:
     p_teach.add_argument("--lessons-per", type=int, default=30)
     p_teach.add_argument("--seed", type=int, default=6)
     p_teach.add_argument("--weight", default=None)
+    p_gguf = sub.add_parser("gguf", help="pack a weight into the GGUF interchange envelope")
+    p_gguf.add_argument("--weight", default=None, help="source .safetensors (default: canonical)")
+    p_gguf.add_argument("--out", default=None, help="destination .gguf")
     p_comp = sub.add_parser("completions", help="print the PowerShell tab-completion script")
     p_comp.add_argument("--install", action="store_true",
                         help="write it beside the fleet and wire the profile")
@@ -276,6 +284,14 @@ def main(argv=None) -> int:
     if not args.cmd:
         print(REGISTER)
         return 0
+
+    if args.cmd == "gguf":
+        from wuddlies.gguf_export import export_gguf, verify_gguf
+        from wuddlies.train import WEIGHT_PATH
+        src = args.weight or WEIGHT_PATH
+        out = export_gguf(src, args.out)
+        ok = verify_gguf(out, src)
+        return 0 if ok else 1
 
     if args.cmd == "completions":
         if args.install:

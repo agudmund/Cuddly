@@ -177,6 +177,21 @@ is a small honest table.
 
 **More than one mind fed this weight's design, and the ledger says so gladly.** The external-source expedition map grew from a scouting exchange with Gemini: asked whether Gemma's pretrained models carried extractable name data inside them (they do not, in any wholesale form), "the dear gem", as the founder calls it, offered up the wider world's registries instead. Those leads were then triaged through this document's bars: some became sources or redirects (the IBGE treasure traces directly to that exchange), others were declined at the door with their reasons recorded in the ledger; the triage judgment is this house's, the generosity of the map was Gemini's. The stratified-sampling and cultural-anchor ideas from the same channel shaped the gem guard and the origin-axis roadmap. **Grok contributed the fairness-engineering pass** (relayed 2026-08-05): the distributional evaluation metrics adopted into the microscope's roadmap (KL divergence against a declared target, top-N coverage, per-family entropy to catch a region collapsing onto its five most popular names), the language-family grouping axis that fused with the cultural-origin idea into one conditioning roadmap, stratified batch sampling as a rig option, and the within-family-only constraint on the future variant floor. Its fair-versus-realistic framing resolved into this card's pour-mode preset menu (equal-family, soft-population clamped, archive-honest) rather than a training-time choice, because conditioning decouples per-region truth from cross-region mix. Several of its recommendations (explicit condition tokens, simplicity as a fairness property, a methodology-and-limitations document) were independently convergent with what was already built, which is its own kind of review. **A second Grok pass** (relayed the same day, moments before its chat window gave out) reviewed the rig's actual code and specified the fifth floor's training-balance layer: language-family damping above region damping, per-family gem ceilings, a mild gender boost for givens, a richness regularizer, effective-mass-per-family reporting, and in-training fairness metrics so early stopping finds the joint knee of loss and fairness; it also endorsed the script deferral and the row-level hold-out as-is. One design note carried forward with it: region-to-family lookup mislabels melting-pot nations (its own US example spans every family on earth), so the family layer's substrate is name-level language tags rather than a region table. The repo's founding credit line (built by Yours Truly with Grok, Gemini, and Claude) continues to be earned by all of its names.
 
+## The interchange envelope
+
+**The weight also travels as GGUF** (`wuddly.gguf`, `python -m wuddlies
+gguf`): not to be run by llama.cpp (its graphs speak transformer; this
+MLP is its own species, and the architecture field says `wuddly` so no
+loader mistakes it for a chat model) but as the standardized container
+every future port reads: tensors under their own names, and the
+vocabulary, regions, origins, priors, richness, and population table as
+properly typed metadata arrays. Export is verified byte-true on
+round-trip at every packing. The safetensors remains the training-native
+working format; the GGUF is the travel format, welcome on Hugging Face,
+parseable by existing C, C++, C#, and Rust readers, and the future
+ggml-C port (the true run-anywhere rail, already Vulkan-blessed on this
+machine) will read this same envelope.
+
 ## The path to publication
 
 **The weight publishes to Hugging Face only when it has earned it.** The family pulls freely from that commons and intends to give back, and precisely because of that, nothing ships incomplete. The gates, explicit so future readers know when the day has come:
