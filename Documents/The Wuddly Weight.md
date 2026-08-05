@@ -68,6 +68,24 @@
     python -m wuddlies sample --type fullname --world population --count 20
     python -m wuddlies bias --world population
 
+**The counter-force: the young may question the old ways.** The tradition
+engine became bidirectional: promoted laws face repeal through two
+pressure-born channels, saturation (a law everyone keeps distinguishes no
+one: once compliance is total for generations, the young may let it go)
+and rebellion (a small chance growing with the law's age: the rules of
+great-grandparents chafe hardest), and family echo dynasties weary the
+same way. A freshly-repealed law cannot re-crystallize off the very
+generation that shed it, but lifetimes later it can return: traditions
+cycle. Proven across a ten-seed sweep (six worlds saw laws fall, both
+channels firing), with one complete arc on record: a K-law born of seven
+souls' coincidence at generation 4, held for four generations, questioned
+and released at generation 8. Root-name injection (`--name Thingaling`)
+and per-line surname wear (`--wear`) landed in the same era: an arbitrary
+injected name became eleven receipted spellings in ten generations, riding
+pure structure without ever touching the weight, while promotions
+compounded around it. With repeal standing, the dish now invents, blends,
+canonizes, and questions: the full metabolism.
+
 **The promotion watcher: accidents become traditions, and the emergence
 trio is complete.** Between generations a deterministic watcher inspects
 each settlement's actually-poured names for regularities worth
