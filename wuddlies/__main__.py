@@ -53,6 +53,11 @@ VERBS
                  --origin O         name family, e.g. Sanskrit, Arabic
                  --count N (20)  --seed N (7)  --temperature T (0.9)
                  --weight PATH      a specific .safetensors
+  world        pour a whole coherent world from one seed: settlements found
+               themselves, families share names, Iceland runs its patronymic
+               program (the seed cascade + the NAMING_PROGRAMS registry)
+                 --seed N (7)  --settlements N (3)  --families N (3)
+                 --souls N (4)  --world W (population)  --region XX (pin)
   bias         run the 30,000-soul microscope over a pour
                  --pours N (1000)  --per N (30)  --seed N (7)
                  --type T  --world W  --weight PATH
@@ -84,15 +89,19 @@ def _completions_script() -> str:
         "cook": "raw harvest -> corpus.tsv + ledger",
         "train": "raise the librarian",
         "sample": "pour souls from the weight",
+        "world": "pour a whole coherent world from one seed",
         "bias": "run the 30k-soul microscope",
         "completions": "print or install this completer",
     }
+    flags_world = ["--seed", "--settlements", "--families", "--souls",
+                   "--world", "--region", "--weight"]
     flags = {
         "train": ["--steps", "--batch", "--seed", "--k", "--dim-char",
                    "--hidden", "--patience", "--weight-path", "--curve-path"],
         "sample": ["--region", "--type", "--gender", "--count", "--seed",
                     "--temperature", "--weight", "--world", "--origin"],
         "bias": ["--pours", "--per", "--seed", "--type", "--weight", "--world"],
+        "world": flags_world,
         "completions": ["--install"],
     }
     def ps_list(items):
@@ -171,6 +180,16 @@ def main(argv=None) -> int:
     p_train.add_argument("--weight-path", default=None, help="where to save the weight")
     p_train.add_argument("--curve-path", default=None, help="where to save the lab-notebook curve")
 
+    p_world = sub.add_parser("world", help="pour a whole coherent world from one seed")
+    p_world.add_argument("--seed", type=int, default=7)
+    p_world.add_argument("--settlements", type=int, default=3)
+    p_world.add_argument("--families", type=int, default=3)
+    p_world.add_argument("--souls", type=int, default=4)
+    p_world.add_argument("--world", default="population",
+                         choices=("archive", "population", "equal"))
+    p_world.add_argument("--region", default=None, help="pin every settlement to one region")
+    p_world.add_argument("--weight", default=None)
+
     p_bias = sub.add_parser("bias", help="run the bias microscope over a large pour")
     p_bias.add_argument("--pours", type=int, default=1000)
     p_bias.add_argument("--per", type=int, default=30)
@@ -236,6 +255,17 @@ def main(argv=None) -> int:
               k=args.k, dim_char=args.dim_char, hidden=args.hidden,
               patience=args.patience, weight_path=args.weight_path,
               curve_path=args.curve_path)
+        return 0
+
+    if args.cmd == "world":
+        from wuddlies.cascade import pour_world, print_world
+        from wuddlies.model import load_model
+        from wuddlies.train import WEIGHT_PATH
+        model = load_model(args.weight or WEIGHT_PATH)
+        census = pour_world(model, args.seed, settlements=args.settlements,
+                            families=args.families, souls=args.souls,
+                            world=args.world, region=args.region)
+        print_world(census)
         return 0
 
     if args.cmd == "bias":
