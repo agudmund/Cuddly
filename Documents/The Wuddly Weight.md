@@ -60,6 +60,10 @@
 
 **From code:** `from wuddlies import load_model`, then `model.sample_name(rng, region="FR", name_type="given")` with a `numpy.random.default_rng(seed)`. The `condition` parameter is the reserved socket and currently refuses non-None values honestly.
 
+## Acknowledgments
+
+**More than one mind fed this weight's design, and the ledger says so gladly.** The external-source expedition map grew from a scouting exchange with Gemini: asked whether Gemma's pretrained models carried extractable name data inside them (they do not, in any wholesale form), "the dear gem", as the founder calls it, offered up the wider world's registries instead. Those leads were then triaged through this document's bars: some became sources or redirects (the IBGE treasure traces directly to that exchange), others were declined at the door with their reasons recorded in the ledger; the triage judgment is this house's, the generosity of the map was Gemini's. The stratified-sampling and cultural-anchor ideas from the same channel shaped the gem guard and the origin-axis roadmap. The repo's founding credit line (built by Yours Truly with Grok and Gemini) continues to be earned.
+
 ## The path to publication
 
 **The weight publishes to Hugging Face only when it has earned it.** The family pulls freely from that commons and intends to give back, and precisely because of that, nothing ships incomplete. The gates, explicit so future readers know when the day has come:
