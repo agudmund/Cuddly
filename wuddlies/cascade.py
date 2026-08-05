@@ -113,8 +113,25 @@ def _weather_suffix(suffix: str, rng) -> str:
     return ops[int(rng.integers(len(ops)))] if ops else suffix
 
 
+def _mint_particles(model: WuddlyModel, rng, region: str) -> dict:
+    """A culture inventing patronymics grows its particles from its OWN
+    soil: the tails of names its region actually pours. Invention, never
+    Iceland-import (importing is what confluences do, with the herd)."""
+    tails = []
+    for _ in range(6):
+        name = model.sample_name(rng, region=region, name_type="given",
+                                 temperature=1.0)
+        tail = name[-3:].lower() if len(name) >= 4 else name.lower()
+        if tail and tail not in tails:
+            tails.append(tail)
+    m = tails[0] if tails else "son"
+    f = next((t for t in tails[1:] if t != m), m + "a")
+    return {"M": m, "F": f, "U": m}
+
+
 def maybe_drift(program: dict, rng, drift_rate: float,
-                stamp: str) -> tuple[dict, list[str]]:
+                stamp: str, model: WuddlyModel | None = None,
+                region: str | None = None) -> tuple[dict, list[str]]:
     """One roll of the drift die. Returns the (possibly new) program and the
     log lines, each carrying its stamp (founding, or a generation mark)."""
     if drift_rate <= 0 or rng.random() >= drift_rate:
@@ -141,18 +158,59 @@ def maybe_drift(program: dict, rng, drift_rate: float,
     else:
         if prog["token_source"] == "surname":
             prog["token_source"] = "given"
-            prog["child_suffix"] = dict(prog.get("child_suffix")
-                                        or {"M": "sson", "F": "sdóttir", "U": "sson"})
+            if model is not None and region is not None:
+                minted = _mint_particles(model, rng, region)
+                prog["child_suffix"] = minted
+                log.append(f"{stamp}: this settlement went patronymic and "
+                           f"minted its own particles from local soil: "
+                           f"-{minted['M']} (M), -{minted['F']} (F)")
+            else:
+                prog["child_suffix"] = dict(prog.get("child_suffix")
+                                            or {"M": "sson", "F": "sdóttir", "U": "sson"})
+                log.append(f"{stamp}: this settlement went patronymic "
+                           "(a parent's name now carries)")
             prog["token_inherits"] = False
             prog["id"] = "went_patronymic"
-            log.append(f"{stamp}: this settlement went patronymic "
-                       "(a parent's name now carries)")
         else:
             prog["token_source"] = "surname"
             prog["child_suffix"] = None
             prog["token_inherits"] = True
             prog["id"] = "settled_surnames"
             log.append(f"{stamp}: patronymics froze into standing surnames")
+    return prog, log
+
+
+# ── merge crossover: the herds meet ───────────────────────────────────────
+
+def crossover(prog_a: dict, prog_b: dict, root_a: str, root_b: str,
+              rng) -> tuple[dict, list[str]]:
+    """Two herds found one settlement; their programs recombine field-wise.
+    A custom (like patronymic particles) can arrive WITH its herd: import,
+    honestly logged, as distinct from drift's local invention."""
+    log = []
+    src_a = bool(rng.integers(2))
+    src_parent, src_root = (prog_a, root_a) if src_a else (prog_b, root_b)
+    ord_a = bool(rng.integers(2))
+    ord_parent, ord_root = (prog_a, root_a) if ord_a else (prog_b, root_b)
+    prog = {
+        "id": f"confluence({root_a}x{root_b})",
+        "token_source": src_parent["token_source"],
+        "token_inherits": src_parent["token_inherits"],
+        "order": ord_parent["order"],
+        "child_suffix": None,
+    }
+    log.append(f"confluence: the token walks {src_root}'s way "
+               f"({prog['token_source']}); name order follows {ord_root} "
+               f"({prog['order']})")
+    sa, sb = prog_a.get("child_suffix"), prog_b.get("child_suffix")
+    if sa and sb:
+        prog["child_suffix"] = {g: (sa if bool(rng.integers(2)) else sb)[g]
+                                for g in ("M", "F", "U")}
+        log.append("confluence: the particles blended from both herds")
+    elif (sa or sb) and prog["token_source"] == "given":
+        carrier = root_a if sa else root_b
+        prog["child_suffix"] = dict(sa or sb)
+        log.append(f"confluence: the particles arrived with the {carrier} herd")
     return prog, log
 
 
@@ -203,39 +261,64 @@ def pour_world(model: WuddlyModel, world_seed: int, settlements: int = 3,
                families: int = 3, souls: int = 4, world: str = "population",
                region: str | None = None, drift_rate: float = DRIFT_RATE,
                generations: int = 1, children_max: int | None = None,
-               gen_drift_rate: float = GEN_DRIFT_RATE) -> dict:
+               gen_drift_rate: float = GEN_DRIFT_RATE,
+               confluences: int = 0,
+               roots: tuple[str, str] | None = None) -> dict:
     """One number in, one coherent history out, drift log included.
-    `souls` caps children-per-parent when children_max is not given."""
+    `souls` caps children-per-parent when children_max is not given. The
+    last `confluences` settlements are founded by TWO herds meeting: their
+    programs recombine, and each family carries its own root region."""
     children_max = children_max or max(1, souls - 1)
     root = np.random.SeedSequence(world_seed)
     out = {"seed": world_seed, "world": world, "generations": generations,
            "settlements": []}
-    for s_seq in root.spawn(settlements):
+    for idx, s_seq in enumerate(root.spawn(settlements)):
         founding, drift_seq, families_seq = s_seq.spawn(3)
         f_rng = np.random.default_rng(founding)
-        if region is None:
-            w = model.region_draw_weights(world)
-            s_region = model.regions[int(f_rng.choice(len(model.regions), p=w))]
-        else:
-            s_region = region
-        eponym = model.sample_name(f_rng, region=s_region, name_type="surname")
-
         d_rng = np.random.default_rng(drift_seq)
-        program, drift_log = maybe_drift(base_program_for(s_region), d_rng,
-                                         drift_rate, "founding drift")
+        is_confluence = idx >= settlements - confluences
+
+        def draw_region():
+            if region is not None:
+                return region
+            w = model.region_draw_weights(world)
+            return model.regions[int(f_rng.choice(len(model.regions), p=w))]
+
+        if is_confluence:
+            root_a, root_b = roots if roots else (draw_region(), draw_region())
+            eponym = (model.sample_name(f_rng, region=root_a, name_type="surname")
+                      + "-"
+                      + model.sample_name(f_rng, region=root_b, name_type="surname"))
+            program, drift_log = crossover(base_program_for(root_a),
+                                           base_program_for(root_b),
+                                           root_a, root_b, d_rng)
+            mint_soil = root_a
+            s_roots = (root_a, root_b)
+        else:
+            s_region = draw_region()
+            eponym = model.sample_name(f_rng, region=s_region, name_type="surname")
+            program, drift_log = maybe_drift(base_program_for(s_region), d_rng,
+                                             drift_rate, "founding drift",
+                                             model=model, region=s_region)
+            mint_soil = s_region
+            s_roots = None
+
         programs = [program]
         for g in range(1, generations + 1):
             nxt, glog = maybe_drift(programs[-1], d_rng, gen_drift_rate,
-                                    f"generation {g} drift")
+                                    f"generation {g} drift",
+                                    model=model, region=mint_soil)
             programs.append(nxt)
             drift_log.extend(glog)
 
-        fams = [pour_lineage(model, fs, s_region, programs, generations,
-                             children_max)
-                for fs in families_seq.spawn(families)]
-        out["settlements"].append({"region": s_region, "eponym": eponym,
-                                   "programs": programs, "drift": drift_log,
-                                   "families": fams})
+        fam_roots = ([root_a if d_rng.random() < 0.5 else root_b
+                      for _ in range(families)] if is_confluence
+                     else [mint_soil] * families)
+        fams = [pour_lineage(model, fs, fr, programs, generations, children_max)
+                for fs, fr in zip(families_seq.spawn(families), fam_roots)]
+        out["settlements"].append({"region": mint_soil, "roots": s_roots,
+                                   "eponym": eponym, "programs": programs,
+                                   "drift": drift_log, "families": fams})
     return out
 
 
@@ -253,12 +336,17 @@ def print_world(census: dict, printer=print) -> None:
             f"{census['generations']} generation(s): "
             f"{len(census['settlements'])} settlements")
     for s in census["settlements"]:
-        printer(f"\n  ~ the {s['eponym']} settlement ({s['region']}) ~")
+        if s.get("roots"):
+            a, b = s["roots"]
+            printer(f"\n  ~ the {s['eponym']} confluence ({a} × {b}) ~")
+        else:
+            printer(f"\n  ~ the {s['eponym']} settlement ({s['region']}) ~")
         for line in s["drift"]:
             printer(f"    * {line}")
         for fam in s["families"]:
             label = ("line of" if not s["programs"][0]["token_inherits"]
                      else "house of")
-            printer(f"    {label} {fam['token']}:")
+            tag = f" ({fam['region']})" if s.get("roots") else ""
+            printer(f"    {label} {fam['token']}{tag}:")
             for i, soul in enumerate(fam["souls"]):
                 _print_soul(soul, "    ", i == len(fam["souls"]) - 1, printer)

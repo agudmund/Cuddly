@@ -63,6 +63,10 @@ VERBS
                                          patronymics mint from each parent
                  --children N (souls-1)  max children per parent
                  --gen-drift F (0.06)    drift between generations; stamped
+                 --confluence N (0)      the herds meet: last N settlements
+                                         founded by TWO roots, programs
+                                         recombined, families per-root
+                 --roots A,B             pin every confluence's pair
   bias         run the 30,000-soul microscope over a pour
                  --pours N (1000)  --per N (30)  --seed N (7)
                  --type T  --world W  --weight PATH
@@ -100,7 +104,8 @@ def _completions_script() -> str:
     }
     flags_world = ["--seed", "--settlements", "--families", "--souls",
                    "--world", "--region", "--drift-rate", "--generations",
-                   "--children", "--gen-drift", "--weight"]
+                   "--children", "--gen-drift", "--confluence", "--roots",
+                   "--weight"]
     flags = {
         "train": ["--steps", "--batch", "--seed", "--k", "--dim-char",
                    "--hidden", "--patience", "--weight-path", "--curve-path"],
@@ -202,6 +207,10 @@ def main(argv=None) -> int:
                          help="max children per parent (default: --souls minus one)")
     p_world.add_argument("--gen-drift", type=float, default=None,
                          help="per-generation drift chance (default 0.06; 0 = still years)")
+    p_world.add_argument("--confluence", type=int, default=0,
+                         help="found the last N settlements by two herds meeting")
+    p_world.add_argument("--roots", default=None,
+                         help="pin every confluence's pair, e.g. IN,CN")
     p_world.add_argument("--weight", default=None)
 
     p_bias = sub.add_parser("bias", help="run the bias microscope over a large pour")
@@ -279,12 +288,23 @@ def main(argv=None) -> int:
         model = load_model(args.weight or WEIGHT_PATH)
         rate = DRIFT_RATE if args.drift_rate is None else args.drift_rate
         gen_rate = GEN_DRIFT_RATE if args.gen_drift is None else args.gen_drift
+        # PowerShell reads A,B as its own array syntax and may deliver "A B";
+        # accept comma or whitespace with equal grace (the tolerant-parse rule).
+        roots = None
+        if args.roots:
+            import re
+            parts = [p for p in re.split(r"[,\s]+", args.roots.upper()) if p]
+            if len(parts) != 2:
+                print(f"[desk] --roots wants exactly two regions, got: {parts}")
+                return 2
+            roots = (parts[0], parts[1])
         census = pour_world(model, args.seed, settlements=args.settlements,
                             families=args.families, souls=args.souls,
                             world=args.world, region=args.region,
                             drift_rate=rate, generations=args.generations,
                             children_max=args.children,
-                            gen_drift_rate=gen_rate)
+                            gen_drift_rate=gen_rate,
+                            confluences=args.confluence, roots=roots)
         print_world(census)
         return 0
 
