@@ -30,9 +30,16 @@ def main(argv=None) -> int:
     sub.add_parser("cook", help="cook the raw harvest into corpus.tsv")
 
     p_train = sub.add_parser("train", help="raise the librarian from the corpus")
-    p_train.add_argument("--steps", type=int, default=6000)
+    p_train.add_argument("--steps", type=int, default=24000)
     p_train.add_argument("--batch", type=int, default=384)
     p_train.add_argument("--seed", type=int, default=7)
+    p_train.add_argument("--k", type=int, default=4, help="context window in characters")
+    p_train.add_argument("--dim-char", type=int, default=24)
+    p_train.add_argument("--hidden", type=int, default=224)
+    p_train.add_argument("--patience", type=int, default=0,
+                         help="stop after N evals without validation gain (0 = run to --steps)")
+    p_train.add_argument("--weight-path", default=None, help="where to save the weight")
+    p_train.add_argument("--curve-path", default=None, help="where to save the lab-notebook curve")
 
     p_sample = sub.add_parser("sample", help="pour souls from the weight")
     p_sample.add_argument("--region", default=None, help="ISO2 code, e.g. GB; omit for the world")
@@ -58,7 +65,10 @@ def main(argv=None) -> int:
 
     if args.cmd == "train":
         from wuddlies.train import train
-        train(steps=args.steps, batch=args.batch, seed=args.seed)
+        train(steps=args.steps, batch=args.batch, seed=args.seed,
+              k=args.k, dim_char=args.dim_char, hidden=args.hidden,
+              patience=args.patience, weight_path=args.weight_path,
+              curve_path=args.curve_path)
         return 0
 
     if args.cmd == "sample":

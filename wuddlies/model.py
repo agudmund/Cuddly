@@ -11,16 +11,20 @@ characters plus region / type / gender embeddings, two tanh hidden layers,
 softmax over the character vocabulary. Small enough to train in minutes
 and to hand-port to C# later as a dependency-free forward pass.
 
+Dimensions are per-model, carried in the weight file's own metadata, so a
+half-megabyte v1 and a bigger laboratory sibling load through the same
+door. The module constants below are only the defaults a new brain is
+born with.
+
 The weight travels as wuddly.safetensors, written and read by the minimal
-safetensors implementation below (8-byte little-endian header length, JSON
-header, raw tensor bytes): fully self-contained, with the vocabulary and
-condition tables carried in the file's own metadata, so loading needs
+safetensors implementation at the bottom (8-byte little-endian header
+length, JSON header, raw tensor bytes): fully self-contained, needing
 nothing but this file and numpy.
 
 The sampler is deterministic by seed. The `condition` parameter is the
 SOCKET for the dish: a vector of meaning-free floats reserved for wiring
-by the schema's keeper; the v1 weight carries no float-condition head yet
-and honestly refuses rather than silently ignoring it.
+by the schema's keeper; current weights carry no float-condition head yet
+and honestly refuse rather than silently ignoring it.
 """
 
 from __future__ import annotations
@@ -34,7 +38,7 @@ BOS = 0   # also the padding context before a name starts; never sampled
 EOS = 1
 CHAR_BASE = 2
 
-K = 4               # context window, in characters
+K = 4               # default context window, in characters
 DIM_CHAR = 24
 DIM_REGION = 16
 DIM_TYPE = 8
@@ -51,42 +55,49 @@ class WuddlyModel:
     def __init__(self, chars: list[str], regions: list[str],
                  region_weights: list[float] | None = None,
                  gender_prior: list[float] | None = None,
-                 rng: np.random.Generator | None = None):
+                 rng: np.random.Generator | None = None,
+                 k: int = K, dim_char: int = DIM_CHAR,
+                 dim_region: int = DIM_REGION, dim_type: int = DIM_TYPE,
+                 dim_gender: int = DIM_GENDER, hidden: int = HIDDEN):
         self.chars = list(chars)                      # index CHAR_BASE + i
         self.regions = list(regions)
         self.region_weights = list(region_weights or [1.0] * len(regions))
         self.gender_prior = list(gender_prior or [0.0, 0.5, 0.5])
         self.char_to_idx = {c: CHAR_BASE + i for i, c in enumerate(self.chars)}
         self.vocab = CHAR_BASE + len(self.chars)
+        self.k, self.dim_char, self.dim_region = k, dim_char, dim_region
+        self.dim_type, self.dim_gender, self.hidden = dim_type, dim_gender, hidden
         rng = rng or np.random.default_rng(0)
 
         v, r = self.vocab, len(self.regions)
-        d_in = K * DIM_CHAR + DIM_REGION + DIM_TYPE + DIM_GENDER
+        d_in = k * dim_char + dim_region + dim_type + dim_gender
 
         def init(*shape):
             return (rng.standard_normal(shape) * 0.08).astype(np.float32)
 
         self.p = {
-            "Ec": init(v, DIM_CHAR),
-            "Er": init(r, DIM_REGION),
-            "Et": init(len(TYPES), DIM_TYPE),
-            "Eg": init(len(GENDERS), DIM_GENDER),
-            "W1": init(d_in, HIDDEN), "b1": np.zeros(HIDDEN, np.float32),
-            "W2": init(HIDDEN, HIDDEN), "b2": np.zeros(HIDDEN, np.float32),
-            "W3": init(HIDDEN, v), "b3": np.zeros(v, np.float32),
+            "Ec": init(v, dim_char),
+            "Er": init(r, dim_region),
+            "Et": init(len(TYPES), dim_type),
+            "Eg": init(len(GENDERS), dim_gender),
+            "W1": init(d_in, hidden), "b1": np.zeros(hidden, np.float32),
+            "W2": init(hidden, hidden), "b2": np.zeros(hidden, np.float32),
+            "W3": init(hidden, v), "b3": np.zeros(v, np.float32),
         }
-        self._adam = {k: (np.zeros_like(w), np.zeros_like(w)) for k, w in self.p.items()}
+        self._adam = {kk: (np.zeros_like(w), np.zeros_like(w)) for kk, w in self.p.items()}
         self._adam_t = 0
+
+    def n_params(self) -> int:
+        return sum(int(np.prod(t.shape)) for t in self.p.values())
 
     # ── forward ───────────────────────────────────────────────────────────
 
     def _input_vec(self, ctx, reg, typ, gen):
         b = ctx.shape[0]
-        x = np.concatenate([
-            self.p["Ec"][ctx].reshape(b, K * DIM_CHAR),
+        return np.concatenate([
+            self.p["Ec"][ctx].reshape(b, self.k * self.dim_char),
             self.p["Er"][reg], self.p["Et"][typ], self.p["Eg"][gen],
         ], axis=1)
-        return x
 
     def forward(self, ctx, reg, typ, gen):
         x = self._input_vec(ctx, reg, typ, gen)
@@ -94,6 +105,18 @@ class WuddlyModel:
         h2 = np.tanh(h1 @ self.p["W2"] + self.p["b2"])
         logits = h2 @ self.p["W3"] + self.p["b3"]
         return logits, (x, h1, h2)
+
+    def eval_loss(self, ctx, reg, typ, gen, target, batch: int = 4096) -> float:
+        """Mean cross-entropy over a fixed example set, no learning."""
+        total, n = 0.0, ctx.shape[0]
+        for s in range(0, n, batch):
+            e = min(s + batch, n)
+            logits, _ = self.forward(ctx[s:e], reg[s:e], typ[s:e], gen[s:e])
+            logits -= logits.max(axis=1, keepdims=True)
+            ex = np.exp(logits)
+            probs = ex / ex.sum(axis=1, keepdims=True)
+            total += float(-np.log(probs[np.arange(e - s), target[s:e]] + 1e-9).sum())
+        return total / n
 
     # ── training ──────────────────────────────────────────────────────────
 
@@ -123,29 +146,30 @@ class WuddlyModel:
         g["b1"] = dz1.sum(axis=0)
         dx = dz1 @ self.p["W1"].T
 
-        dEc_flat = dx[:, :K * DIM_CHAR].reshape(b, K, DIM_CHAR)
+        kdc = self.k * self.dim_char
+        dEc_flat = dx[:, :kdc].reshape(b, self.k, self.dim_char)
         g["Ec"] = np.zeros_like(self.p["Ec"])
         np.add.at(g["Ec"], ctx, dEc_flat)
-        off = K * DIM_CHAR
+        off = kdc
         g["Er"] = np.zeros_like(self.p["Er"])
-        np.add.at(g["Er"], reg, dx[:, off:off + DIM_REGION])
-        off += DIM_REGION
+        np.add.at(g["Er"], reg, dx[:, off:off + self.dim_region])
+        off += self.dim_region
         g["Et"] = np.zeros_like(self.p["Et"])
-        np.add.at(g["Et"], typ, dx[:, off:off + DIM_TYPE])
-        off += DIM_TYPE
+        np.add.at(g["Et"], typ, dx[:, off:off + self.dim_type])
+        off += self.dim_type
         g["Eg"] = np.zeros_like(self.p["Eg"])
-        np.add.at(g["Eg"], gen, dx[:, off:off + DIM_GENDER])
+        np.add.at(g["Eg"], gen, dx[:, off:off + self.dim_gender])
 
         self._adam_t += 1
         b1c = 1.0 - 0.9 ** self._adam_t
         b2c = 1.0 - 0.999 ** self._adam_t
-        for k, grad in g.items():
-            m, v = self._adam[k]
+        for kk, grad in g.items():
+            m, v = self._adam[kk]
             m *= 0.9
             m += 0.1 * grad
             v *= 0.999
             v += 0.001 * grad * grad
-            self.p[k] -= (lr * (m / b1c) / (np.sqrt(v / b2c) + 1e-8)).astype(np.float32)
+            self.p[kk] -= (lr * (m / b1c) / (np.sqrt(v / b2c) + 1e-8)).astype(np.float32)
         return loss
 
     # ── sampling ──────────────────────────────────────────────────────────
@@ -156,7 +180,7 @@ class WuddlyModel:
                     condition=None) -> str:
         """Draw one name. Deterministic for a given rng state and arguments."""
         if condition is not None:
-            raise ValueError("the v1 weight carries no float-condition head yet; "
+            raise ValueError("current weights carry no float-condition head yet; "
                              "the socket is reserved for wiring in the dish")
         if region is None:
             w = np.asarray(self.region_weights, dtype=np.float64)
@@ -173,7 +197,7 @@ class WuddlyModel:
         else:
             gen_i = GENDERS.index(gender)
 
-        ctx = [BOS] * K
+        ctx = [BOS] * self.k
         out = []
         for _ in range(max_len):
             logits, _ = self.forward(np.asarray([ctx], np.int32),
@@ -205,8 +229,9 @@ def save_model(model: WuddlyModel, path: str | Path, extra_meta: dict | None = N
         "regions": json.dumps(model.regions),
         "region_weights": json.dumps(model.region_weights),
         "gender_prior": json.dumps(model.gender_prior),
-        "dims": json.dumps({"K": K, "char": DIM_CHAR, "region": DIM_REGION,
-                            "type": DIM_TYPE, "gender": DIM_GENDER, "hidden": HIDDEN}),
+        "dims": json.dumps({"K": model.k, "char": model.dim_char,
+                            "region": model.dim_region, "type": model.dim_type,
+                            "gender": model.dim_gender, "hidden": model.hidden}),
     }
     for k, v in (extra_meta or {}).items():
         meta[k] = str(v)
@@ -236,12 +261,18 @@ def load_model(path: str | Path) -> WuddlyModel:
     header = json.loads(raw[8:8 + hlen].decode("utf-8"))
     meta = header.pop("__metadata__")
     data = raw[8 + hlen:]
+    dims = json.loads(meta.get("dims", "{}"))
 
     model = WuddlyModel(
         chars=json.loads(meta["chars"]),
         regions=json.loads(meta["regions"]),
         region_weights=json.loads(meta["region_weights"]),
         gender_prior=json.loads(meta["gender_prior"]),
+        k=int(dims.get("K", K)), dim_char=int(dims.get("char", DIM_CHAR)),
+        dim_region=int(dims.get("region", DIM_REGION)),
+        dim_type=int(dims.get("type", DIM_TYPE)),
+        dim_gender=int(dims.get("gender", DIM_GENDER)),
+        hidden=int(dims.get("hidden", HIDDEN)),
     )
     for name, info in header.items():
         start, end = info["data_offsets"]
