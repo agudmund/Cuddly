@@ -73,6 +73,10 @@ VERBS
                  --max-souls N (25000)   the growth guard: generations are
                                          exponential; --children 1 pours
                                          lineal DYNASTIES (20 gens = 20 souls)
+                 --name X                pin the first family's founding name
+                                         verbatim and watch it evolve
+                 --wear F (0.08)         per-child surname weathering: cousins
+                                         come to spell their ancestor apart
   bias         run the 30,000-soul microscope over a pour
                  --pours N (1000)  --per N (30)  --seed N (7)
                  --type T  --world W  --weight PATH
@@ -111,7 +115,8 @@ def _completions_script() -> str:
     flags_world = ["--seed", "--settlements", "--families", "--souls",
                    "--world", "--region", "--drift-rate", "--generations",
                    "--children", "--gen-drift", "--confluence", "--roots",
-                   "--promotions", "--temperature", "--weight"]
+                   "--promotions", "--temperature", "--max-souls", "--name",
+                   "--wear", "--weight"]
     flags = {
         "train": ["--steps", "--batch", "--seed", "--k", "--dim-char",
                    "--hidden", "--patience", "--weight-path", "--curve-path"],
@@ -223,6 +228,10 @@ def main(argv=None) -> int:
                          help="pour heat: calm cultures (0.65) promote more traditions")
     p_world.add_argument("--max-souls", type=int, default=25000,
                          help="growth guard: refuse worlds expected to exceed this")
+    p_world.add_argument("--name", default=None,
+                         help="pin the first family's founding name verbatim, e.g. Thingaling")
+    p_world.add_argument("--wear", type=float, default=None,
+                         help="per-child surname weathering chance (default 0.08; 0 = names never wear)")
     p_world.add_argument("--weight", default=None)
 
     p_bias = sub.add_parser("bias", help="run the bias microscope over a large pour")
@@ -293,8 +302,8 @@ def main(argv=None) -> int:
         return 0
 
     if args.cmd == "world":
-        from wuddlies.cascade import (DRIFT_RATE, GEN_DRIFT_RATE, pour_world,
-                                      print_world)
+        from wuddlies.cascade import (DRIFT_RATE, GEN_DRIFT_RATE,
+                                      TOKEN_WEAR_RATE, pour_world, print_world)
         from wuddlies.model import load_model
         from wuddlies.train import WEIGHT_PATH
         model = load_model(args.weight or WEIGHT_PATH)
@@ -310,6 +319,7 @@ def main(argv=None) -> int:
                 print(f"[desk] --roots wants exactly two regions, got: {parts}")
                 return 2
             roots = (parts[0], parts[1])
+        wear = TOKEN_WEAR_RATE if args.wear is None else args.wear
         census = pour_world(model, args.seed, settlements=args.settlements,
                             families=args.families, souls=args.souls,
                             world=args.world, region=args.region,
@@ -319,7 +329,8 @@ def main(argv=None) -> int:
                             confluences=args.confluence, roots=roots,
                             promotions_on=(args.promotions == "on"),
                             temperature=args.temperature,
-                            max_souls=args.max_souls)
+                            max_souls=args.max_souls,
+                            root_name=args.name, wear_rate=wear)
         print_world(census)
         return 0
 

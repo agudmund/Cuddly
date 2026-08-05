@@ -132,6 +132,32 @@ def _mint_particles(model: WuddlyModel, rng, region: str) -> dict:
     return {"M": m, "F": f, "U": m}
 
 
+TOKEN_WEAR_RATE = 0.08   # per child, in inherited-surname lines
+
+
+def _wear_token(token: str, rng) -> str:
+    """One small phonetic weathering of a carried family name: how Smyth
+    and Smith became strangers. Same ops as particle weathering, plus the
+    slow clipping of long endings."""
+    ops = []
+    plain = unicodedata.normalize("NFD", token)
+    plain = "".join(c for c in plain if not unicodedata.combining(c))
+    if plain != token:
+        ops.append(plain)
+    for i in range(len(token) - 1):
+        if token[i].lower() == token[i + 1].lower():
+            ops.append(token[:i] + token[i + 1:])
+    vowels = "aeiouy"
+    vi = [i for i, c in enumerate(token.lower()) if c in vowels]
+    if vi:
+        i = vi[int(rng.integers(len(vi)))]
+        swap = vowels[int(rng.integers(len(vowels)))]
+        ops.append(token[:i] + swap + token[i + 1:])
+    if len(token) > 6:
+        ops.append(token[:-1])
+    return ops[int(rng.integers(len(ops)))] if ops else token
+
+
 def maybe_drift(program: dict, rng, drift_rate: float,
                 stamp: str, model: WuddlyModel | None = None,
                 region: str | None = None) -> tuple[dict, list[str]]:
@@ -278,17 +304,24 @@ def pour_history(model: WuddlyModel, families_seq: np.random.SeedSequence,
                  fam_roots: list[str], programs: list[dict],
                  generations: int, children_max: int,
                  drift_log: list, promotions_on: bool,
-                 temperature: float = 0.9) -> list[dict]:
+                 temperature: float = 0.9,
+                 root_names: list[str | None] | None = None,
+                 wear_rate: float = TOKEN_WEAR_RATE) -> list[dict]:
     """Pour a settlement's whole history one generation at a time, letting
-    the watcher inspect each completed generation before the next is born."""
+    the watcher inspect each completed generation before the next is born.
+    A root_names entry pins that family's founding token verbatim (any
+    string welcome: the name rides structure, never the weight); wear_rate
+    lets carried surnames weather per child, so branches diverge."""
     n_fam = len(fam_roots)
     fam_seqs = families_seq.spawn(n_fam)
     fams = []
     level = []   # (soul, family) pairs of the generation being poured
-    for froot, fseq in zip(fam_roots, fam_seqs):
+    for i, (froot, fseq) in enumerate(zip(fam_roots, fam_seqs)):
         founding, kids = fseq.spawn(2)
         f_rng = np.random.default_rng(founding)
-        token = pour_token(model, f_rng, froot, programs[0], temperature)
+        pinned = root_names[i] if root_names and i < len(root_names) else None
+        token = pinned or pour_token(model, f_rng, froot, programs[0],
+                                     temperature)
         fam = {"token": token, "region": froot, "souls": [], "laws": {},
                "_kid_seq": kids}
         fams.append(fam)
@@ -308,9 +341,21 @@ def pour_history(model: WuddlyModel, families_seq: np.random.SeedSequence,
                 echo = fam["laws"].get("echo")
                 given = _pour_given(model, s_rng, fam["region"], gender,
                                     program, echo, temperature)
-                token = (fam["token"] if program["token_inherits"]
-                         else (parent["given"] if parent else fam["token"]))
+                if program["token_inherits"]:
+                    carried = (parent.get("token") if parent else None) \
+                        or fam["token"]
+                    if wear_rate > 0 and s_rng.random() < wear_rate:
+                        worn = _wear_token(carried, s_rng)
+                        if worn != carried:
+                            drift_log.append(
+                                f"generation {gen}: the {carried} name wore "
+                                f"to {worn} in {given}'s line")
+                            carried = worn
+                    token = carried
+                else:
+                    token = parent["given"] if parent else fam["token"]
                 soul = {"given": given, "gender": gender, "gen": gen,
+                        "token": token,
                         "parent_given": parent["given"] if parent else None,
                         "name": assemble(program, token, given, gender),
                         "children": []}
@@ -349,7 +394,9 @@ def pour_world(model: WuddlyModel, world_seed: int, settlements: int = 3,
                roots: tuple[str, str] | None = None,
                promotions_on: bool = True,
                temperature: float = 0.9,
-               max_souls: int = 25000) -> dict:
+               max_souls: int = 25000,
+               root_name: str | None = None,
+               wear_rate: float = TOKEN_WEAR_RATE) -> dict:
     """One number in, one coherent history out, drift log included.
     `souls` caps children-per-parent when children_max is not given. The
     last `confluences` settlements are founded by TWO herds meeting: their
@@ -416,9 +463,12 @@ def pour_world(model: WuddlyModel, world_seed: int, settlements: int = 3,
         fam_roots = ([root_a if d_rng.random() < 0.5 else root_b
                       for _ in range(families)] if is_confluence
                      else [mint_soil] * families)
+        root_names = ([root_name] + [None] * (families - 1)
+                      if (root_name and idx == 0) else None)
         fams = pour_history(model, families_seq, fam_roots, programs,
                             generations, children_max, drift_log,
-                            promotions_on, temperature)
+                            promotions_on, temperature,
+                            root_names=root_names, wear_rate=wear_rate)
         out["settlements"].append({"region": mint_soil, "roots": s_roots,
                                    "eponym": eponym, "programs": programs,
                                    "drift": drift_log, "families": fams})
