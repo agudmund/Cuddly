@@ -17,3 +17,7 @@ notes.txt
 # .NET / MAUI build artifacts (the biggest culprits)
 **/bin/
 **/obj/
+
+# The Wuddlies: the raw harvest re-downloads deterministically; only the
+# cooked corpus and the weight itself are the repo's to carry.
+wuddlies/data/raw/

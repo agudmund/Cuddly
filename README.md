@@ -10,6 +10,26 @@ Built with love, a single shared braincell, and occasional input from friendly A
 - Creative pile — audio snippets, images, old code treasures, documents, and lore about the Wuddlies
 - Sound design beginnings — gentle chimes and page flaps in Audio/
 
+## The Wuddlies naming channel (`wuddlies/`)
+
+The librarian: a tiny own-trained character-level weight (~143k parameters,
+about half a megabyte as `wuddly.safetensors`) that pours name material for
+the scheme, replacing the ancient fixed name list with an infinite, seeded,
+deterministic source. Pure numpy, no framework, fully offline at inference;
+a socket toward the dish, never an integration. Conditioned on region, name
+type, and gender; real per-country frequencies carry the Zipf realism.
+
+```
+python -m wuddlies cook     # raw harvest -> corpus.tsv
+python -m wuddlies train    # corpus -> wuddly.safetensors (seconds)
+python -m wuddlies sample --region IT --count 10 --seed 11
+```
+
+Corpus provenance, with gratitude: [onomaverse/names](https://huggingface.co/datasets/onomaverse/names)
+(CC-BY-4.0) and [Hobson/surname-nationality](https://huggingface.co/datasets/Hobson/surname-nationality)
+(MIT). Raw downloads are gitignored and re-harvestable; the cooked corpus
+and the weight travel with the repo.
+
 ## Core vibe
 Slow, joyful building. No rush. Strip down, rebuild, affirm the cozy core.
 

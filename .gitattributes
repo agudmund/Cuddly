@@ -37,5 +37,7 @@
 *.tif binary
 *.tiff binary
 *.pyd binary
+# Trained weights — the librarian and any future siblings
+*.safetensors binary
 # Large executables tracked via LFS when present
 *.exe filter=lfs diff=lfs merge=lfs -text
