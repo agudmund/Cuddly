@@ -58,6 +58,8 @@
 
 ## Use
 
+**From anywhere, via the family fleet:** the `wuddly` verb (a `_util/bin` front door) runs the desk from any directory: bare `wuddly` prints the complete register of verbs and arguments, and `wuddly completions --install` wires PowerShell tab-completion (verbs, flags, world modes, all regions baked from the live weight, marquee origins).
+
 **From the desk (run from the repo root):**
 
     python -m wuddlies sample --region IT --count 10 --seed 11

@@ -18,17 +18,143 @@ and pour souls. Run from the Cuddly repo root:
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
 
 import numpy as np
 
+# The marquee origin families for tab-completion (any of the full 3,261
+# corpus tags still works typed in full; these are the clean big names).
+MARQUEE_ORIGINS = (
+    "Arabic", "Hebrew", "Latin", "Greek", "Spanish", "Germanic", "English",
+    "Sanskrit", "Italian", "French", "Chinese", "Japanese", "Korean",
+    "Persian", "Turkish", "Russian", "Portuguese", "Vietnamese", "Thai",
+    "Hindi", "Swahili", "Yoruba", "Hausa", "Irish",
+)
+
+REGISTER = """\
+wuddly - the Wuddlies naming desk (runs from anywhere; home: the Cuddly repo)
+
+VERBS
+  harvest      run the expedition: pull every raw source aboard (idempotent)
+  cook         cook the raw harvest into corpus.tsv + the SOURCES.md ledger
+  train        raise the librarian from the corpus
+                 --steps N (60000)  --batch N (384)  --seed N (7)
+                 --k N (6)  --dim-char N (32)  --hidden N (384)
+                 --patience N (12; 0 runs to --steps)
+                 --weight-path PATH  --curve-path PATH
+  sample       pour souls from the weight
+                 --region XX        ISO2, e.g. IT, IN, BR (omit for the world)
+                 --type T           given | surname            (given)
+                 --gender G         M | F                      (weight priors)
+                 --world W          archive | population | equal   (archive)
+                 --origin O         name family, e.g. Sanskrit, Arabic
+                 --count N (20)  --seed N (7)  --temperature T (0.9)
+                 --weight PATH      a specific .safetensors
+  bias         run the 30,000-soul microscope over a pour
+                 --pours N (1000)  --per N (30)  --seed N (7)
+                 --type T  --world W  --weight PATH
+  completions  print the PowerShell tab-completion script
+                 --install          write it beside the fleet and wire the profile
+
+EXAMPLES
+  wuddly sample --world population --count 15
+  wuddly sample --origin Sanskrit --region IN --count 12 --seed 7
+  wuddly sample --type surname --world equal --temperature 1.25
+  wuddly bias --world population
+  wuddly train
+
+Same seed, same souls, forever. Docs: Cuddly/Documents/The Wuddly Weight.md
+"""
+
+
+def _completions_script() -> str:
+    """Build the PowerShell completer, region list baked from the live weight."""
+    regions: list[str] = []
+    try:
+        from wuddlies.model import load_model
+        from wuddlies.train import WEIGHT_PATH
+        regions = load_model(WEIGHT_PATH).regions
+    except Exception:
+        pass
+    verbs = {
+        "harvest": "pull every raw source aboard",
+        "cook": "raw harvest -> corpus.tsv + ledger",
+        "train": "raise the librarian",
+        "sample": "pour souls from the weight",
+        "bias": "run the 30k-soul microscope",
+        "completions": "print or install this completer",
+    }
+    flags = {
+        "train": ["--steps", "--batch", "--seed", "--k", "--dim-char",
+                   "--hidden", "--patience", "--weight-path", "--curve-path"],
+        "sample": ["--region", "--type", "--gender", "--count", "--seed",
+                    "--temperature", "--weight", "--world", "--origin"],
+        "bias": ["--pours", "--per", "--seed", "--type", "--weight", "--world"],
+        "completions": ["--install"],
+    }
+    def ps_list(items):
+        return ",".join("'" + i.replace("'", "''") + "'" for i in items)
+    verb_lines = ";".join(f"'{v}'='{d}'" for v, d in verbs.items())
+    flag_lines = ";".join(f"'{v}'=@({ps_list(f)})" for v, f in flags.items())
+    return f"""# -Intricate - bin/wuddly.completions.ps1 generated tab-completions for the naming desk
+# -The last of the completion tables finished every word you began, For Enjoying
+# -Built using a single shared braincell by Yours Truly and various Intelligences
+#
+# GENERATED file: regenerate with `wuddly completions --install` (regions are
+# baked from the live weight at emit time).
+Register-ArgumentCompleter -Native -CommandName wuddly -ScriptBlock {{
+    param($wordToComplete, $commandAst, $cursorPosition)
+    $verbs = @{{{verb_lines}}}
+    $flags = @{{{flag_lines}}}
+    $enums = @{{'--world'=@('archive','population','equal');
+               '--type'=@('given','surname'); '--gender'=@('M','F')}}
+    $regions = @({ps_list(regions)})
+    $origins = @({ps_list(MARQUEE_ORIGINS)})
+    $tokens = $commandAst.ToString() -split '\\s+' | Where-Object {{ $_ }}
+    $prev = if ($tokens.Count -gt 1) {{ $tokens[-1 - [int][bool]$wordToComplete] }} else {{ '' }}
+    $verb = ($tokens | Select-Object -Skip 1 | Where-Object {{ $_ -notlike '-*' }} | Select-Object -First 1)
+    $out = if ($enums.ContainsKey($prev)) {{ $enums[$prev] }}
+        elseif ($prev -eq '--region') {{ $regions }}
+        elseif ($prev -eq '--origin') {{ $origins }}
+        elseif ($verb -and $flags.ContainsKey($verb)) {{ $flags[$verb] }}
+        else {{ $verbs.Keys }}
+    $out | Where-Object {{ $_ -like "$wordToComplete*" }} | Sort-Object | ForEach-Object {{
+        $tip = if ($verbs.ContainsKey($_)) {{ $verbs[$_] }} else {{ $_ }}
+        [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $tip)
+    }}
+}}
+"""
+
+
+def _install_completions() -> None:
+    script = _completions_script()
+    bin_dir = Path(__file__).resolve().parents[2] / "_util" / "bin"
+    target = bin_dir / "wuddly.completions.ps1"
+    target.write_text(script, encoding="utf-8", newline="\n")
+    print(f"[desk] completer written: {target}")
+    profile = Path.home() / "Documents" / "PowerShell" / "Microsoft.PowerShell_profile.ps1"
+    marker = "wuddly completions --install"
+    line = f". \"{target}\"  # managed by `{marker}`"
+    existing = profile.read_text(encoding="utf-8") if profile.exists() else ""
+    if marker in existing:
+        print(f"[desk] profile already wired: {profile}")
+    else:
+        profile.parent.mkdir(parents=True, exist_ok=True)
+        with open(profile, "a", encoding="utf-8") as f:
+            f.write(f"\n# Wuddlies completions\n{line}\n")
+        print(f"[desk] profile wired: {profile} (new shells complete inline)")
+
 
 def main(argv=None) -> int:
-    parser = argparse.ArgumentParser(prog="python -m wuddlies",
+    parser = argparse.ArgumentParser(prog="wuddly",
                                      description="The Wuddlies naming channel.")
-    sub = parser.add_subparsers(dest="cmd", required=True)
+    sub = parser.add_subparsers(dest="cmd", required=False)
 
     sub.add_parser("harvest", help="run the expedition: pull every raw source aboard")
     sub.add_parser("cook", help="cook the raw harvest into corpus.tsv")
+    p_comp = sub.add_parser("completions", help="print the PowerShell tab-completion script")
+    p_comp.add_argument("--install", action="store_true",
+                        help="write it beside the fleet and wire the profile")
 
     p_train = sub.add_parser("train", help="raise the librarian from the corpus")
     p_train.add_argument("--steps", type=int, default=60000)
@@ -67,6 +193,17 @@ def main(argv=None) -> int:
                           help="name-level family axis, e.g. Sanskrit, Arabic, Germanic")
 
     args = parser.parse_args(argv)
+
+    if not args.cmd:
+        print(REGISTER)
+        return 0
+
+    if args.cmd == "completions":
+        if args.install:
+            _install_completions()
+        else:
+            print(_completions_script())
+        return 0
 
     if args.cmd == "harvest":
         from wuddlies.harvest import harvest_all
