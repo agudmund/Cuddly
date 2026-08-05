@@ -5,38 +5,50 @@
 -The last of the corpus kitchens washed every name the world actually uses and kept the counts that made them true, For Enjoying
 -Built using a single shared braincell by Yours Truly and various Intelligences
 
-Cooks the harvested raw datasets into one faithful corpus file. Faithful
-means: every script kept as-is (Latin, Hebrew, Arabic, hangul, all of it),
-casing and diacritics untouched, and the real per-country counts carried
-whole. Filtering for what a given model can chew is the MODEL's concern
+Cooks the harvested raw sources into one faithful corpus file. Faithful
+means: every script kept as-is, casing normalised only where a source
+shouts in ALL CAPS (census habits), and the real counts carried whole.
+Filtering for what a given model can chew stays the MODEL's concern
 (train.py); the kitchen never seasons away the world's diversity.
 
-Sources cooked in v1: onomaverse given-name-frequency + surname-frequency
-(per-country counts, gender on givens). The popular-names ranking, the
-gender-inference table, the transliteration atlas, and the equivalence
-graph stay raw for the later floors (validation, variant adoption). The
-Hobson nationality-labeled surnames wait for an enrichment pass, since
-their regions are nationality words rather than ISO codes.
+Since the second harvest the kitchen is a dispatcher of ADAPTERS, one per
+source shape (the family pattern arriving on schedule): each adapter reads
+its raw shelf and yields (name, type, region, gender, count) rows, plus a
+provenance note. A missing shelf is contextual absence: reported, skipped,
+never fatal. The kitchen writes two artifacts: corpus.tsv (the faithful
+rows) and SOURCES.md (the provenance ledger: license, coverage, and the
+bias each source is known to carry, stated rather than hidden).
 
-Output: wuddlies/data/corpus.tsv with columns
-    name <TAB> type(given|surname) <TAB> region(ISO2) <TAB> gender(M|F|U) <TAB> weight(count)
-one row per (name, country) pairing, exactly as the census saw it.
+Cross-source scale note, recorded honestly: census counts and
+notable-person counts are not the same unit. Within a region they mix
+under the trainer's count**0.5 damping, which softens the mismatch; the
+ledger says so, and a finer per-source calibration is a later floor.
 """
 
 from __future__ import annotations
 
 import csv
+import datetime as _dt
 from collections import Counter
 from pathlib import Path
 
 DATA_DIR = Path(__file__).parent / "data"
 RAW_DIR = DATA_DIR / "raw"
 CORPUS_PATH = DATA_DIR / "corpus.tsv"
+SOURCES_PATH = DATA_DIR / "SOURCES.md"
 
 
-def _cook_frequency_csv(path: Path, name_type: str, rows_out: list) -> int:
-    """Stream one onomaverse frequency CSV into corpus rows. Returns row count."""
-    kept = 0
+def _uncap(name: str) -> str:
+    """Census files shout; give SMITH back its indoor voice as Smith."""
+    return name.title() if name.isupper() else name
+
+
+# ── adapters ──────────────────────────────────────────────────────────────
+
+def _read_onomaverse(name_type: str, filename: str):
+    path = RAW_DIR / "onomaverse" / filename
+    if not path.exists():
+        return
     with open(path, "r", encoding="utf-8", newline="") as f:
         for row in csv.DictReader(f):
             name = (row.get("name") or "").strip()
@@ -49,36 +61,184 @@ def _cook_frequency_csv(path: Path, name_type: str, rows_out: list) -> int:
                 continue
             gender = (row.get("gender") or "").strip().upper()
             if gender not in ("M", "F"):
-                gender = "U"        # unknown, multi, or surname
-            rows_out.append((name, name_type, region, gender, count))
-            kept += 1
-    return kept
+                gender = "U"
+            yield (name, name_type, region, gender, count)
+
+
+def adapter_onomaverse_given():
+    yield from _read_onomaverse("given", "given-name-frequency.csv")
+
+
+def adapter_onomaverse_surname():
+    yield from _read_onomaverse("surname", "surname-frequency.csv")
+
+
+def adapter_ssa_given():
+    d = RAW_DIR / "ssa"
+    files = sorted(d.glob("yob*.txt"))
+    if not files:
+        return
+    agg: Counter = Counter()
+    for path in files:
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                parts = line.rstrip("\n").split(",")
+                if len(parts) != 3:
+                    continue
+                name, sex, count = parts
+                agg[(name.strip(), sex.strip().upper())] += int(count)
+    for (name, sex), count in agg.items():
+        yield (name, "given", "US", "M" if sex == "M" else "F", count)
+
+
+def _read_census_csv(path: Path):
+    with open(path, "r", encoding="utf-8", errors="ignore", newline="") as f:
+        for row in csv.DictReader(f):
+            name = (row.get("NAME") or row.get("name") or "").strip()
+            if not name or name.upper() == "ALL OTHER NAMES":
+                continue
+            try:
+                count = int(row.get("COUNT") or row.get("count") or 0)
+            except ValueError:
+                continue
+            if count <= 0:
+                continue
+            yield _uncap(name), count
+
+
+def adapter_census2010_surname():
+    d = RAW_DIR / "census2010"
+    for path in sorted(d.glob("*.csv")) if d.exists() else []:
+        for name, count in _read_census_csv(path):
+            yield (name, "surname", "US", "U", count)
+
+
+def adapter_census2020_surname():
+    d = RAW_DIR / "census2020"
+    for path in sorted(d.glob("*.csv")) if d.exists() else []:
+        for name, count in _read_census_csv(path):
+            yield (name, "surname", "US", "U", count)
+
+
+def adapter_insee_given():
+    d = RAW_DIR / "insee"
+    files = sorted(d.glob("nat*.csv")) if d.exists() else []
+    if not files:
+        return
+    agg: Counter = Counter()
+    with open(files[0], "r", encoding="utf-8", errors="ignore", newline="") as f:
+        for row in csv.DictReader(f, delimiter=";"):
+            name = (row.get("preusuel") or "").strip()
+            if not name or name == "_PRENOMS_RARES":
+                continue
+            sex = (row.get("sexe") or "").strip()
+            try:
+                count = int(float(row.get("nombre") or 0))
+            except ValueError:
+                continue
+            if count <= 0:
+                continue
+            agg[(_uncap(name), "M" if sex == "1" else "F")] += count
+    for (name, gender), count in agg.items():
+        yield (name, "given", "FR", gender, count)
+
+
+def adapter_wikidata():
+    d = RAW_DIR / "wikidata"
+    for path in sorted(d.glob("*_given.tsv")) if d.exists() else []:
+        region = path.name[:2]
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                parts = line.rstrip("\n").split("\t")
+                if len(parts) != 3:
+                    continue
+                name, gender, count = parts
+                yield (name, "given", region, gender, int(count))
+    for path in sorted(d.glob("*_family.tsv")) if d.exists() else []:
+        region = path.name[:2]
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                parts = line.rstrip("\n").split("\t")
+                if len(parts) != 3:
+                    continue
+                name, _gender, count = parts
+                yield (name, "surname", region, "U", int(count))
+
+
+# (key, adapter, license, url, bias note)
+ADAPTERS = (
+    ("onomaverse given", adapter_onomaverse_given, "CC-BY-4.0",
+     "https://huggingface.co/datasets/onomaverse/names",
+     "collection footprint over-serves the Arab world and the Mediterranean"),
+    ("onomaverse surname", adapter_onomaverse_surname, "CC-BY-4.0",
+     "https://huggingface.co/datasets/onomaverse/names",
+     "same footprint as its given-name half"),
+    ("SSA givens 1880+", adapter_ssa_given, "public domain (US gov)",
+     "https://www.ssa.gov/oact/babynames/",
+     "US-only by definition; names under 5 bearers suppressed at source"),
+    ("US Census 2010 surnames", adapter_census2010_surname, "public domain (US gov)",
+     "https://www.census.gov/topics/population/genealogy/data.html",
+     "US-only; surnames under 100 bearers suppressed at source"),
+    ("US Census 2020 surnames", adapter_census2020_surname, "public domain (US gov)",
+     "https://www.census.gov/topics/population/genealogy/data.html",
+     "US-only; present only if the 2020 shelf was reachable"),
+    ("INSEE prenoms 1900+", adapter_insee_given, "Licence Ouverte (French gov)",
+     "https://www.insee.fr/fr/statistiques/8595130",
+     "France-only; names under 3 bearers suppressed at source"),
+    ("Wikidata notable humans", adapter_wikidata, "CC0",
+     "https://query.wikidata.org/",
+     "fame proxy, not census: skews historical, male, and toward wiki-covered "
+     "cultures; counts are notable-person counts, a different unit from census "
+     "counts (mixed under sqrt damping, stated here rather than hidden)"),
+)
 
 
 def cook() -> dict:
-    """Cook the raw harvest into corpus.tsv. Returns a stats dict."""
+    """Cook every reachable shelf into corpus.tsv + SOURCES.md. Returns stats."""
     rows: list = []
-    givens = _cook_frequency_csv(RAW_DIR / "onomaverse" / "given-name-frequency.csv",
-                                 "given", rows)
-    surnames = _cook_frequency_csv(RAW_DIR / "onomaverse" / "surname-frequency.csv",
-                                   "surname", rows)
+    per_source: dict[str, int] = {}
+    for key, adapter, license_, url, bias in ADAPTERS:
+        got = 0
+        for r in adapter():
+            rows.append(r)
+            got += 1
+        per_source[key] = got
 
     regions = Counter(r[2] for r in rows)
     chars = Counter()
     for r in rows:
         chars.update(r[0])
+    givens = sum(1 for r in rows if r[1] == "given")
 
     CORPUS_PATH.parent.mkdir(parents=True, exist_ok=True)
     with open(CORPUS_PATH, "w", encoding="utf-8", newline="\n") as f:
         for name, ntype, region, gender, count in rows:
             f.write(f"{name}\t{ntype}\t{region}\t{gender}\t{count}\n")
 
+    today = _dt.date.today().isoformat()
+    lines = [
+        "# The Wuddlies corpus: provenance ledger",
+        "",
+        f"Cooked {today} by `python -m wuddlies cook`. Aggregates and",
+        "notable-public-record only; individual-level civilian data (electoral",
+        "rolls, voter files, breach-derived sets) is refused regardless of",
+        "technical availability. Every source's known bias is stated here",
+        "rather than hidden; the bias microscope (`python -m wuddlies bias`)",
+        "measures what survives into the pour.",
+        "",
+    ]
+    for key, adapter, license_, url, bias in ADAPTERS:
+        got = per_source.get(key, 0)
+        status = f"{got:,} rows" if got else "shelf empty this cook (skipped)"
+        lines += [f"## {key}", "",
+                  f"- **Rows:** {status}", f"- **License:** {license_}",
+                  f"- **Source:** {url}", f"- **Known bias:** {bias}", ""]
+    SOURCES_PATH.write_text("\n".join(lines), encoding="utf-8")
+
     return {
-        "rows": len(rows),
-        "givens": givens,
-        "surnames": surnames,
-        "regions": len(regions),
-        "unique_chars": len(chars),
+        "rows": len(rows), "givens": givens, "surnames": len(rows) - givens,
+        "regions": len(regions), "unique_chars": len(chars),
+        "per_source": per_source,
         "top_regions": regions.most_common(8),
     }
 

@@ -27,6 +27,7 @@ def main(argv=None) -> int:
                                      description="The Wuddlies naming channel.")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
+    sub.add_parser("harvest", help="run the expedition: pull every raw source aboard")
     sub.add_parser("cook", help="cook the raw harvest into corpus.tsv")
 
     p_train = sub.add_parser("train", help="raise the librarian from the corpus")
@@ -59,6 +60,11 @@ def main(argv=None) -> int:
 
     args = parser.parse_args(argv)
 
+    if args.cmd == "harvest":
+        from wuddlies.harvest import harvest_all
+        harvest_all()
+        return 0
+
     if args.cmd == "cook":
         from wuddlies.corpus import cook
         stats = cook()
@@ -66,6 +72,8 @@ def main(argv=None) -> int:
               f"({stats['givens']:,} given, {stats['surnames']:,} surname) "
               f"across {stats['regions']} regions; "
               f"{stats['unique_chars']} unique characters")
+        for src, n in stats["per_source"].items():
+            print(f"[kitchen]   {src}: {n:,} rows")
         print(f"[kitchen] largest regions: "
               + ", ".join(f"{r} ({n:,})" for r, n in stats["top_regions"]))
         return 0
