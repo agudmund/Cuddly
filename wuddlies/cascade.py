@@ -247,38 +247,82 @@ def crossover(prog_a: dict, prog_b: dict, root_a: str, root_b: str,
 
 INITIAL_RUN_SHARE = 0.5     # half a generation sharing a first letter
 INITIAL_RUN_MIN = 4         # ...among at least this many souls
+REBEL_RATE = 0.04           # per law, per generation, times the law's age
+SATURATION_SHARE = 0.98     # a law everyone keeps distinguishes no one...
+SATURATION_AGE = 3          # ...once it has been total for this many years
+SATURATION_FALL = 0.5       # ...after which each generation may let it go
 
 
-def watch_for_promotions(gen: int, level: list, program: dict,
-                         families: list) -> tuple[dict, list[str]]:
-    """Inspect a completed generation's ACTUAL names for regularities worth
-    crystallizing. Deterministic observation, never a dice roll: the Smith
-    route in miniature. Returns the (possibly promoted) program for the
-    NEXT generation, plus log lines; family echo laws land on the family."""
+def watch_traditions(gen: int, level: list, program: dict,
+                     families: list, rng) -> tuple[dict, list[str]]:
+    """The tradition engine, both directions. Promotions are deterministic
+    observations of a generation's actual names (the Smith route). Repeals
+    are the counter-force: the young questioning the old ways, through
+    saturation (a total law distinguishes no one) and rebellion (old laws
+    chafe hardest). A repealed law may be re-promoted lifetimes later:
+    traditions cycle. Every event, both directions, gets its receipt."""
     log = []
     prog = program
 
-    # The initial-letter run: an accident of the elders becomes law.
-    if not program.get("initial") and len(level) >= INITIAL_RUN_MIN:
+    # ── the counter-force: repeal before promotion, elders judged first ──
+    if program.get("initial") and level:
+        letter = program["initial"]
+        age = gen - program.get("initial_born", gen)
+        share = sum(1 for s, _f in level
+                    if s["given"][:1].upper() == letter) / len(level)
+        fell = None
+        if share >= SATURATION_SHARE and age >= SATURATION_AGE \
+                and rng.random() < SATURATION_FALL:
+            fell = (f"generation {gen} repeal: the letter {letter} no longer "
+                    f"set anyone apart, and the young let it go")
+        elif rng.random() < REBEL_RATE * age:
+            fell = (f"generation {gen} repeal: the young questioned the "
+                    f"{letter} law of their elders, and let it fall")
+        if fell:
+            prog = dict(program)
+            prog.pop("initial", None)
+            prog.pop("initial_born", None)
+            prog["id"] = prog["id"] + "-repealed"
+            log.append(fell)
+    just_repealed = bool(log)
+
+    for fam in families:
+        echo = fam["laws"].get("echo")
+        if echo:
+            age = gen - fam["laws"].get("echo_born", gen)
+            if rng.random() < REBEL_RATE * age:
+                del fam["laws"]["echo"]
+                fam["laws"].pop("echo_born", None)
+                log.append(f"generation {gen} repeal: the {fam['token']} "
+                           f"family wearied of {echo}; a child will be "
+                           f"named freshly for the first time in "
+                           f"{age} generations")
+
+    # ── promotions: accidents crystallizing, as before ───────────────────
+    if not prog.get("initial") and len(level) >= INITIAL_RUN_MIN:
         firsts = {}
         for soul, _fam in level:
             c = soul["given"][:1].upper()
             firsts[c] = firsts.get(c, 0) + 1
         letter, count = max(firsts.items(), key=lambda kv: kv[1])
-        if count / len(level) >= INITIAL_RUN_SHARE:
-            prog = dict(program)
-            prog["initial"] = letter
-            prog["id"] = prog["id"] + f"+initial({letter})"
+        # A freshly-repealed law may not re-crystallize off the very
+        # generation that shed it; lifetimes later, cycles are welcome.
+        if count / len(level) >= INITIAL_RUN_SHARE and not just_repealed:
+            promoted = dict(prog)
+            promoted["initial"] = letter
+            promoted["initial_born"] = gen + 1
+            promoted["id"] = promoted["id"] + f"+initial({letter})"
             log.append(f"generation {gen} promotion: {count} of {len(level)} "
                        f"souls happened to share the letter {letter}; the "
                        f"accident is now tradition, and the young must carry it")
+            prog = promoted
 
-    # The echo: a child bearing their parent's own name founds a custom.
     for soul, fam in level:
         parent_given = soul.get("parent_given")
         if (parent_given and soul["given"] == parent_given
                 and "echo" not in fam["laws"]):
             fam["laws"]["echo"] = soul["given"]
+            fam["laws"]["echo_born"] = gen
             log.append(f"generation {gen} promotion: in the {fam['token']} "
                        f"family a child received their parent's own name; "
                        f"the name {soul['given']} now carries")
@@ -306,13 +350,16 @@ def pour_history(model: WuddlyModel, families_seq: np.random.SeedSequence,
                  drift_log: list, promotions_on: bool,
                  temperature: float = 0.9,
                  root_names: list[str | None] | None = None,
-                 wear_rate: float = TOKEN_WEAR_RATE) -> list[dict]:
+                 wear_rate: float = TOKEN_WEAR_RATE,
+                 watcher_rng=None) -> list[dict]:
     """Pour a settlement's whole history one generation at a time, letting
     the watcher inspect each completed generation before the next is born.
     A root_names entry pins that family's founding token verbatim (any
     string welcome: the name rides structure, never the weight); wear_rate
     lets carried surnames weather per child, so branches diverge."""
     n_fam = len(fam_roots)
+    if watcher_rng is None:
+        watcher_rng = np.random.default_rng(0)
     fam_seqs = families_seq.spawn(n_fam)
     fams = []
     level = []   # (soul, family) pairs of the generation being poured
@@ -363,19 +410,24 @@ def pour_history(model: WuddlyModel, families_seq: np.random.SeedSequence,
                 level.append((soul, fam))
                 next_frontier.append((soul, fam, ks.spawn(1)[0]))
         if promotions_on and gen < generations:
-            promoted, plog = watch_for_promotions(gen, level,
-                                                  programs[min(gen + 1,
-                                                               len(programs) - 1)],
-                                                  fams)
-            # A promoted law flows down ALL the remaining years, not just the
-            # next one, or the watcher re-crystallizes its own tradition.
-            if promoted.get("initial"):
-                for j in range(gen + 1, len(programs)):
-                    if not programs[j].get("initial"):
-                        pj = dict(programs[j])
+            promoted, plog = watch_traditions(gen, level,
+                                              programs[min(gen + 1,
+                                                           len(programs) - 1)],
+                                              fams, watcher_rng)
+            # Law state flows down ALL the remaining years, both directions:
+            # a promotion binds every later generation, a repeal frees them.
+            for j in range(gen + 1, len(programs)):
+                pj = dict(programs[j])
+                if promoted.get("initial"):
+                    if pj.get("initial") != promoted["initial"]:
                         pj["initial"] = promoted["initial"]
+                        pj["initial_born"] = promoted.get("initial_born", gen + 1)
                         pj["id"] += f"+initial({promoted['initial']})"
-                        programs[j] = pj
+                elif pj.get("initial"):
+                    pj.pop("initial", None)
+                    pj.pop("initial_born", None)
+                    pj["id"] += "-repealed"
+                programs[j] = pj
             drift_log.extend(plog)
         print(f"[world] generation {gen} poured: {len(level)} souls",
               file=sys.stderr, flush=True)
@@ -468,7 +520,8 @@ def pour_world(model: WuddlyModel, world_seed: int, settlements: int = 3,
         fams = pour_history(model, families_seq, fam_roots, programs,
                             generations, children_max, drift_log,
                             promotions_on, temperature,
-                            root_names=root_names, wear_rate=wear_rate)
+                            root_names=root_names, wear_rate=wear_rate,
+                            watcher_rng=d_rng)
         out["settlements"].append({"region": mint_soil, "roots": s_roots,
                                    "eponym": eponym, "programs": programs,
                                    "drift": drift_log, "families": fams})
