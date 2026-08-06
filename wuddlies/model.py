@@ -56,6 +56,13 @@ GENDERS = ("U", "M", "F")
 DIM_CULTURE = 8
 CULT_PROJ = 16
 PAR_PROJ = 16
+# The seventh era's headline: the parent name arrives as POSITIONAL SLOTS
+# rather than one averaged vector. A mean is a bag of letters, excellent
+# for flavour and structurally unable to copy; slots let the weight carry
+# a parent's letters and then change one, which is exactly what wear is.
+# A weight whose Wp is (dim_char, PAR_PROJ) predates this and still loads,
+# read back through the mean path by shape alone.
+PAR_SLOTS = 12
 
 # ── the world-mix presets (the fourth floor) ──────────────────────────────
 # Fair versus realistic is a FLAG, never a training choice: the weight
@@ -137,6 +144,15 @@ class WuddlyModel:
                 + CULT_PROJ + PAR_PROJ)
 
         def init(*shape):
+            """Embeddings keep a fixed small scale; projection matrices are
+            scaled by their fan-in. Without this the seventh era's twelve
+            positional parent slots arrive about seven times hotter than the
+            single averaged vector they replace, saturating the first tanh
+            and starving the gradients that were the whole point of the
+            change (measured 2026-08-05, before any schooling was spent)."""
+            if len(shape) == 2 and shape[0] > 64:
+                return (rng.standard_normal(shape)
+                        / np.sqrt(shape[0])).astype(np.float32)
             return (rng.standard_normal(shape) * 0.08).astype(np.float32)
 
         self.p = {
@@ -146,7 +162,7 @@ class WuddlyModel:
             "Eg": init(len(GENDERS), dim_gender),
             "Eo": init(len(self.origins), dim_origin),
             "Wc": init(DIM_CULTURE, CULT_PROJ),
-            "Wp": init(dim_char, PAR_PROJ),
+            "Wp": init(PAR_SLOTS * dim_char, PAR_PROJ),
             "W1": init(d_in, hidden), "b1": np.zeros(hidden, np.float32),
             "W2": init(hidden, hidden), "b2": np.zeros(hidden, np.float32),
             "W3": init(hidden, v), "b3": np.zeros(v, np.float32),
@@ -159,10 +175,21 @@ class WuddlyModel:
 
     # ── forward ───────────────────────────────────────────────────────────
 
+    @property
+    def parent_is_slots(self) -> bool:
+        """True for seventh-era weights (positional slots), False for the
+        sixth era's mean pooling. Read from Wp's own shape, so an envelope
+        needs no extra field to say which era it came from."""
+        return self.p["Wp"].shape[0] != self.dim_char
+
     def _parent_pool(self, pidx, plen):
-        """Mean of the parent name's char embeddings; zeros when no parent."""
+        """The parent name as the weight sees it: positional slots since the
+        seventh era, a masked mean before it. Zeros when there is no parent."""
         emb = self.p["Ec"][pidx]                       # (B, P, dc)
         mask = (pidx > 0)[..., None]                   # pad index 0 masked out
+        if self.parent_is_slots:
+            slots = emb[:, :PAR_SLOTS] * mask[:, :PAR_SLOTS]
+            return slots.reshape(emb.shape[0], PAR_SLOTS * self.dim_char)
         summed = (emb * mask).sum(axis=1)
         return summed / np.maximum(plen, 1)[:, None]
 
@@ -172,7 +199,7 @@ class WuddlyModel:
         if cul is None:
             cul = np.zeros((b, DIM_CULTURE), np.float32)
         if pidx is None:
-            pool = np.zeros((b, self.dim_char), np.float32)
+            pool = np.zeros((b, self.p["Wp"].shape[0]), np.float32)
         else:
             pool = self._parent_pool(pidx, plen)
         return np.concatenate([
@@ -216,7 +243,7 @@ class WuddlyModel:
         if cul is None:
             cul = np.zeros((b, DIM_CULTURE), np.float32)
         pool = (self._parent_pool(pidx, plen) if pidx is not None
-                else np.zeros((b, self.dim_char), np.float32))
+                else np.zeros((b, self.p["Wp"].shape[0]), np.float32))
         logits, (x, h1, h2) = self.forward(ctx, reg, typ, gen, ori, cul,
                                            pidx, plen)
         logits -= logits.max(axis=1, keepdims=True)
@@ -264,9 +291,17 @@ class WuddlyModel:
         dx_p = dx[:, off:off + PAR_PROJ]
         g["Wp"] = pool.T.astype(np.float32) @ dx_p
         if pidx is not None:
-            dpool = (dx_p @ self.p["Wp"].T) / np.maximum(plen, 1)[:, None]
+            dpool = dx_p @ self.p["Wp"].T
             mask = (pidx > 0)[..., None]
-            np.add.at(g["Ec"], pidx, dpool[:, None, :] * mask)
+            if self.parent_is_slots:
+                # Each slot owns its own gradient: that separability is the
+                # whole point of the change.
+                dslots = dpool.reshape(-1, PAR_SLOTS, self.dim_char)
+                np.add.at(g["Ec"], pidx[:, :PAR_SLOTS],
+                          dslots * mask[:, :PAR_SLOTS])
+            else:
+                dmean = dpool / np.maximum(plen, 1)[:, None]
+                np.add.at(g["Ec"], pidx, dmean[:, None, :] * mask)
 
         if return_grads:
             # The gradient auditor's door: analytic grads, nothing applied.

@@ -226,8 +226,9 @@ def build_lesson_examples(lessons, char_idx, region_idx, k: int):
         ri = region_idx[region]
         ti = type_idx["full"]
         gi = gender_idx.get(gender, 0)
-        pid = np.zeros(20, np.int32)
-        ids = [char_idx[c] for c in parent[:20] if c in char_idx]
+        from wuddlies.model import PAR_SLOTS
+        pid = np.zeros(PAR_SLOTS, np.int16)
+        ids = [char_idx[c] for c in parent[:PAR_SLOTS] if c in char_idx]
         pid[:len(ids)] = ids
         pl = len(ids)
         ctx = [BOS] * k
@@ -242,8 +243,8 @@ def build_lesson_examples(lessons, char_idx, region_idx, k: int):
     arrays = (np.asarray(X, np.int32), np.asarray(reg, np.int16),
               np.asarray(typ, np.int8), np.asarray(gen, np.int8),
               np.asarray(ori, np.int16), np.asarray(y, np.int32),
-              np.asarray(culs, np.float32), np.asarray(pidxs, np.int32),
-              np.asarray(plens, np.int32))
+              np.asarray(culs, np.float32), np.asarray(pidxs, np.int16),
+              np.asarray(plens, np.int16))
     return arrays, skipped
 
 

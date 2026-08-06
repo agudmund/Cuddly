@@ -21,3 +21,8 @@ notes.txt
 # The Wuddlies: the raw harvest re-downloads deterministically; only the
 # cooked corpus and the weight itself are the repo's to carry.
 wuddlies/data/raw/
+# The curriculum is derived data, regenerable byte-for-byte from its seed
+# and the source weight (`wuddly teach --seed N`), and it grows into tens
+# of megabytes as the eras deepen. The weights it produces travel; the
+# lessons themselves do not.
+wuddlies/data/lessons.tsv

@@ -204,9 +204,12 @@ def main(argv=None) -> int:
     sub.add_parser("harvest", help="run the expedition: pull every raw source aboard")
     sub.add_parser("cook", help="cook the raw harvest into corpus.tsv")
     p_teach = sub.add_parser("teach", help="pour the sixth era's curriculum of invented cultures")
-    p_teach.add_argument("--cultures", type=int, default=2000)
-    p_teach.add_argument("--lessons-per", type=int, default=30)
-    p_teach.add_argument("--seed", type=int, default=6)
+    p_teach.add_argument("--cultures", type=int, default=5000)
+    p_teach.add_argument("--chains", type=int, default=5,
+                         help="lineages poured per culture")
+    p_teach.add_argument("--chain-len", type=int, default=5,
+                         help="generations walked per lineage")
+    p_teach.add_argument("--seed", type=int, default=7)
     p_teach.add_argument("--weight", default=None)
     p_front = sub.add_parser("frontier", help="find how weathered a world may be before its chains break")
     p_front.add_argument("--rates", default=None,
@@ -218,6 +221,15 @@ def main(argv=None) -> int:
     p_front.add_argument("--families", type=int, default=3)
     p_front.add_argument("--temperature", type=float, default=0.9)
     p_front.add_argument("--weight", default=None)
+
+    p_watch = sub.add_parser("longwatch", help="run one world for hundreds of generations")
+    p_watch.add_argument("--generations", type=int, default=500)
+    p_watch.add_argument("--population", type=int, default=80)
+    p_watch.add_argument("--wear", type=float, default=0.08)
+    p_watch.add_argument("--seed", type=int, default=1)
+    p_watch.add_argument("--region", default="GH")
+    p_watch.add_argument("--name", default=None, help="pin the founding name")
+    p_watch.add_argument("--weight", default=None)
 
     p_gguf = sub.add_parser("gguf", help="pack a weight into the GGUF interchange envelope")
     p_gguf.add_argument("--weight", default=None, help="source .safetensors (default: canonical)")
@@ -266,7 +278,7 @@ def main(argv=None) -> int:
     p_world.add_argument("--temperature", type=float, default=0.9,
                          help="pour heat: calm cultures (0.65) promote more traditions")
     p_world.add_argument("--max-souls", type=int, default=25000,
-                         help="growth guard: refuse worlds expected to exceed this")
+                         help="warn above this projected size (0 = pour in silence)")
     p_world.add_argument("--name", default=None,
                          help="pin the first family's founding name verbatim, e.g. Thingaling")
     p_world.add_argument("--wear", type=float, default=None,
@@ -321,6 +333,16 @@ def main(argv=None) -> int:
                       families=args.families, temperature=args.temperature)
         return 0
 
+    if args.cmd == "longwatch":
+        from wuddlies.deeptime import watch
+        from wuddlies.model import load_model
+        from wuddlies.train import WEIGHT_PATH
+        model = load_model(args.weight or WEIGHT_PATH)
+        watch(model, generations=args.generations, population=args.population,
+              wear_rate=args.wear, seed=args.seed, region=args.region,
+              root=args.name)
+        return 0
+
     if args.cmd == "gguf":
         from wuddlies.gguf_export import export_gguf, verify_gguf
         from wuddlies.train import WEIGHT_PATH
@@ -362,8 +384,8 @@ def main(argv=None) -> int:
         from wuddlies.teacher import teach
         from wuddlies.train import WEIGHT_PATH
         model = load_model(args.weight or WEIGHT_PATH)
-        teach(model, cultures=args.cultures, lessons_per=args.lessons_per,
-              seed=args.seed)
+        teach(model, cultures=args.cultures, chains=args.chains,
+              chain_len=args.chain_len, seed=args.seed)
         return 0
 
     if args.cmd == "train":

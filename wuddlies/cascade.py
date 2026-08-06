@@ -460,16 +460,22 @@ def pour_world(model: WuddlyModel, world_seed: int, settlements: int = 3,
     mean_kids = (1 + children_max) / 2
     expected = settlements * families * sum(mean_kids ** g
                                             for g in range(1, generations + 1))
-    if expected > max_souls:
-        raise SystemExit(
-            f"[world] this world would pour ~{int(expected):,} souls "
-            f"({settlements} settlements x {families} families x up-to-"
-            f"{children_max} children over {generations} generations); "
-            f"the cap is {max_souls:,}.\n"
-            f"[world] for a deep DYNASTY pour a lineal saga: --children 1 "
-            f"(one heir per generation = "
-            f"{settlements * families * generations} souls).\n"
-            f"[world] or raise the cap deliberately with --max-souls.")
+    if max_souls and expected > max_souls:
+        # The arithmetic was always the valuable half; the refusal was not.
+        # Removed as a ceiling 2026-08-05 at the founder's word: a big world
+        # is a legitimate thing to want, and the only real service is saying
+        # how big before the grinding starts.
+        minutes = expected * 0.008 / 60
+        print(f"[world] LARGE WORLD: ~{int(expected):,} souls expected "
+              f"({settlements} settlements x {families} families x up-to-"
+              f"{children_max} children over {generations} generations), "
+              f"roughly {minutes:,.0f} minutes of pouring. Proceeding.",
+              file=sys.stderr, flush=True)
+        print(f"[world] (a lineal saga is the cheap way to go deep: "
+              f"--children 1 pours {settlements * families * generations} "
+              f"souls over the same {generations} generations; and for "
+              f"hundreds of generations, 'wuddly longwatch' is the "
+              f"instrument built for it)", file=sys.stderr, flush=True)
     root = np.random.SeedSequence(world_seed)
     out = {"seed": world_seed, "world": world, "generations": generations,
            "settlements": []}
