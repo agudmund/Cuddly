@@ -78,6 +78,19 @@ EROSION_BAND = (0.0, 0.50)
 DIM_OBSERVED_WEAR = 4
 DIM_CULTURE_RATE = 5
 
+# THE NINTH ERA'S CORRECTION: a curriculum must cover its own dial.
+# wuddly8's erosion axis worked and its top end produced nonsense, and the
+# measurement said why: `_wear_token` applies exactly ONE operation, so
+# every worn handing landed at edit-distance one, and the dial position
+# (distance over name length) never rose above zero. Asking that weight
+# for heavy wear was asking about a region it had never seen one example
+# of, and extrapolation into unseen conditioning is not coarseness, it is
+# a question outside experience. So a handing may now apply SEVERAL
+# operations, each culture carries its own severity, and the dial is
+# scaled by edit COUNT rather than by proportion of the name, which also
+# stops a long name being structurally unable to reach the top.
+WEAR_STEPS_MAX = 3
+
 
 def _invent_culture(model: WuddlyModel, rng) -> tuple[dict, np.ndarray]:
     """One synthetic culture and its point in the eight-float space."""
@@ -85,12 +98,17 @@ def _invent_culture(model: WuddlyModel, rng) -> tuple[dict, np.ndarray]:
     order_ff = bool(rng.integers(2))
     patro = bool(rng.integers(2))
     erosion = float(rng.uniform(*EROSION_BAND))
+    # How hard this culture wears a name when it wears one at all. Uniform
+    # across cultures, so the dial ends up covered rather than crowded at
+    # its gentle end.
+    severity = int(rng.integers(1, WEAR_STEPS_MAX + 1))
     particles = None
     if patro:
         soil = model.regions[int(rng.integers(len(model.regions)))]
         particles = _mint_particles(model, rng, soil)
     culture = {"region": region, "order_ff": order_ff,
-               "particles": particles, "erosion": erosion}
+               "particles": particles, "erosion": erosion,
+               "severity": severity}
 
     vec = rng.normal(0.0, 0.12, CULTURE_DIMS)
     vec[0] += 1.0 if order_ff else -1.0
@@ -110,12 +128,13 @@ def _assemble(culture: dict, given: str, family: str) -> str:
 
 
 def _wear_amount(handed: str, carried: str) -> float:
-    """How far this one handing moved the name, in [0, 1]. Observable in the
-    lesson itself, which is the whole point of conditioning on it."""
+    """How far this one handing moved the name, in [0, 1], measured in edits
+    rather than in proportion so the scale means the same thing for a short
+    name and a long one. Observable in the lesson itself, which is the whole
+    point of conditioning on it."""
     if handed == carried:
         return 0.0
-    d = _levenshtein(handed, carried)
-    return min(1.0, d / max(len(handed), 1))
+    return min(1.0, _levenshtein(handed, carried) / WEAR_STEPS_MAX)
 
 
 def _lineage(model: WuddlyModel, rng, culture: dict, chain: int):
@@ -148,7 +167,20 @@ def _lineage(model: WuddlyModel, rng, culture: dict, chain: int):
                                       gender=gender)
             handed = token
             if rng.random() < culture["erosion"]:
-                token = _wear_token(token, rng)
+                # A short name cannot absorb three edits without ceasing to
+                # be a name at all, so severity is capped by what the token
+                # can carry.
+                # Wear until the intended DISTANCE is reached rather than
+                # applying a fixed number of operations and hoping: ops can
+                # overlap or undo each other, and hoping is what left the
+                # top of wuddly8's dial with no examples in it.
+                target = max(1, min(culture["severity"], len(token) - 2))
+                for _ in range(12):
+                    if _levenshtein(handed, token) >= target:
+                        break
+                    stepped = _wear_token(token, rng)
+                    if stepped != token:
+                        token = stepped
             yield (handed, gender, _assemble(culture, given, token),
                    _wear_amount(handed, token))
 

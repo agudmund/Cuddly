@@ -168,7 +168,11 @@ def _wear_token(token: str, rng) -> str:
     vi = [i for i, c in enumerate(token.lower()) if c in vowels]
     if vi:
         i = vi[int(rng.integers(len(vi)))]
-        swap = vowels[int(rng.integers(len(vowels)))]
+        # Never offer the letter already there: a shift that shifts nothing
+        # is an operation that silently does not happen, which quietly ate
+        # part of the ninth era's intended wear range before it was found.
+        choices = [v for v in vowels if v != token[i].lower()]
+        swap = choices[int(rng.integers(len(choices)))]
         ops.append(token[:i] + swap + token[i + 1:])
     if len(token) > 6:
         ops.append(token[:-1])
