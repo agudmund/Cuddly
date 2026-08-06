@@ -80,6 +80,10 @@ VERBS
   bias         run the 30,000-soul microscope over a pour
                  --pours N (1000)  --per N (30)  --seed N (7)
                  --type T  --world W  --weight PATH
+  frontier     find how weathered a world may be before its chains break
+                 --rates "0,0.05,0.1"  --seeds N (5)  --region XX (GH)
+                 --generations N (10)  --children N (2)  --families N (3)
+                 (reports the whole curve; the threshold stays your call)
   gguf         pack a weight into the GGUF interchange envelope
                  --weight PATH (canonical)  --out PATH
                  (container, not chat-model: arch=wuddly; verified byte-true)
@@ -118,6 +122,7 @@ def _completions_script() -> str:
         "sample": "pour souls from the weight",
         "world": "pour a whole coherent world from one seed",
         "bias": "run the 30k-soul microscope",
+        "frontier": "find the weathering frontier",
         "gguf": "pack a weight into the GGUF envelope",
         "completions": "print or install this completer",
     }
@@ -133,6 +138,8 @@ def _completions_script() -> str:
                     "--temperature", "--weight", "--world", "--origin"],
         "bias": ["--pours", "--per", "--seed", "--type", "--weight", "--world"],
         "world": flags_world,
+        "frontier": ["--rates", "--seeds", "--region", "--generations",
+                      "--children", "--families", "--temperature", "--weight"],
         "gguf": ["--weight", "--out"],
         "completions": ["--install"],
     }
@@ -201,6 +208,17 @@ def main(argv=None) -> int:
     p_teach.add_argument("--lessons-per", type=int, default=30)
     p_teach.add_argument("--seed", type=int, default=6)
     p_teach.add_argument("--weight", default=None)
+    p_front = sub.add_parser("frontier", help="find how weathered a world may be before its chains break")
+    p_front.add_argument("--rates", default=None,
+                         help='wear rates to sweep, e.g. "0,0.05,0.1,0.2"')
+    p_front.add_argument("--seeds", type=int, default=5)
+    p_front.add_argument("--region", default="GH")
+    p_front.add_argument("--generations", type=int, default=10)
+    p_front.add_argument("--children", type=int, default=2)
+    p_front.add_argument("--families", type=int, default=3)
+    p_front.add_argument("--temperature", type=float, default=0.9)
+    p_front.add_argument("--weight", default=None)
+
     p_gguf = sub.add_parser("gguf", help="pack a weight into the GGUF interchange envelope")
     p_gguf.add_argument("--weight", default=None, help="source .safetensors (default: canonical)")
     p_gguf.add_argument("--out", default=None, help="destination .gguf")
@@ -288,6 +306,19 @@ def main(argv=None) -> int:
 
     if not args.cmd:
         print(REGISTER)
+        return 0
+
+    if args.cmd == "frontier":
+        import re as _re
+        from wuddlies.frontier import DEFAULT_RATES, find_frontier
+        from wuddlies.model import load_model
+        from wuddlies.train import WEIGHT_PATH
+        model = load_model(args.weight or WEIGHT_PATH)
+        rates = (tuple(float(x) for x in _re.split(r"[,\s]+", args.rates) if x)
+                 if args.rates else DEFAULT_RATES)
+        find_frontier(model, rates=rates, seeds=args.seeds, region=args.region,
+                      generations=args.generations, children=args.children,
+                      families=args.families, temperature=args.temperature)
         return 0
 
     if args.cmd == "gguf":
