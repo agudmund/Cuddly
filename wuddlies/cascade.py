@@ -48,6 +48,23 @@ from wuddlies.model import FAMILY_FIRST_REGIONS, GENDERS, WuddlyModel
 DRIFT_RATE = 0.12       # at each settlement's founding
 GEN_DRIFT_RATE = 0.06   # between each generation, per settlement
 
+# THE MEASURED DEFAULT (2026-08-05). A single wear constant is the wrong
+# shape of answer, because erosion COMPOUNDS: the frontier-finder put the
+# best rate at 0.08 over ten generations and 0.05 over fourteen, and the
+# deep-time achievement sweep put it near 0.005 over six hundred. Those are
+# not three answers, they are one answer seen from three depths, and they
+# agree on the quantity that actually matters: about three quarters of a
+# wear event over the life of a lineage. Anything less and nothing ever
+# changes; much more and the family shatters. So the default is a rule
+# rather than a number, and `wuddly world` pours the measured world at
+# whatever depth it is asked for. `--wear` still pins it by hand.
+WEAR_EVENTS_PER_LINEAGE = 0.75
+
+
+def default_wear(generations: int) -> float:
+    """The measured wear rate for a lineage this deep."""
+    return WEAR_EVENTS_PER_LINEAGE / max(generations, 1)
+
 
 # ── the operator language, v1: programs are data ──────────────────────────
 
@@ -448,12 +465,14 @@ def pour_world(model: WuddlyModel, world_seed: int, settlements: int = 3,
                temperature: float = 0.9,
                max_souls: int = 25000,
                root_name: str | None = None,
-               wear_rate: float = TOKEN_WEAR_RATE) -> dict:
+               wear_rate: float | None = None) -> dict:
     """One number in, one coherent history out, drift log included.
     `souls` caps children-per-parent when children_max is not given. The
     last `confluences` settlements are founded by TWO herds meeting: their
     programs recombine, and each family carries its own root region."""
     children_max = children_max or max(1, souls - 1)
+    if wear_rate is None:
+        wear_rate = default_wear(generations)
     # Honest growth arithmetic BEFORE pouring: generations are exponential,
     # and a silent hour of grinding is not a world, it is a mistake with no
     # narrator (field lesson, a 20-generation x3-children request, 2026-08-05).

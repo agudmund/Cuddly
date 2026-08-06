@@ -75,8 +75,11 @@ VERBS
                                          lineal DYNASTIES (20 gens = 20 souls)
                  --name X                pin the first family's founding name
                                          verbatim and watch it evolve
-                 --wear F (0.08)         per-child surname weathering: cousins
-                                         come to spell their ancestor apart
+                 --wear F (measured)     per-child weathering; the default is
+                                         derived from the depth you asked for
+                                         (~0.75 wear events per lineage), so
+                                         `wuddly world` pours the measured
+                                         world without you naming a number
   bias         run the 30,000-soul microscope over a pour
                  --pours N (1000)  --per N (30)  --seed N (7)
                  --type T  --world W  --weight PATH
@@ -240,6 +243,13 @@ def main(argv=None) -> int:
     p_ach.add_argument("--name", default=None)
     p_ach.add_argument("--weight", default=None)
 
+    p_con = sub.add_parser("constellations", help="hunt combinations of achievement that travel together")
+    p_con.add_argument("--worlds", type=int, default=90)
+    p_con.add_argument("--generations", type=int, default=400)
+    p_con.add_argument("--region", default="GH")
+    p_con.add_argument("--name", default=None)
+    p_con.add_argument("--weight", default=None)
+
     p_gguf = sub.add_parser("gguf", help="pack a weight into the GGUF interchange envelope")
     p_gguf.add_argument("--weight", default=None, help="source .safetensors (default: canonical)")
     p_gguf.add_argument("--out", default=None, help="destination .gguf")
@@ -291,7 +301,8 @@ def main(argv=None) -> int:
     p_world.add_argument("--name", default=None,
                          help="pin the first family's founding name verbatim, e.g. Thingaling")
     p_world.add_argument("--wear", type=float, default=None,
-                         help="per-child surname weathering chance (default 0.08; 0 = names never wear)")
+                         help="per-child weathering chance; default is MEASURED from the depth "
+                              "(about 0.75 wear events per lineage), 0 = names never wear")
     p_world.add_argument("--weight", default=None)
 
     p_bias = sub.add_parser("bias", help="run the bias microscope over a large pour")
@@ -366,6 +377,15 @@ def main(argv=None) -> int:
                      root=args.name, **kw)
         return 0
 
+    if args.cmd == "constellations":
+        from wuddlies.deeptime import constellations
+        from wuddlies.model import load_model
+        from wuddlies.train import WEIGHT_PATH
+        model = load_model(args.weight or WEIGHT_PATH)
+        constellations(model, worlds=args.worlds, generations=args.generations,
+                       region=args.region, root=args.name)
+        return 0
+
     if args.cmd == "gguf":
         from wuddlies.gguf_export import export_gguf, verify_gguf
         from wuddlies.train import WEIGHT_PATH
@@ -438,7 +458,7 @@ def main(argv=None) -> int:
                 print(f"[desk] --roots wants exactly two regions, got: {parts}")
                 return 2
             roots = (parts[0], parts[1])
-        wear = TOKEN_WEAR_RATE if args.wear is None else args.wear
+        wear = args.wear   # None means the measured depth-aware default
         census = pour_world(model, args.seed, settlements=args.settlements,
                             families=args.families, souls=args.souls,
                             world=args.world, region=args.region,

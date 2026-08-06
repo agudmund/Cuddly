@@ -47,6 +47,7 @@ from pathlib import Path
 import numpy as np
 
 from wuddlies.cascade import _mint_particles, _wear_token
+from wuddlies.frontier import _levenshtein
 from wuddlies.model import GENDERS, WuddlyModel
 
 print = functools.partial(print, flush=True)
@@ -54,8 +55,28 @@ print = functools.partial(print, flush=True)
 LESSONS_PATH = Path(__file__).parent / "data" / "lessons.tsv"
 
 CULTURE_DIMS = 8
-# The band the frontier-finder measured, taught end to end.
-EROSION_BAND = (0.005, 0.13)
+
+# THE TEACHING BAND IS NOT THE WORLD BAND (the eighth era's correction).
+# The frontier-finder measured 0.005 to 0.13 as the range real worlds want,
+# and wuddly7 was taught exactly that: the result was an erosion axis that
+# did nothing at all, because only 2.9 percent of its handings ever changed
+# a name and a weight cannot carve an axis out of noise. A curriculum is
+# not a world; it needs CONTRAST rather than verisimilitude, so the teacher
+# spans nothing-at-all to heavily-weathered and lets the pour ask for any
+# point in between afterwards.
+EROSION_BAND = (0.0, 0.50)
+
+# And the deeper correction, which came from asking what a single lesson can
+# possibly reveal. A RATE is invisible in one handing: a lesson shows a name
+# that changed or a name that did not, never the frequency behind it, so
+# wuddly7 was conditioned on a quantity none of its examples contained.
+# WEAR is visible in every handing. Since the eighth era the condition
+# vector therefore carries both, and which one the weight actually uses is
+# a question the pours can answer rather than a thing to assume:
+#   dim 4  the wear on THIS handing (observable in the lesson itself)
+#   dim 5  the culture's underlying rate (observable only across lessons)
+DIM_OBSERVED_WEAR = 4
+DIM_CULTURE_RATE = 5
 
 
 def _invent_culture(model: WuddlyModel, rng) -> tuple[dict, np.ndarray]:
@@ -77,17 +98,24 @@ def _invent_culture(model: WuddlyModel, rng) -> tuple[dict, np.ndarray]:
     if particles:
         vec[2] += (sum(map(ord, particles["M"])) % 97) / 97 - 0.5
         vec[3] += (sum(map(ord, particles["F"])) % 97) / 97 - 0.5
-    # The erosion axis, centred and scaled to sit in the same range as the
-    # structural dimensions, so a walk along it means as much as a walk
-    # along any other.
+    # dim 4 is filled per-handing by the lineage walker, not here.
     lo, hi = EROSION_BAND
-    vec[4] += 2.0 * (erosion - lo) / (hi - lo) - 1.0
-    # dims 5..7 stay noise: fallow ground, the weight's to organise.
+    vec[DIM_CULTURE_RATE] += 2.0 * (erosion - lo) / (hi - lo) - 1.0
+    # dims 6..7 stay noise: fallow ground, the weight's to organise.
     return culture, vec.astype(np.float32)
 
 
 def _assemble(culture: dict, given: str, family: str) -> str:
     return f"{family} {given}" if culture["order_ff"] else f"{given} {family}"
+
+
+def _wear_amount(handed: str, carried: str) -> float:
+    """How far this one handing moved the name, in [0, 1]. Observable in the
+    lesson itself, which is the whole point of conditioning on it."""
+    if handed == carried:
+        return 0.0
+    d = _levenshtein(handed, carried)
+    return min(1.0, d / max(len(handed), 1))
 
 
 def _lineage(model: WuddlyModel, rng, culture: dict, chain: int):
@@ -110,7 +138,7 @@ def _lineage(model: WuddlyModel, rng, culture: dict, chain: int):
             given = model.sample_name(rng, region=region, name_type="given",
                                       gender=gender)
             suffix = culture["particles"].get(gender, culture["particles"]["M"])
-            yield handed, gender, _assemble(culture, given, handed + suffix)
+            yield handed, gender, _assemble(culture, given, handed + suffix), 0.0
             handed = given
     else:
         token = model.sample_name(rng, region=region, name_type="surname")
@@ -121,7 +149,8 @@ def _lineage(model: WuddlyModel, rng, culture: dict, chain: int):
             handed = token
             if rng.random() < culture["erosion"]:
                 token = _wear_token(token, rng)
-            yield handed, gender, _assemble(culture, given, token)
+            yield (handed, gender, _assemble(culture, given, token),
+                   _wear_amount(handed, token))
 
 
 def teach(model: WuddlyModel, cultures: int = 5000, chains: int = 5,
@@ -142,13 +171,17 @@ def teach(model: WuddlyModel, cultures: int = 5000, chains: int = 5,
             patro_n += 1 if culture["particles"] else 0
             vs = ",".join(f"{x:.4f}" for x in vec)
             for _ in range(chains):
-                prev_family = None
-                for handed, gender, target in _lineage(model, rng, culture,
-                                                       chain_len):
-                    f.write(f"{vs}\t{culture['region']}\t{handed}\t"
+                for handed, gender, target, amount in _lineage(
+                        model, rng, culture, chain_len):
+                    # dim 4 carries THIS handing's wear, so every single
+                    # lesson contains the quantity it is conditioned on.
+                    v = vec.copy()
+                    v[DIM_OBSERVED_WEAR] = 2.0 * amount - 1.0
+                    row = ",".join(f"{x:.4f}" for x in v)
+                    f.write(f"{row}\t{culture['region']}\t{handed}\t"
                             f"{gender}\t{target}\n")
                     n += 1
-                    if handed not in target:
+                    if amount > 0:
                         worn += 1
             if (c + 1) % 500 == 0:
                 progress(f"[teacher] {c + 1:,}/{cultures:,} cultures taught "

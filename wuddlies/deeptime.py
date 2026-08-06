@@ -297,6 +297,88 @@ def achievements(model, rates=(0.005, 0.01, 0.02, 0.035, 0.05, 0.08, 0.12),
     return rows
 
 
+AXES = ("dominance", "endurance", "continuity", "solitude",
+        "fidelity", "fecundity", "influence", "recurrence")
+
+
+def _profile_of(w: dict, generations: int) -> dict:
+    g = max(generations, 1)
+    return {
+        "dominance": w["longest_reign"] / g,
+        "endurance": max([n for _f, n in w["endured"]] or [0]) / g,
+        "continuity": w["longest_thread"] / g,
+        "solitude": max([n for _f, n in w["solitary"]] or [0]) / g,
+        "fidelity": w["root_lasted"] / g,
+        "fecundity": max([n for _f, n in w["fecund"]] or [0]),
+        "influence": max([s for _f, s in w["influence"]] or [0]),
+        "recurrence": w["revived"] / g,
+    }
+
+
+def constellations(model, worlds: int = 90, generations: int = 400,
+                   region: str = "GH", root: str | None = None,
+                   progress=print) -> dict:
+    """Hunt for combinations of achievement that always travel together.
+
+    The founder's argument for why this matters: a ninth kind of
+    achievement will not arrive by the world gaining a new primitive, it
+    arrives when a COMBINATION turns out to behave as one thing and earns
+    a name. "Endured but never ruled" is not two achievements, it is one
+    that nobody had defined. So rather than adding types by thinking
+    harder, this runs many worlds across the whole parameter space, keeps
+    every profile, and reports which axes move together and which refuse
+    to share a world. A pair that always travels together is a candidate
+    type, discovered rather than declared.
+    """
+    rng = np.random.default_rng(17)
+    rows = []
+    progress(f"[constellations] running {worlds} worlds across the parameter "
+             f"space, {generations} generations each")
+    for i in range(worlds):
+        rate = float(10 ** rng.uniform(-3.2, -0.7))     # ~0.0006 to 0.2
+        pop = int(rng.choice([40, 60, 80, 120, 160]))
+        w = watch(model, generations=generations, population=pop,
+                  wear_rate=rate, seed=1000 + i, region=region, root=root,
+                  progress=lambda *_a, **_k: None)
+        rows.append({"rate": rate, "population": pop,
+                     **_profile_of(w, generations)})
+        if (i + 1) % 30 == 0:
+            progress(f"[constellations]   {i + 1}/{worlds} worlds profiled")
+
+    mat = np.asarray([[r[a] for a in AXES] for r in rows], dtype=np.float64)
+    # Rank-transform each axis before correlating: these measures are
+    # wildly different in scale and shape, and rank correlation asks the
+    # question actually being asked (do they RISE together) without a
+    # single outlier world deciding the answer.
+    ranks = np.argsort(np.argsort(mat, axis=0), axis=0).astype(np.float64)
+    ranks -= ranks.mean(axis=0)
+    denom = np.sqrt((ranks ** 2).sum(axis=0))
+    denom[denom == 0] = 1.0
+    corr = (ranks.T @ ranks) / np.outer(denom, denom)
+
+    pairs = []
+    for i in range(len(AXES)):
+        for j in range(i + 1, len(AXES)):
+            pairs.append((corr[i, j], AXES[i], AXES[j]))
+    pairs.sort(key=lambda p: -p[0])
+
+    progress("")
+    progress("[constellations] travel together (candidate types, discovered "
+             "rather than declared):")
+    for c, a, b in pairs[:4]:
+        progress(f"[constellations]   {a} + {b}   r = {c:+.2f}")
+    progress("[constellations] refuse to share a world (genuine tensions):")
+    for c, a, b in pairs[-4:][::-1]:
+        progress(f"[constellations]   {a} vs {b}   r = {c:+.2f}")
+
+    lone = min(range(len(AXES)),
+               key=lambda i: max(abs(corr[i, j]) for j in range(len(AXES))
+                                 if j != i))
+    progress(f"[constellations] most independent axis: {AXES[lone]} "
+             f"(it says something no other axis is saying)")
+    return {"rows": rows, "corr": corr, "pairs": pairs}
+
+
 def _influence(final_pop: list[str], derived_from: dict[str, str]) -> list:
     """How much of the world alive at the end descends through each form.
     A form can be long dead and still be the road most of the present
