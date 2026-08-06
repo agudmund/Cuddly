@@ -231,6 +231,15 @@ def main(argv=None) -> int:
     p_watch.add_argument("--name", default=None, help="pin the founding name")
     p_watch.add_argument("--weight", default=None)
 
+    p_ach = sub.add_parser("achievements", help="find where the most kinds of achievement coexist")
+    p_ach.add_argument("--rates", default=None)
+    p_ach.add_argument("--seeds", type=int, default=5)
+    p_ach.add_argument("--generations", type=int, default=600)
+    p_ach.add_argument("--population", type=int, default=80)
+    p_ach.add_argument("--region", default="GH")
+    p_ach.add_argument("--name", default=None)
+    p_ach.add_argument("--weight", default=None)
+
     p_gguf = sub.add_parser("gguf", help="pack a weight into the GGUF interchange envelope")
     p_gguf.add_argument("--weight", default=None, help="source .safetensors (default: canonical)")
     p_gguf.add_argument("--out", default=None, help="destination .gguf")
@@ -341,6 +350,20 @@ def main(argv=None) -> int:
         watch(model, generations=args.generations, population=args.population,
               wear_rate=args.wear, seed=args.seed, region=args.region,
               root=args.name)
+        return 0
+
+    if args.cmd == "achievements":
+        import re as _re
+        from wuddlies.deeptime import achievements
+        from wuddlies.model import load_model
+        from wuddlies.train import WEIGHT_PATH
+        model = load_model(args.weight or WEIGHT_PATH)
+        kw = {}
+        if args.rates:
+            kw["rates"] = tuple(float(x) for x in _re.split(r"[,\s]+", args.rates) if x)
+        achievements(model, seeds=args.seeds, generations=args.generations,
+                     population=args.population, region=args.region,
+                     root=args.name, **kw)
         return 0
 
     if args.cmd == "gguf":

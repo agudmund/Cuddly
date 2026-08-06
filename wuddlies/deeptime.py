@@ -95,18 +95,41 @@ def watch(model: WuddlyModel | None, generations: int = 500,
     singleton_run: dict[str, int] = {}
     longest_singleton: dict[str, int] = {}
     alive_prev: set = set()
+
+    # Continuity: a thread is unbroken while no ancestor of this soul has
+    # mutated. Each soul remembers the generation its line last changed, so
+    # the longest unbroken thread is the purest reading of "never changed":
+    # a property of one path through the tree rather than of the crowd.
+    unbroken_since = [0] * population
+    longest_thread = 0
+
+    # Descent between FORMS, not souls: when one spelling wears into
+    # another, that edge is recorded once. It buys the two achievements a
+    # population count cannot see, fecundity (how many spellings a form
+    # gave rise to) and influence (how much of the final world descends
+    # through it).
+    derived_from: dict[str, str] = {}
+    spawned: Counter = Counter()
     check_every = max(1, generations // max(checkpoints, 1))
     snapshots = []
 
     for gen in range(1, generations + 1):
         parents = rng.integers(0, population, population)
-        nxt = []
+        nxt, nxt_since = [], []
         for p in parents:
             token = pop[p]
+            since = unbroken_since[p]
             if wear_rate > 0 and rng.random() < wear_rate:
-                token = _wear_token(token, rng)
+                worn = _wear_token(token, rng)
+                if worn != token:
+                    if worn not in derived_from:
+                        derived_from[worn] = token
+                        spawned[token] += 1
+                    token, since = worn, gen
             nxt.append(token)
-        pop = nxt
+            nxt_since.append(since)
+            longest_thread = max(longest_thread, gen - since)
+        pop, unbroken_since = nxt, nxt_since
 
         counts = Counter(pop)
         top_form, top_n = counts.most_common(1)[0]
@@ -175,9 +198,120 @@ def watch(model: WuddlyModel | None, generations: int = 500,
         "revived": sum(revivals.values()),
         "revived_top": revivals.most_common(3),
         "ever_lived": len(first_seen),
+        "longest_thread": longest_thread,
+        "fecund": spawned.most_common(3),
+        "influence": _influence(pop, derived_from),
     }
     _report(out, progress)
     return out
+
+
+"""
+--- the achievement question -------------------------------------------
+
+An achievement, in a world whose only primitives are forms, bearers,
+time and descent, is **a pattern that persists against the process that
+dissolves patterns**. Everything here is eroding; anything that lasts had
+to resist. The types are therefore not arbitrary, they are the modes of
+persistence those four primitives allow, and the list closes when the
+primitives run out:
+
+    dominance    persisting in NUMBER      held a quarter of the world
+    endurance    persisting in TIME        present, at any share, for ages
+    continuity   persisting UNBROKEN       a line that never once changed
+    solitude     persisting ALONE          the only bearer, for generations
+    fidelity     persisting as ORIGIN      the founding name still here
+    fecundity    persisting THROUGH KIN    the spellings it gave rise to
+    influence    persisting as ANCESTOR    the road the present travelled
+    recurrence   persisting by RETURNING   died, and was re-derived
+
+Eight, and the taxonomy is closed only in the sense that these are the
+ones today's primitives support. Add geography and "spread" appears; add
+prestige and "imitation" appears. New primitives, new ways to last.
+
+`achievements()` then answers the weathering question a second way. Each
+rate is scored on every axis, every axis is normalised across the rates,
+and the rate's richness is the GEOMETRIC mean of its scores: a measure
+that rewards a world where many kinds of achievement are possible at once
+and collapses if any becomes impossible. It never asks which achievement
+is best, only where the most of them can happen together.
+"""
+
+
+def achievements(model, rates=(0.005, 0.01, 0.02, 0.035, 0.05, 0.08, 0.12),
+                 seeds: int = 5, generations: int = 600, population: int = 80,
+                 region: str = "GH", root: str | None = None,
+                 progress=print) -> list[dict]:
+    """Score every wear rate on all eight axes and report where they cluster."""
+    axes = ("dominance", "endurance", "continuity", "solitude",
+            "fidelity", "fecundity", "influence", "recurrence")
+    rows = []
+    progress(f"[achieve] scoring {len(rates)} rates x {seeds} worlds x "
+             f"{generations} generations on {len(axes)} axes of persistence")
+    for rate in rates:
+        acc = {a: [] for a in axes}
+        for seed in range(1, seeds + 1):
+            w = watch(model, generations=generations, population=population,
+                      wear_rate=rate, seed=seed, region=region, root=root,
+                      progress=lambda *_a, **_k: None)
+            g = max(generations, 1)
+            acc["dominance"].append(w["longest_reign"] / g)
+            acc["endurance"].append(max([n for _f, n in w["endured"]] or [0]) / g)
+            acc["continuity"].append(w["longest_thread"] / g)
+            acc["solitude"].append(max([n for _f, n in w["solitary"]] or [0]) / g)
+            acc["fidelity"].append(w["root_lasted"] / g)
+            acc["fecundity"].append(max([n for _f, n in w["fecund"]] or [0]))
+            acc["influence"].append(max([s for _f, s in w["influence"]] or [0]))
+            acc["recurrence"].append(w["revived"] / g)
+        rows.append({"rate": rate,
+                     **{a: float(np.mean(v)) for a, v in acc.items()}})
+
+    # Normalise each axis across the rates, then take the geometric mean.
+    for a in axes:
+        hi = max(r[a] for r in rows) or 1.0
+        for r in rows:
+            r[a + "_n"] = r[a] / hi
+    for r in rows:
+        vals = [max(r[a + "_n"], 1e-6) for a in axes]
+        r["richness"] = float(np.exp(np.mean(np.log(vals))))
+
+    progress("[achieve] rate    " + "  ".join(f"{a[:4]}" for a in axes)
+             + "   richness")
+    for r in rows:
+        progress(f"[achieve] {r['rate']:<7.4g}"
+                 + "  ".join(f"{r[a + '_n']:.2f}" for a in axes)
+                 + f"     {r['richness']:.3f}")
+    best = max(rows, key=lambda r: r["richness"])
+    progress("")
+    progress(f"[achieve] the most kinds of achievement coexist at wear "
+             f"{best['rate']:.4g} (richness {best['richness']:.3f})")
+    sat = [a for a in axes if sum(1 for r in rows if r[a + "_n"] > 0.98) > 2]
+    if sat:
+        progress(f"[achieve] note, these axes saturate across most of the "
+                 f"range and so discriminate weakly here: {', '.join(sat)}")
+    weak = [a for a in axes if best[a + "_n"] < 0.4]
+    if weak:
+        progress(f"[achieve] even there these stay thin: {', '.join(weak)}")
+    progress("[achieve] no axis is ranked above another; richness only asks "
+             "how many can happen at once.")
+    return rows
+
+
+def _influence(final_pop: list[str], derived_from: dict[str, str]) -> list:
+    """How much of the world alive at the end descends through each form.
+    A form can be long dead and still be the road most of the present
+    travelled down: influence is an achievement no census can see."""
+    through: Counter = Counter()
+    for form in set(final_pop):
+        seen, node = set(), form
+        while node is not None and node not in seen:
+            seen.add(node)
+            node = derived_from.get(node)
+        for ancestor in seen:
+            if ancestor != form:
+                through[ancestor] += final_pop.count(form)
+    total = max(len(final_pop), 1)
+    return [(f, n / total) for f, n in through.most_common(3)]
 
 
 def _report(w: dict, progress) -> None:
@@ -219,6 +353,16 @@ def _report(w: dict, progress) -> None:
              f"later): {w['revived']}"
              + (("; " + ", ".join(f"'{f}' x{n}" for f, n in w["revived_top"]))
                 if w["revived_top"] else ""))
+    progress(f"[longwatch]   longest unbroken thread (a line that never "
+             f"changed, however few carried it): {w['longest_thread']} "
+             f"generations")
+    if w["fecund"]:
+        progress("[longwatch]   most fecund (spellings it gave rise to): "
+                 + ", ".join(f"'{f}' {n}" for f, n in w["fecund"]))
+    if w["influence"]:
+        progress("[longwatch]   most influential (share of the final world "
+                 "descending through it): "
+                 + ", ".join(f"'{f}' {s:.0%}" for f, s in w["influence"]))
 
     progress("[longwatch] snapshots of the world:")
     for gen, common, forms in w["snapshots"]:
