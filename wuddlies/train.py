@@ -68,6 +68,8 @@ _DEFERRED_BLOCKS = (
     (0x20000, 0x3FFFF),
 )
 
+BASE_LR = 1.5e-3
+MAX_LR_REDUCTIONS = 3
 GROUP_CEILING_PERMILLE = 99.5
 REGION_CEILING_MIN_ROWS = 200
 GENDER_BOOST_EXP = 0.4
@@ -254,7 +256,7 @@ def train(steps: int = 60000, batch: int = 384, seed: int = 7,
           weight_path: Path | str | None = None,
           curve_path: Path | str | None = None,
           lessons: bool = False, lesson_mix: float = 0.35,
-          progress=print) -> WuddlyModel:
+          base_lr: float = BASE_LR, progress=print) -> WuddlyModel:
     """Raise a librarian. With patience > 0 the run self-stops after that many
     evals without a new best validation loss, and reports its own knee."""
     weight_path = Path(weight_path or WEIGHT_PATH)
@@ -298,13 +300,24 @@ def train(steps: int = 60000, batch: int = 384, seed: int = 7,
     best_val, best_step, best_params, stale = float("inf"), 0, None, 0
     curve = [("step", "train_loss", "val_loss", "elapsed_s")]
 
+    # ANNEAL ON PLATEAU, NOT ON SCHEDULE (fixed 2026-08-06). The learning
+    # rate used to step down at fixed fractions of the PLANNED steps, while
+    # the patience gate stops on ACTUAL progress: so asking for a longer run
+    # pushed the annealing out of reach and a 300,000-step request that
+    # stopped at 109,000 spent its whole life at full rate, plateauing
+    # worse than the 80,000-step run that annealed twice. Now the rate
+    # follows the validation instead of the calendar, which cannot drift
+    # out of step with early stopping because it is driven by the same
+    # signal.
+    lr = base_lr
+    lr_patience = max(2, patience // 3) if patience else 4
+    reductions = 0
+
     step = 0
     while step < steps:
         chunk = min(eval_every, steps - step)
         order = rng.choice(len(y), size=chunk * batch, p=p)
         for i in range(chunk):
-            frac = step / max(steps, 1)
-            lr = 1.5e-3 if frac < 0.6 else (7.5e-4 if frac < 0.85 else 3.75e-4)
             if lX is not None and rng.random() < lesson_mix:
                 li = rng.integers(0, len(ly), size=batch)
                 loss = model.loss_and_step(lX[li], lreg[li], ltyp[li],
@@ -334,11 +347,18 @@ def train(steps: int = 60000, batch: int = 384, seed: int = 7,
             marker = "  <- best"
         else:
             stale += 1
-            marker = f"  (stale {stale}{'/' + str(patience) if patience else ''})"
+            if stale >= lr_patience and reductions < MAX_LR_REDUCTIONS:
+                lr *= 0.5
+                reductions += 1
+                stale = 0
+                marker = f"  (annealed to {lr:.2e}, cut {reductions})"
+            else:
+                marker = f"  (stale {stale}{'/' + str(patience) if patience else ''})"
         progress(f"[rig] step {step:6d}/{steps}  train {running:.4f}  "
-                 f"val {val:.4f}{extra}  ({elapsed:.0f}s){marker}")
-        if patience and stale >= patience:
-            progress(f"[rig] KNEE: no validation gain for {patience} evals; "
+                 f"val {val:.4f}{extra}  lr {lr:.1e}  ({elapsed:.0f}s){marker}")
+        if patience and stale >= patience and reductions >= MAX_LR_REDUCTIONS:
+            progress(f"[rig] KNEE: no validation gain for {patience} evals "
+                     f"after {reductions} learning-rate cuts; "
                      f"best was step {best_step} (val {best_val:.4f}). "
                      f"The redundant-return paradigm began "
                      f"~{best_step} steps in ({best_step / 6000:.1f} kettle-units).")
