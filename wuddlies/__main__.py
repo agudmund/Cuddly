@@ -271,6 +271,8 @@ def main(argv=None) -> int:
     p_train.add_argument("--lessons", action="store_true",
                          help="mix in the sixth era's culture curriculum (run teach first)")
     p_train.add_argument("--lesson-mix", type=float, default=0.35)
+    p_train.add_argument("--eval-every", type=int, default=500,
+                         help="steps between validation reads; raise it for long schoolings")
 
     p_world = sub.add_parser("world", help="pour a whole coherent world from one seed")
     p_world.add_argument("--seed", type=int, default=7)
@@ -437,7 +439,7 @@ def main(argv=None) -> int:
               k=args.k, dim_char=args.dim_char, hidden=args.hidden,
               patience=args.patience, weight_path=args.weight_path,
               curve_path=args.curve_path, lessons=args.lessons,
-              lesson_mix=args.lesson_mix)
+              lesson_mix=args.lesson_mix, eval_every=args.eval_every)
         return 0
 
     if args.cmd == "world":
